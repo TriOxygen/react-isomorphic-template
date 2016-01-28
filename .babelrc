@@ -1,0 +1,20 @@
+{
+  "presets":  ["es2015", "react", "stage-1"],
+  "plugins":  [
+    ["oxygen-css", {
+      "vendorPrefixes": true,
+      "minify": false,
+      "prefix": "",
+      "compressClassNames": true,
+      "bundleFile": "static/styles/bundle.css",
+      "context": "src/oxygen-md/Styles/index.js",
+      "mediaMap": {
+        "phone": "media only screen and (max-width: 767px)",
+        "desktop": "media only screen and (min-width: 768px)"
+      }
+    }],
+    ["transform-export-extensions"],
+    ["transform-class-properties"],
+    ["transform-object-rest-spread"]
+    ]
+}
