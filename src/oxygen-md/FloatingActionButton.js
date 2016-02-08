@@ -7,7 +7,7 @@ import classNames from 'classnames';
 const styles = oxygenStyle({
   button: {
     border: 'none',
-    display: 'block',
+    display: 'inline-block',
     position: 'relative',
     fontWeight: 500,
     color: 'inherit',
@@ -23,27 +23,19 @@ const styles = oxygenStyle({
     padding: 0,
     fontSize: `${Units.phone.button.fontSize}px`,
     cursor: 'pointer',
-    borderRadius: '50%',
-    width: '100%'
-  },
-  root: {
-    display: 'inline-block',
     width: `${Units.phone.floatingActionButton.size}px`,
     height: `${Units.phone.floatingActionButton.size}px`,
     lineHeight: `${Units.phone.floatingActionButton.size}px`,
-    borderRadius: `${Units.phone.floatingActionButton.size / 2}px`,
+    borderRadius: '50%',
     '&mini': {
       width: `${Units.phone.floatingActionButton.miniSize}px`,
       height: `${Units.phone.floatingActionButton.miniSize}px`,
       lineHeight: `${Units.phone.floatingActionButton.miniSize}px`,
-      borderRadius: `${Units.phone.floatingActionButton.miniSize / 2}px`,
     },
-  }
+  },
 });
 
 class FloatingActionButton extends Component {
-
-  static displayName = 'FloatingActionButton';
 
   static propTypes = {
     disabled: PropTypes.bool,
@@ -66,7 +58,7 @@ class FloatingActionButton extends Component {
 
   getButtonStyles() {
     const theme = this.props.theme || this.context.theme;
-    const { disabled, primary, secondary} = this.props;
+    const { disabled, primary, secondary } = this.props;
     let specStyles;
     if (disabled) {
       specStyles = {
@@ -127,32 +119,17 @@ class FloatingActionButton extends Component {
   }
 
   render() {
-    const { disabled, children, mini, icon, primary, secondary } = this.props;
-    const theme = this.props.theme || this.context.theme;
+    const { disabled, children, mini, icon } = this.props;
     const ink = !disabled && <Ink />;
-    let iconEl;
-    if (icon) {
-      let iconProps;
-      if (primary) {
-        iconProps = { color: theme.primary[500].text.default };
-      } else if (secondary) {
-        iconProps = { color: theme.secondary[500].text.default };
-      } else {
-        iconProps = { color: theme.text.default };
-      }
-      iconEl = icon && React.cloneElement(icon, iconProps);
-    }
-    const rootClasses = classNames(styles.root, {
+    const classes = classNames(styles.button, {
       [styles.mini]: mini
     });
     return (
-      <div className={rootClasses}>
-        <button className={styles.button} disabled={disabled} style={this.getButtonStyles()}>
-          {ink}
-          {iconEl}
-          {children}
-        </button>
-      </div>
+      <button className={classes} disabled={disabled} style={this.getButtonStyles()}>
+        {ink}
+        {icon}
+        {children}
+      </button>
     );
   }
 }

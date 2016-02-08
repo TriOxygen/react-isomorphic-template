@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import radium from 'radium';
 import { Shadow, Units } from './Styles';
+import View from './View';
+import IconButton from './IconButton';
 
 const styles = oxygenStyle({
   root: {
@@ -26,6 +27,7 @@ class Toolbar extends Component {
     primary: PropTypes.bool,
     secondary: PropTypes.bool,
     children: PropTypes.node,
+    leftIcon: PropTypes.node,
     theme: PropTypes.object
   };
 
@@ -40,7 +42,7 @@ class Toolbar extends Component {
   getStyle() {
     const theme = this.props.theme || this.context.theme;
     const { zDepth, primary, secondary, transparent } = this.props;
-    return [
+    return Object.assign({},
       transparent ? null : {
         backgroundColor: theme.theme.statusBar.material,
         color: theme.theme.statusBar.text.default,
@@ -54,17 +56,42 @@ class Toolbar extends Component {
         backgroundColor: theme.primary1,
         color: theme.primary1Text
       } : null,
-    ];
+    );
+  }
+
+  getIconStyle() {
+    const theme = this.props.theme || this.context.theme;
+    const { primary, secondary} = this.props;
+    return Object.assign({},
+      transparent ? null : {
+        backgroundColor: theme.theme.statusBar.material,
+        color: theme.theme.statusBar.text.default,
+        boxShadow: Shadow[zDepth]
+      },
+      secondary && !transparent ? {
+        backgroundColor: theme.secondary1,
+        color: theme.secondary1Text
+      } : null,
+      primary && !transparent ? {
+        backgroundColor: theme.primary1,
+        color: theme.primary1Text
+      } : null,
+    );
+
   }
 
   render() {
-    const { children } = this.props;
+    const { children, leftIcon, transparent, primary, secondary } = this.props;
+    const theme = this.props.theme || this.context.theme;
+    let { statusBar } = theme.theme;
     return (
-      <div className={styles.root} style={this.getStyle()}>
-        {children}
-      </div>
+      <View row className={styles.root} style={this.getStyle()}>
+        <View grow={0} ><IconButton primary={primary} secondary={secondary}/></View>
+        <View grow={1}>{children}</View>
+        <View grow={0} ><IconButton primary={primary} secondary={secondary}/></View>
+      </View>
     );
   }
 }
 
-export default radium(Toolbar);
+export default Toolbar;

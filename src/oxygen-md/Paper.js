@@ -1,16 +1,23 @@
-import React, {Component, PropTypes} from 'react';
-import radium from 'radium';
-import { Units, Shadow} from './Styles';
+import React, { Component, PropTypes } from 'react';
+import { Units, Shadow } from './Styles';
+import classNames from 'classnames';
 
-const styles = {
+const styles = oxygenStyle({
   root: {
     boxSizing: 'border-box',
+    '&padded': {
+      padding: Units.phone.gutter.mini,
+    },
+    '&spaced': {
+      margin: Units.phone.gutter.mini,
+    },
+    '&rounded': {
+      borderRadius: Units.phone.borderRadius
+    }
   },
-};
+});
 
 class Paper extends Component {
-  static displayName = 'Paper';
-
   static propTypes = {
     zDepth: PropTypes.number,
     transparent: PropTypes.bool,
@@ -33,34 +40,26 @@ class Paper extends Component {
 
   getStyle() {
     const theme = this.props.theme || this.context.theme;
-    const { units } = theme;
-    const { style, zDepth, padded, spaced, transparent, rounded } = this.props;
-    return [
-      styles.root, transparent ? null : {
-        backgroundColor: theme.theme.card.material,
-        boxShadow: Shadow[zDepth]
-      },
-      padded ? {
-        padding: units.gutter.mini
-      } : null,
-      spaced ? {
-        margin: units.gutter.mini
-      } : null,
-      rounded ? {
-        borderRadius: theme.units.borderRadius,
-      } : null,
-      style
-    ];
+    const { zDepth, transparent } = this.props;
+    return transparent ? null : {
+      backgroundColor: theme.theme.card.material,
+      boxShadow: Shadow[zDepth]
+    };
   }
 
   render() {
-    const { children } = this.props;
+    const { children, spaced, padded, rounded } = this.props;
+    const classes = classNames(styles.root, {
+      [styles.spaced]: spaced,
+      [styles.padded]: padded,
+      [styles.rounded]: rounded,
+    })
     return (
-      <div style={this.getStyle()}>
+      <div className={classes} style={this.getStyle()}>
         {children}
       </div>
     );
   }
 }
 
-export default radium(Paper);
+export default Paper;

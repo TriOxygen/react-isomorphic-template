@@ -7,17 +7,16 @@ import { Shadow, Units } from './Styles';
 const styles = oxygenStyle({
   button: {
     border: 'none',
-    display: 'block',
-    width: '100%',
+    display: 'inline-block',
     fontWeight: 500,
-    margin: 0,
     backgroundColor: 'rgba(158, 158, 158, 0.2)',
     color: 'inherit',
+    overflow: 'hidden',
     userSelect: 'none',
+    position: 'relative',
     textTransform: 'uppercase',
     outline: 'none',
     tapHighlightColor: 'transparent',
-    overflow: 'hidden',
     transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     cursor: 'pointer',
     boxShadow: Shadow[1],
@@ -26,10 +25,14 @@ const styles = oxygenStyle({
     padding: `0 ${Units.phone.gutter.mini}px`,
     borderRadius: Units.phone.borderRadius,
     fontSize: `${Units.phone.button.fontSize}px`,
+    minWidth: Units.phone.button.width,
+    margin: `auto ${Units.phone.gutter.mini}px`,
     ':hover': {
       boxShadow: Shadow[2]
     },
     '@desktop': {
+      margin: `auto ${Units.desktop.gutter.mini}px`,
+      minWidth: Units.desktop.button.width,
       minHeight: `${Units.desktop.button.height}px`,
       lineHeight: `${Units.desktop.button.height}px`,
       padding: `0 ${Units.desktop.gutter.mini}px`,
@@ -44,25 +47,14 @@ const styles = oxygenStyle({
         lineHeight: `${Units.desktop.button.dense.height}px`
       },
     },
-  },
-  fullWidth: {
-    display: 'block'
-  },
-  root: {
-    display: 'inline-block',
-    position: 'relative',
-    margin: `0 ${Units.phone.gutter.mini}px`,
-    minWidth: Units.phone.button.width,
-    '@desktop': {
-      margin: `0 ${Units.desktop.gutter.mini}px`,
-      minWidth: Units.desktop.button.width,
+    '&fullWidth': {
+      display: 'block',
+      width: '100%'
     }
-  }
+  },
 });
 
 class RaisedButton extends Component {
-  static displayName = 'RaisedButton';
-
   static propTypes = {
     disabled: PropTypes.bool,
     dense: PropTypes.bool,
@@ -135,16 +127,16 @@ class RaisedButton extends Component {
     const theme = this.props.theme || this.context.theme;
     const { disabled, fullWidth, dense, label, children } = this.props;
     const ink = !disabled && <Ink />;
-    const rootClasses = classNames(styles.root, fullWidth ? styles.fullWidth : null);
-    const buttonClasses = classNames(styles.button, dense ? styles.dense : null);
+    const buttonClasses = classNames(styles.button, {
+      [styles.dense]: dense,
+      [styles.fullWidth]: fullWidth
+    });
     return (
-      <div className={rootClasses}>
-        <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)}>
-          {ink}
-          {children}
-          {label}
-        </button>
-      </div>
+      <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)}>
+        {ink}
+        {children}
+        {label}
+      </button>
     );
   }
 }

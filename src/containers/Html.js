@@ -47,7 +47,7 @@ export default class Html extends Component
         <body>
 
           {/* rendered React page */}
-          <div id="react-view" dangerouslySetInnerHTML={{ __html: renderToString(component) }}/>
+          <div id="app" dangerouslySetInnerHTML={{ __html: renderToString(component) }}/>
 
           {/* Flux store data will be reloaded into the store on the client */}
           <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${JSON.stringify(store)};` }} />

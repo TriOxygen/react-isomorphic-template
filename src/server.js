@@ -7,13 +7,14 @@ import { Provider } from 'react-redux';
 import * as reducers from 'reducers';
 import promiseMiddleware from 'lib/promiseMiddleware';
 import fetchComponentData from 'lib/fetchComponentData';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import path from 'path';
 import Html from 'containers/Html';
 import WebpackIsomorphicTools from 'webpack-isomorphic-tools';
 import api from 'api';
 import chokidar from 'chokidar';
 import AppWrapper from 'containers/AppWrapper';
+import configureStore from 'reducers/configureStore';
 // import routes from 'routes';
 
 const app = express();
@@ -27,7 +28,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  console.log(path.resolve(__dirname, '../static'));
   app.use('/static', express.static(path.resolve(__dirname, '../static')));
 }
 
@@ -41,9 +41,6 @@ require.uncache = function (moduleName) {
   const modulePath = path.resolve(__dirname, '../', moduleName);
   // Run over the cache looking for the files
   // loaded by the specified module name
-  // require.searchCache(moduleName, function (mod) {
-  //     delete require.cache[mod.id];
-  // });
   if (require.cache[modulePath]) {
     require.cache[modulePath].children.forEach(child => {
       delete require.cache[child.id];
@@ -58,6 +55,8 @@ require.uncache = function (moduleName) {
         delete module.constructor._pathCache[cacheKey];
       }
   });
+  // require(modulePath);
+
 };
 
 // this global variable will be used later in express middleware
@@ -70,9 +69,8 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
       var routes = require('./routes').default;
       app.use( function main(req, res) {
         const location = createLocation(req.url);
-        const reducer = combineReducers(reducers);
-        const store = applyMiddleware(promiseMiddleware)(createStore)(reducer);
 
+        const store = configureStore();
         // const routes = require('./routes');
 
         match({ routes, location }, (err, redirectLocation, renderProps) => {
@@ -107,17 +105,6 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           }
 
           // One-liner for current directory, ignores .dotfiles
-          chokidar.watch('./src', {}).on('all', (event, pathToFile) => {
-            if (event === 'change') {
-              require.uncache(pathToFile);
-              require.uncache('src/routes.js');
-              require.uncache('src/containers/Html.js');
-              app._router.stack = app._router.stack.filter(route => {
-                return route.name !== 'main';
-              });
-              init();
-            }
-          });
 
 
           fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
@@ -126,7 +113,22 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
             .catch(err => res.end(err.message));
         });
       });
+
     }
+
+    chokidar.watch('./src', {}).on('all', (event, pathToFile) => {
+      if (event === 'change') {
+        require.uncache(pathToFile);
+        require.uncache('src/routes.js');
+        require.uncache('src/containers/Html.js');
+        require.uncache('src/containers/App.js');
+        require.uncache('src/containers/Home.js');
+        app._router.stack = app._router.stack.filter(route => {
+          return route.name !== 'main';
+        });
+        init();
+      }
+    });
     init();
   });
 

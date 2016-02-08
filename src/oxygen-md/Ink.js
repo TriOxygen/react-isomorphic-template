@@ -8,7 +8,7 @@ const MOUSE_LEFT = 0;
 const TAU = Math.PI * 2;
 const hasTouch = typeof window !== 'undefined' && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch);
 
-const styles = {
+const styles = oxygenStyle({
   root: {
     borderRadius: 'inherit',
     height: '100%',
@@ -17,7 +17,7 @@ const styles = {
     top: 0,
     width: '100%'
   }
-};
+});
 
 class Ink extends Component {
   static displayName = 'Ink';
@@ -168,7 +168,8 @@ class Ink extends Component {
     return (
       <canvas
         ref="canvas"
-        style={{ ...styles.root, ...this.props.style }}
+        className={styles.root}
+        style={{ ...this.props.style }}
         height={ height * density }
         width={ width * density }
         onDragOver={ this._onRelease }

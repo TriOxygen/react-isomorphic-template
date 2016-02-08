@@ -1,7 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'react';
 
-
 const css = oxygenStyle({
   root: {
     margin: 14
@@ -28,7 +27,6 @@ const css3 = oxygenStyle({
     }
   }
 });
-
 
 export default class TodosView extends React.Component {
   static propTypes = {

@@ -5,6 +5,7 @@ import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
 import isomorphicConfig from './webpack-isomorphic-tools-configuration';
 import fs from 'fs';
 import path from 'path';
+import WebpackErrorNotificationPlugin from 'webpack-error-notification';
 
 const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(isomorphicConfig)
         .development(process.env.NODE_ENV !== 'production');
@@ -41,10 +42,10 @@ babelConfig.plugins.push(['react-transform', {
 //   }
 // }]);
 
-console.log(babelConfig);
 
 const config = {
   cache: true,
+  devtool: 'cheap-module-source-map',
   entry: [
     'webpack-hot-middleware/client',
     './src/client',
@@ -63,6 +64,7 @@ const config = {
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
+    new WebpackErrorNotificationPlugin(),
     // new ExtractTextPlugin('static/dist/main.css'),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({

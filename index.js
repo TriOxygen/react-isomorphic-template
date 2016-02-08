@@ -1,4 +1,3 @@
-'use strict';
 var fs = require('fs');
 
 var babelConfig;
@@ -17,7 +16,7 @@ process.env.SERVER = true;
 // here goes all your web application code:
 var server = require('server').default;
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 server.listen(PORT, function () {
   console.log('Server listening on: ' + PORT);

@@ -6,60 +6,52 @@ import classNames from 'classnames';
 
 const styles = oxygenStyle({
   button: {
+    position: 'relative',
+    borderRadius: '50%',
     border: 'none',
     display: 'inline-block',
-    fontWeight: 500,
+    width: Units.phone.iconSize * 2,
+    height: Units.phone.iconSize * 2,
+    padding: Units.phone.iconSize / 2,
     color: 'inherit',
     userSelect: 'none',
     backgroundColor: 'transparent',
-    textTransform: 'uppercase',
     outline: 'none',
     tapHighlightColor: 'transparent',
     transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    overflow: 'hidden',
     cursor: 'pointer',
-    minHeight: `${Units.phone.button.height}px`,
-    lineHeight: `${Units.phone.button.height}px`,
-    padding: `0 ${Units.phone.gutter.mini}px`,
-    borderRadius: Units.phone.borderRadius,
-    fontSize: `${Units.phone.button.fontSize}px`,
-    position: 'relative',
-    margin: `0 ${Units.phone.gutter.mini}px`,
-    minWidth: Units.phone.button.width,
+    overflow: 'hidden',
+    verticalAlign: 'middle',
+    margin: 'auto auto',
     '@desktop': {
-      margin: `0 ${Units.desktop.gutter.mini}px`,
-      minWidth: Units.desktop.button.width,
-      minHeight: `${Units.desktop.button.height}px`,
-      lineHeight: `${Units.desktop.button.height}px`,
-      padding: `0 ${Units.desktop.gutter.mini}px`,
-      borderRadius: Units.desktop.borderRadius,
-      fontSize: `${Units.desktop.button.fontSize}px`,
+      width: Units.desktop.iconSize * 2,
+      height: Units.desktop.iconSize * 2,
     },
     '&dense': {
-      minHeight: `${Units.phone.button.dense.height}px`,
-      lineHeight: `${Units.phone.button.dense.height}px`,
+      width: Units.phone.iconSize * 1.5,
+      height: Units.phone.iconSize * 1.5,
       '@desktop': {
-        minHeight: `${Units.desktop.button.dense.height}px`,
-        lineHeight: `${Units.desktop.button.dense.height}px`
+        width: Units.desktop.iconSize * 1.5,
+        height: Units.desktop.iconSize * 1.5,
       },
     },
   },
-
-  fullWidth: {
-    display: 'block'
-  },
+  icon: {
+    zIndex: 2
+  }
 });
 
-class FlatButton extends Component {
+class IconButton extends Component {
+
   static propTypes = {
     disabled: PropTypes.bool,
     dense: PropTypes.bool,
     primary: PropTypes.bool,
-    theme: PropTypes.object,
-    fullWidth: PropTypes.bool,
     secondary: PropTypes.bool,
-    label: PropTypes.string,
-    children: PropTypes.node
+    color: PropTypes.string,
+    hoverColor: PropTypes.string,
+    children: PropTypes.node,
+    theme: PropTypes.object
   };
 
   static contextTypes = {
@@ -104,37 +96,22 @@ class FlatButton extends Component {
           color: theme.secondary[700].hex,
         }
       };
-    } else {
-      specStyles = {
-        color: theme.text.default,
-        ':hover': {
-          backgroundColor: theme.button.flat.hover,
-        },
-        ':active': {
-          backgroundColor: theme.button.flat.active,
-        }
-      };
     }
     return [specStyles];
   }
 
   render() {
+    const { dense, disabled, children } = this.props;
     const theme = this.props.theme || this.context.theme;
-    const { dense, disabled, fullWidth, label, children } = this.props;
     const ink = !disabled && <Ink />;
-    const buttonClasses = classNames(styles.button, {
-      [styles.dense]: dense,
-      [styles.fullWidth]: fullWidth
-    });
-
+    const buttonClasses = classNames(styles.button, dense ? styles.dense : null);
     return (
-      <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)}>
+      <button className={buttonClasses} style={this.getButtonStyles(theme)} disabled={disabled}>
         {ink}
-        {label}
         {children}
       </button>
     );
   }
 }
 
-export default radium(FlatButton);
+export default radium(IconButton);

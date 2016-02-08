@@ -1,55 +1,88 @@
 import React, { PropTypes, Component } from 'react';
-import { mergeStyles } from './Styles';
+import classNames from 'classnames';
+import { Typography, Units } from './Styles';
 
-const styles = {
-  input: {
-    root: {
-      border: '0',
-      position: 'absolute',
-      left: 0,
-      width: '100%',
-      resize: 'none',
-      background: 'transparent',
+const styles = oxygenStyle({
+  root: {
+    position: 'relative',
+    height: 46,
+    '&hasFloatingLabel': {
+       height: 72,
     },
-    focus: {
-      outline: 'none',
+  }
+});
+
+const underlineStyles = oxygenStyle({
+  root: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    borderStyle: 'none none solid none',
+    borderWidth: 1,
+    bottom: Units.phone.gutter.mini / 2,
+    '&active': {
+      transition: 'all 0.3s ease',
+      transform: 'scaleX(0)',
+      borderWidth: 2,
     }
   },
-  placeholder: {
+});
+
+
+const inputStyles = oxygenStyle({
+  root: {
+    border: 0,
     position: 'absolute',
     left: 0,
     width: '100%',
-  },
-  label: {
-    root: {
-      top: 40,
-      height: 16,
-      width: '100%',
-      position: 'absolute',
-      left: 0,
-      marginBottom: 2,
-      transition: 'all 0.3s ease',
-      transformOrigin: 'bottom left',
+    resize: 'none',
+    background: 'transparent',
+    fontSize: Typography.phone.body1.fontSize,
+    fontWeight: Typography.phone.body1.fontWeight,
+    ':focus': {
+      outline: 'none',
     },
-    focus: {
+    top: 16,
+    '&hasFloatingLabel': {
+      top: 40,
+    },
+  }
+})
+
+const placeHolderStyles = oxygenStyle({
+  root: {
+    position: 'absolute',
+    left: 0,
+    width: '100%',
+    top: 16,
+    height: 24,
+    boxSizing: 'border-box',
+    padding: `0 0 ${Units.phone.gutter.mini}px 0`,
+    '&hasFloatingLabel': {
+       top: 40,
+    },
+  }
+  //       color: theme.text.disabled,
+
+});
+
+const labelStyles = oxygenStyle({
+  root: {
+    fontSize: Typography.phone.body1.fontSize,
+    fontWeight: Typography.phone.body1.fontWeight,
+    top: 40,
+    height: 16,
+    width: '100%',
+    position: 'absolute',
+    left: 0,
+    marginBottom: 2,
+    transition: 'all 0.3s ease',
+    transformOrigin: 'bottom left',
+    '&focus': {
       transform: 'scale(0.75) translate3d(0, -24px, 0) ',
     }
-  },
-  underline: {
-    root: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      borderStyle: 'none none solid none',
-      borderWidth: 1,
-      transition: 'all 0.3s ease'
-    }
-  },
-  root: {
-    position: 'relative',
   }
-};
-
+});
 
 class TextField extends Component {
   static displayName = 'TextField';
@@ -71,110 +104,76 @@ class TextField extends Component {
     hasValue: false
   };
 
-  getInputStyle() {
-    const { focused } = this.state;
-    const { floatingLabelText } = this.props;
-    const theme = this.props.theme || this.context.theme;
-    const { units, typography } = theme;
-    return mergeStyles(styles.input.root,
-      {
-        padding: `0 0 ${units.gutter.mini}px 0`,
-        height: 24,
-        boxSizing: 'border-box',
-        borderColor: theme.text.default,
-      }, floatingLabelText ? {
-        top: 40,
-      } : {
-        top: 16
-      },
-      focused ? {
-        borderColor: theme.primary1,
-      } : null,
-      typography.base,
-      focused ? styles.input.focus : null
-    );
-  }
+  // getInputStyle() {
+  //   const { focused } = this.state;
+  //   const { floatingLabelText } = this.props;
+  //   const theme = this.props.theme || this.context.theme;
+  //   const { units, typography } = theme;
+  //   return mergeStyles(styles.input.root,
+  //     {
+  //       padding: `0 0 ${units.gutter.mini}px 0`,
+  //       height: 24,
+  //       boxSizing: 'border-box',
+  //       borderColor: theme.text.default,
+  //     }, floatingLabelText ? {
+  //       top: 40,
+  //     } : {
+  //       top: 16
+  //     },
+  //     focused ? {
+  //       borderColor: theme.primary1,
+  //     } : null,
+  //     typography.base,
+  //     focused ? styles.input.focus : null
+  //   );
+  // }
 
-  getLabelStyle() {
-    const { focused, hasValue } = this.state;
-    const theme = this.props.theme || this.context.theme;
-    const { typography } = theme;
-    return mergeStyles(styles.label.root,
-      typography.base,
-      focused || hasValue ? styles.label.focus : null
-    );
-  }
 
-  getStyle() {
-    const { floatingLabelText } = this.props;
-    const theme = this.props.theme || this.context.theme;
-    const { typography } = theme;
-    return mergeStyles(styles.root, typography.base,
-      floatingLabelText ? {
-        height: 72,
-      } : {
-        height: 46
-      }
-    );
-  }
+  // getPlaceholderStyle() {
+  //   const theme = this.props.theme || this.context.theme;
+  //   const { typography, units } = theme;
+  //   const { floatingLabelText } = this.props;
+  //   return mergeStyles(styles.placeholder, typography.base,
+  //     {
+  //       padding: `0 0 ${units.gutter.mini}px 0`,
+  //       height: 24,
+  //       boxSizing: 'border-box',
+  //       color: theme.text.disabled,
+  //     }, floatingLabelText ? {
+  //       top: 40,
+  //     } : {
+  //       top: 16
+  //     }
+  //   );
+  // }
+
 
   getPlaceholderStyle() {
     const theme = this.props.theme || this.context.theme;
-    const { typography, units } = theme;
-    const { floatingLabelText } = this.props;
-    return mergeStyles(styles.placeholder, typography.base,
-      {
-        padding: `0 0 ${units.gutter.mini}px 0`,
-        height: 24,
-        boxSizing: 'border-box',
-        color: theme.text.disabled,
-      }, floatingLabelText ? {
-        top: 40,
-      } : {
-        top: 16
-      }
-    );
+    const { focused } = this.state;
+    return Object.assign({}, {
+      color: theme.text.disabled
+    });
   }
-
   getUnderlineStyle(active = false) {
     const theme = this.props.theme || this.context.theme;
-    const { units } = theme;
     const { focused } = this.state;
-    let activeStyle;
-    if (active) {
-      if (focused) {
-        activeStyle = {
-          transform: 'scaleX(1)',
-          borderWidth: 2,
-          borderColor: theme.primary1,
-        };
-      } else {
-        activeStyle = {
-          transform: 'scaleX(0)',
-          borderWidth: 2,
-          borderColor: theme.primary1,
-        };
-      }
-    }
-    return mergeStyles(styles.underline.root,
-      {
-        borderColor: theme.text.disabled,
-        bottom: units.gutter.mini / 2
-      },
-      activeStyle,
-    );
+    return Object.assign({
+      borderColor: active && focused ? theme.primary1 : theme.text.disabled,
+      transform: focused? 'scaleX(1)' : null,
+    });
   }
 
   handleBlur() {
-    this.setState({focused: false});
+    this.setState({ focused: false });
   }
 
   handleFocus() {
-    this.setState({focused: true});
+    this.setState({ focused: true });
   }
 
   handleChange(event) {
-    this.setState({hasValue: !!event.target.value});
+    this.setState({ hasValue: !!event.target.value });
   }
 
   focus() {
@@ -191,16 +190,32 @@ class TextField extends Component {
     } else {
       placeholderText = !hasValue ? placeholder : null;
     }
+    const inputClasses = classNames(inputStyles.root, {
+      [inputStyles.hasFloatingLabel]: floatingLabelText,
+    });
+    const rootClasses = classNames(styles.root, {
+      [styles.hasFloatingLabel]: floatingLabelText,
+    });
+    const placeHolderClasses = classNames(placeHolderStyles.root, {
+      [placeHolderStyles.hasFloatingLabel]: floatingLabelText,
+    });
+    const underlineClasses = classNames(underlineStyles.root, underlineStyles.active, {
+      [underlineStyles.focus]: focused
+    });
+
     if (floatingLabelText) {
-      floatingLabelEl = <label style={this.getLabelStyle()} onTouchTap={this.focus.bind(this)}>{floatingLabelText}</label>;
+      const labelClasses = classNames(labelStyles.root, {
+        [labelStyles.focus]: focused || hasValue
+      });
+      floatingLabelEl = <label className={labelClasses} onTouchTap={this.focus.bind(this)}>{floatingLabelText}</label>;
     }
     return (
-      <div style={this.getStyle()}>
-        <div style={this.getPlaceholderStyle()}>{placeholderText}</div>
+      <div className={rootClasses}>
+        <div className={placeHolderClasses} style={this.getPlaceholderStyle()}>{placeholderText}</div>
         {floatingLabelEl}
-        <input ref="input" style={this.getInputStyle()} type={type} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} onFocus={this.handleFocus.bind(this)}/>
-        <hr style={this.getUnderlineStyle()}/>
-        <hr style={this.getUnderlineStyle(true)}/>
+        <input ref="input" className={inputClasses} type={type} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} onFocus={this.handleFocus.bind(this)}/>
+        <hr className={underlineStyles.root} style={this.getUnderlineStyle()}/>
+        <hr className={underlineClasses} style={this.getUnderlineStyle(true)}/>
       </div>
     );
   }

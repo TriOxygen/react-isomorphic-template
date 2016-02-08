@@ -1,38 +1,15 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
+import View from './View';
+import classNames from 'classnames';
 
-const styles = {
-  fixed: {
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0
-    },
-    header: {
-      flexGrow: 0,
-      zIndex: 2,
-    },
-    content: {
-      flexGrow: 1,
-      overflow: 'auto',
-      zIndex: 1
-    },
+const layoutStyles = oxygenStyle({
+  root: {
+    height: '100%',
   },
-  default: {
-    root: {
-
-    },
-    content: {
-
-    },
-    header: {
-
-    }
+  test: {
+    fontSize: 30
   }
-};
+});
 
 class Layout extends Component {
   static displayName = 'Layout';
@@ -53,20 +30,13 @@ class Layout extends Component {
   };
 
   render() {
-    const { children, fixedHeader } = this.props;
-    const [header, ...otherChildren] = children;
-    let headerEl;
-    const style = fixedHeader ? styles.fixed : styles.default;
-    if (header) {
-      headerEl = <div style={style.header}>{header}</div>;
-    }
+    const { children } = this.props;
+    const [header, ...other] = children;
     return (
-      <div style={style.root}>
-        {headerEl}
-        <div style={style.content}>
-          {otherChildren}
-        </div>
-      </div>
+      <View column className={classNames(layoutStyles.root)}>
+        {header}
+        <div style={{ overflow: 'auto', flex: 1 }}>{other}</div>
+      </View>
     );
   }
 }

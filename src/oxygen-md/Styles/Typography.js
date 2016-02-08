@@ -1,7 +1,7 @@
-const LIGHT = 100;
+const LIGHT = 300;
 const REGULAR = 400;
 const MEDIUM = 500;
-// const BOLD = 700;
+const BOLD = 700;
 
 const caption = {
   fontSize: 12,
@@ -10,12 +10,12 @@ const caption = {
 
 const body1 = {
   fontSize: 14,
-  fontWeight: REGULAR
+  fontWeight: LIGHT
 };
 
 const body2 = {
   fontSize: 14,
-  fontWeight: MEDIUM
+  fontWeight: LIGHT
 };
 
 const subheading = {
@@ -25,7 +25,7 @@ const subheading = {
 
 const title = {
   fontSize: 20,
-  fontWeight: MEDIUM
+  fontWeight: BOLD
 };
 const display1 = {
   fontSize: 34,

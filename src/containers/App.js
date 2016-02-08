@@ -1,5 +1,10 @@
 import React, { PropTypes } from 'react';
-import radium from 'radium';
+
+const appStyles = oxygenStyle({
+  root: {
+    height: '100%'
+  }
+})
 
 class App extends React.Component {
   static propTypes = {
@@ -8,7 +13,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={appStyles.root}>
         {this.props.children}
       </div>
     );
