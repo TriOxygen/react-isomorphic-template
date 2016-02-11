@@ -118,15 +118,19 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
 
     chokidar.watch('./src', {}).on('all', (event, pathToFile) => {
       if (event === 'change') {
-        require.uncache(pathToFile);
-        require.uncache('src/routes.js');
-        require.uncache('src/containers/Html.js');
-        require.uncache('src/containers/App.js');
-        require.uncache('src/containers/Home.js');
-        app._router.stack = app._router.stack.filter(route => {
-          return route.name !== 'main';
-        });
-        init();
+        try {
+          require.uncache(pathToFile);
+          require.uncache('src/routes.js');
+          require.uncache('src/containers/Html.js');
+          require.uncache('src/containers/App.js');
+          require.uncache('src/containers/Home.js');
+          app._router.stack = app._router.stack.filter(route => {
+            return route.name !== 'main';
+          });
+          init();
+        } catch (e) {
+          console.error(e);
+        }
       }
     });
     init();

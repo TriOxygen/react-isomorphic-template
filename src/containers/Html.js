@@ -31,7 +31,7 @@ export default class Html extends Component
       <html lang="en-us">
         <head>
           <meta charSet="utf-8"/>
-          <title>Oz - Todo</title>
+          <title>Coursio</title>
 
           {/* favicon */}
           <link rel="shortcut icon" href={assets.assets['./static/images/favicon.png']} />

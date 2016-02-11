@@ -7,7 +7,13 @@ const styles = oxygenStyle({
     display: 'flex',
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+  },
+  responsiveRow: {
+    flexDirection: 'row',
+    '@phone': {
+      flexDirection: 'column'
+    }
   },
   column: {
     flexDirection: 'column'
@@ -45,14 +51,16 @@ export default class View extends Component {
     flex: PropTypes.number,
     grow: PropTypes.number,
     shrink: PropTypes.number,
+    responsiveRow: PropTypes.bool,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   };
 
   render() {
     const style = mixProps({}, this.props);
-    const { className, row, column, children, ...other } = this.props;
+    const { className, row, column, children, responsiveRow, ...other } = this.props;
     const classes = classNames(className, styles.root, {
       [styles.row]: row,
+      [styles.responsiveRow]: responsiveRow,
       [styles.column]: !row && column
     });
     return <div className={classes} {...other} style={style}>{children}</div>;

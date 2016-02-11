@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames';
-import { Units, Colors, Typography } from 'oxygen-md/Styles';
+import { Units, Typography } from 'oxygen-md/Styles';
 
 const sectionStyles = oxygenStyle({
   root: {
-    padding: Units.desktop.gutter.more * 2
+    padding: `${Units.desktop.gutter.more * 2}px ${Units.desktop.gutter.mini}px`,
   },
   center: {
-    width: Units.desktop.keylineIncrement * 15,
     fontSize: Typography.phone.body1.fontSize,
     fontWeight: Typography.phone.body1.fontWeight,
     margin: 'auto',
+    width: '100%',
     lineHeight: '150%',
+    '@desktop': {
+      width: Units.desktop.keylineIncrement * 15,
+    },
   },
   header: {
     textAlign: 'center',
@@ -61,34 +63,32 @@ const colorSchemes = [
     text: dark,
   },
   {
-    backgroundColor: '#aaaaaa',
+    backgroundColor: '#AAAAAA',
     text: dark,
   },
   {
-    backgroundColor: '#bbbbbb',
+    backgroundColor: '#BBBBBB',
     text: dark,
   },
   {
-    backgroundColor: '#cccccc',
+    backgroundColor: '#CCCCCC',
     text: dark,
   },
   {
-    backgroundColor: '#dddddd',
+    backgroundColor: '#DDDDDD',
     text: dark,
   },
   {
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#EEEEEE',
     text: dark,
   },
   {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#F7F7F7',
     text: dark,
   },
 ];
 
 class Section extends Component {
-  static displayName =  'Section';
-
   static propTypes = {
     style: PropTypes.object,
     children: PropTypes.node,
@@ -111,7 +111,6 @@ class Section extends Component {
 
   render() {
     const { children, header } = this.props;
-    const style = this.getStyle();
     let headerEl;
     if (header) {
       if (typeof header === 'string') {

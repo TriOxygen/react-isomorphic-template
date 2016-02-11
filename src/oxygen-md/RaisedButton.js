@@ -125,14 +125,14 @@ class RaisedButton extends Component {
 
   render() {
     const theme = this.props.theme || this.context.theme;
-    const { disabled, fullWidth, dense, label, children } = this.props;
+    const { disabled, fullWidth, dense, label, children, ...other } = this.props;
     const ink = !disabled && <Ink />;
     const buttonClasses = classNames(styles.button, {
       [styles.dense]: dense,
       [styles.fullWidth]: fullWidth
     });
     return (
-      <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)}>
+      <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)} {...other} >
         {ink}
         {children}
         {label}

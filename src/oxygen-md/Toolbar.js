@@ -28,6 +28,7 @@ class Toolbar extends Component {
     secondary: PropTypes.bool,
     children: PropTypes.node,
     leftIcon: PropTypes.node,
+    rightIcon: PropTypes.node,
     theme: PropTypes.object
   };
 
@@ -61,7 +62,7 @@ class Toolbar extends Component {
 
   getIconStyle() {
     const theme = this.props.theme || this.context.theme;
-    const { primary, secondary} = this.props;
+    const { primary, secondary, transparent, zDepth } = this.props;
     return Object.assign({},
       transparent ? null : {
         backgroundColor: theme.theme.statusBar.material,
@@ -81,14 +82,12 @@ class Toolbar extends Component {
   }
 
   render() {
-    const { children, leftIcon, transparent, primary, secondary } = this.props;
-    const theme = this.props.theme || this.context.theme;
-    let { statusBar } = theme.theme;
+    const { children, leftIcon, rightIcon, primary, secondary } = this.props;
     return (
       <View row className={styles.root} style={this.getStyle()}>
-        <View grow={0} ><IconButton primary={primary} secondary={secondary}/></View>
+        <View grow={0} ><IconButton>{leftIcon}</IconButton></View>
         <View grow={1}>{children}</View>
-        <View grow={0} ><IconButton primary={primary} secondary={secondary}/></View>
+        <View grow={0} ><IconButton>{rightIcon}</IconButton></View>
       </View>
     );
   }
