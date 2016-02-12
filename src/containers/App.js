@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-const appStyles = oxygenStyle({
+const appStyles = oxygenCss({
   root: {
     height: '100%'
   }

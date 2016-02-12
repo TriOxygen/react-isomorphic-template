@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Units, Shadow } from './Styles';
 import classNames from 'classnames';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   root: {
     boxSizing: 'border-box',
     '&padded': {

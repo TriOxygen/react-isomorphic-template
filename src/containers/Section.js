@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Units, Typography } from 'oxygen-md/Styles';
 import classNames from 'classnames';
 
-const sectionStyles = oxygenStyle({
+const sectionStyles = oxygenCss({
   root: {
   },
   center: {

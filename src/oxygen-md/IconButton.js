@@ -4,7 +4,7 @@ import Ink from './Ink';
 import { Units } from './Styles';
 import classNames from 'classnames';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   button: {
     position: 'relative',
     borderRadius: '50%',

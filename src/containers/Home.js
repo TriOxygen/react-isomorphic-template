@@ -18,7 +18,7 @@ const { material } = Colors;
 const theme = new Theme(material.red, material.amber, material.grey, 'light');
 const invalidChars = /[^_a-z0-9-]/ig;
 
-const css = oxygenStyle({
+const css = oxygenCss({
   col1: {
     padding: `0 ${Units.phone.gutter.mini}px`,
     width: '100%'

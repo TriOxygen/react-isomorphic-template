@@ -1,13 +1,13 @@
 import React from 'react';
 import { PropTypes } from 'react';
 
-const css = oxygenStyle({
+const css = oxygenCss({
   root: {
     margin: 14
   },
 });
 
-const css2 = oxygenStyle({
+const css2 = oxygenCss({
   root: {
     fontSize: 10,
     '@phone': {
@@ -16,7 +16,7 @@ const css2 = oxygenStyle({
   }
 });
 
-const css3 = oxygenStyle({
+const css3 = oxygenCss({
   root: {
     fontSize: 20,
     '@phone': {

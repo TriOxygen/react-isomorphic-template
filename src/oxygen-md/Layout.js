@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import View from './View';
 import classNames from 'classnames';
 
-const layoutStyles = oxygenStyle({
+const layoutStyles = oxygenCss({
   root: {
     height: '100%',
   },
