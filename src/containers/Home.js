@@ -106,7 +106,7 @@ const moduleMap = {
 
 class Home extends React.Component {
   state = {
-    open: false,
+    scrollTop: 0,
     y: 0,
   };
 
@@ -139,8 +139,14 @@ class Home extends React.Component {
     getStructure();
   }
 
-  jump() {
-    this.setState({ open: !this.state.open });
+  handleWheel(deltaY, scrollMax) {
+    let scrollTop = this.state.scrollTop + deltaY;
+    if (scrollTop > scrollMax) {
+      scrollTop = scrollMax;
+    } else if (scrollTop < 0) {
+      scrollTop = 0;
+    }
+    this.setState({ scrollTop });
   }
 
   renderPages() {
@@ -182,22 +188,21 @@ class Home extends React.Component {
 
   render() {
     const pages = this.renderPages();
-    const { y } = this.state;
+    const { scrollTop } = this.state;
     // const { todos, dispatch } = this.props;
     // <RaisedButton label='Get Stuff' onClick={this.getWebsite.bind(this)}></RaisedButton>
 
               // {({ x }) =>
               // }
             // <RaisedButton onClick={this.jump.bind(this)} label={'Jump'}/>
-
     return (
-      <Motion style={{ x: spring(y * 9) }}>
-        {({ x }) =>
-          <Layout onContentScroll={this.handleScroll.bind(this)} >
+      <Motion style={{ scrollTop: spring(scrollTop) }}>
+        {({ scrollTop }) =>
+          <Layout scrollTop={scrollTop} onContentWheel={this.handleWheel.bind(this)} >
             <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
               <div className={css.animationHolder}>
                 <div className={css.animationThumb} style={{
-                  transform: `translate3d(${x}px, 0, 0)`
+                  transform: `translate3d(${scrollTop / 2}px, 0, 0)`
                 }}/>
               </div>
             </Toolbar>
