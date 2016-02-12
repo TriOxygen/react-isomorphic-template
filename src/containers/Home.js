@@ -196,7 +196,7 @@ class Home extends React.Component {
               // }
             // <RaisedButton onClick={this.jump.bind(this)} label={'Jump'}/>
     return (
-      <Motion style={{ scrollTop: spring(scrollTop) }}>
+      <Motion style={{ scrollTop: spring(scrollTop, {stiffness: 150, damping: 15}) }}>
         {({ scrollTop }) =>
           <Layout scrollTop={scrollTop} onContentWheel={this.handleWheel.bind(this)} >
             <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
