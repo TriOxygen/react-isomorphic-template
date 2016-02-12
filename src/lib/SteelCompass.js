@@ -1,7 +1,8 @@
 import request from 'axios';
 
 const API_URL = 'http://sc.dune/api';
-const COURSE_ID = 1699;
+// const COURSE_ID = 1699;
+const COURSE_ID = 2580;
 
 class SteelCompass {
   getStructure() {
