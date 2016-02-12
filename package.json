@@ -1,7 +1,7 @@
 {
-  "name": "isomorphic-redux",
+  "name": "react-isomorphic-template",
   "version": "1.0.0",
-  "repository": "https://github.com/bananaoomarang/isomorphic-redux",
+  "repository": "https://github.com/TriOxygen/react-isomorphic-template",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "lint:fix": "npm run lint -- --fix",
     "analyze": "webpack --quiet --json --config webpack/webpack.prod.config.js > webpack.json && analyze-bundle-size webpack.json"
   },
-  "author": "Milo Mordaunt <milomord@gmail.com>",
+  "author": "Özgür Ayten <ozgur.ucamaz@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "^6.2.3",
@@ -21,7 +21,7 @@
     "babel": "^6.3.13",
     "babel-core": "^6.3.21",
     "babel-loader": "^6.2.0",
-    "babel-plugin-oxygen-css": "file:../npm/lib/node_modules/babel-plugin-oxygen-css",
+    "babel-plugin-oxygen-css": "https://github.com/TriOxygen/babel-plugin-oxygen-css",
     "babel-plugin-react-transform": "^2.0.0",
     "babel-plugin-syntax-export-extensions": "^6.3.13",
     "babel-plugin-transform-class-properties": "^6.3.13",
@@ -40,7 +40,7 @@
     "history": "^1.17.0",
     "kerberos": "0.0.17",
     "mongoose": "^4.3.4",
-    "oxygen-md-svg-icons": "file:../npm/lib/node_modules/oxygen-md-svg-icons",
+    "oxygen-md-svg-icons": "https://github.com/TriOxygen/oxygen-md-svg-icons",
     "postcss": "^5.0.14",
     "radium": "^0.16.2",
     "react": "^0.14.3",

@@ -2,6 +2,7 @@ node_modules
 npm-debug.log
 dist
 build
+static/styles/bundle.css
 tmp
 *.sublime-project
 *.sublime-workspace
