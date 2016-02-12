@@ -3,7 +3,7 @@ import { Shadow, Units } from './Styles';
 import View from './View';
 import IconButton from './IconButton';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   root: {
     userSelect: 'none',
     boxSizing: 'border-box',

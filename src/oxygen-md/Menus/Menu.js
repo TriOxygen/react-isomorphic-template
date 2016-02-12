@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Paper from '../Paper';
 import { Typography, Units } from '../Styles';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   root: {
     fontSize: `${Typography.phone.base.fontSize}`,
     fontFamily: `${Typography.phone.base.fontFamily}`,

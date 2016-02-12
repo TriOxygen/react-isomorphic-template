@@ -429,4 +429,31 @@ th {
 #app, body, html {
   height: 100%;
   font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+h1, h2 {
+  margin: 0;
+  padding: 8px 0;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+a, a:visited {
+  color: #09BEC3;
+  text-decoration: none
+}
+
+a:hover {
+  text-decoration: underline;
+
 }

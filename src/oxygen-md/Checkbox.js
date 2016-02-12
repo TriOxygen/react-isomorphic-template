@@ -4,7 +4,7 @@ import Toggle from './Toggle';
 import Ink from './Ink';
 import { Units, Colors } from './Styles';
 
-const checkStyles = oxygenStyle({
+const checkStyles = oxygenCss({
   root: {
     width: 20,
     height: 20,

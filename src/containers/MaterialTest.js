@@ -8,7 +8,7 @@ import ActionAccountBalance from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccount
 import ActionAccountBalanceWallet from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBalanceWallet';
 import ActionAccountBox from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBox';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   root: {
   }
 });

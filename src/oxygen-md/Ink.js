@@ -8,7 +8,7 @@ const MOUSE_LEFT = 0;
 const TAU = Math.PI * 2;
 const hasTouch = typeof window !== 'undefined' && (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch);
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   root: {
     borderRadius: 'inherit',
     height: '100%',

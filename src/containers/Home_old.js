@@ -19,7 +19,7 @@ const theme = new Theme(material.red, material.amber, material.grey, 'light');
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 
 
-const css = oxygenStyle({
+const css = oxygenCss({
   caseStudy: {
     padding: Units.phone.gutter.mini,
     flexGrow: 1,

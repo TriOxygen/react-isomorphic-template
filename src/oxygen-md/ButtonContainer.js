@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import { Units } from './Styles';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   root: {
     display: 'inline-block',
     lineHeight: `${Units.phone.gutter.mini * 2 + Units.phone.button.height}px`,

@@ -4,7 +4,7 @@ import Ink from './Ink';
 import { Shadow, Units } from './Styles';
 import classNames from 'classnames';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   button: {
     border: 'none',
     display: 'inline-block',

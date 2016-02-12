@@ -3,7 +3,7 @@ import Ink from './Ink';
 import { Units, Colors } from './Styles';
 import classNames from 'classnames';
 
-const labelStyles = oxygenStyle({
+const labelStyles = oxygenCss({
   root: {
     position: 'relative',
     height: 20,

@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import { Typography, Units } from './Styles';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   root: {
     position: 'relative',
     height: 46,
@@ -12,7 +12,7 @@ const styles = oxygenStyle({
   }
 });
 
-const underlineStyles = oxygenStyle({
+const underlineStyles = oxygenCss({
   root: {
     position: 'absolute',
     left: 0,
@@ -29,7 +29,7 @@ const underlineStyles = oxygenStyle({
 });
 
 
-const inputStyles = oxygenStyle({
+const inputStyles = oxygenCss({
   root: {
     border: 0,
     position: 'absolute',
@@ -49,7 +49,7 @@ const inputStyles = oxygenStyle({
   }
 })
 
-const placeHolderStyles = oxygenStyle({
+const placeHolderStyles = oxygenCss({
   root: {
     position: 'absolute',
     left: 0,
@@ -66,7 +66,7 @@ const placeHolderStyles = oxygenStyle({
 
 });
 
-const labelStyles = oxygenStyle({
+const labelStyles = oxygenCss({
   root: {
     fontSize: Typography.phone.body1.fontSize,
     fontWeight: Typography.phone.body1.fontWeight,

@@ -3,7 +3,7 @@ import { mergeStyles, Units } from '../Styles';
 import Ink from '../Ink';
 import classNames from 'classnames';
 
-const styles = oxygenStyle({
+const styles = oxygenCss({
   icon: {
     marginRight: `${Units.phone.list.padding}px`,
     '@desktop': {
