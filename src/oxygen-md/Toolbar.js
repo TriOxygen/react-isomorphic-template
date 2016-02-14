@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Shadow, Units } from './Styles';
 import View from './View';
 import IconButton from './IconButton';
+import classNames from 'classnames';
 
 const styles = oxygenCss({
   root: {
@@ -29,7 +30,8 @@ class Toolbar extends Component {
     children: PropTypes.node,
     leftIcon: PropTypes.node,
     rightIcon: PropTypes.node,
-    theme: PropTypes.object
+    theme: PropTypes.object,
+    className: PropTypes.string
   };
 
   static contextTypes = {
@@ -82,9 +84,10 @@ class Toolbar extends Component {
   }
 
   render() {
-    const { children, leftIcon, rightIcon, primary, secondary } = this.props;
+    const { children, leftIcon, rightIcon, className, primary, secondary } = this.props;
+    const classes = classNames(styles.root, className);
     return (
-      <View row className={styles.root} style={this.getStyle()}>
+      <View row className={classes} style={this.getStyle()}>
         <View grow={0} ><IconButton>{leftIcon}</IconButton></View>
         <View grow={1}>{children}</View>
         <View grow={0} ><IconButton>{rightIcon}</IconButton></View>

@@ -30,6 +30,9 @@ const styles = oxygenCss({
     ':hover': {
       boxShadow: Shadow[2]
     },
+    ':focus': {
+      boxShadow: Shadow[2]
+    },
     '@desktop': {
       margin: `auto ${Units.desktop.gutter.mini}px`,
       minWidth: Units.desktop.button.width,

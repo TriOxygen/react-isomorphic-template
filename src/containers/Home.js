@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import TodosView from 'components/TodosView';
 import TodosForm from 'components/TodosForm';
 import { bindActionCreators } from 'redux';
 import * as websiteActions from 'reducers/WebsiteReducer';
-import { connect } from 'react-redux';
 import classNames from 'classnames';
 // import theme from '../style/theme';
 import { Colors, Theme, Units, Typography } from 'oxygen-md/Styles';
@@ -12,10 +12,12 @@ import MaterialTest from 'containers/MaterialTest';
 import View from 'oxygen-md/View';
 import { Layout, Toolbar, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
-import { Motion, spring } from 'react-motion';
+import Scrollable from 'components/Scrollable';
+import TransitionTest from 'components/TransitionTest';
+import { connect } from 'react-redux';
+import { routeActions } from 'react-router-redux'
 
-const { material } = Colors;
-const theme = new Theme(material.red, material.amber, material.grey, 'light');
+
 const invalidChars = /[^_a-z0-9-]/ig;
 
 const css = oxygenCss({
@@ -40,6 +42,12 @@ const css = oxygenCss({
       width: '100%'
     }
   },
+  box: {
+    width: 400,
+    padding: 5,
+    height: 100,
+    backgroundColor: '#777'
+  },
   image: {
     maxWidth: '100%'
   },
@@ -55,18 +63,28 @@ const css = oxygenCss({
     display: 'block',
     fontSize: Typography.desktop.title.fontSize,
     fontWeight: Typography.desktop.title.fontWeight,
+  },
+  content: {
+    position: 'relative',
+    zIndex: 1,
+    flex: 1
+  },
+  toolbar: {
+    position: 'relative',
+    zIndex: 2
   }
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     getStructure: bindActionCreators(websiteActions.getStructure, dispatch),
+    go: bindActionCreators(routeActions.push, dispatch)
   }
 }
 
 function mapStateToProps(state) {
   return {
-    website: state.website
+    website: state.website,
   }
 }
 
@@ -106,47 +124,29 @@ const moduleMap = {
 
 class Home extends React.Component {
   state = {
-    scrollTop: 0,
     y: 0,
+    srollTop: 0
   };
 
+  sections = {};
+
   static propTypes = {
-    // todos: PropTypes.any.isRequired,
+    go: PropTypes.func,
     website: PropTypes.object.isRequired,
     getStructure: PropTypes.func.isRequired
   };
 
-  static needs = [
-    websiteActions.getStructure
-  ];
+  // static needs = [
+  //   websiteActions.getStructure
+  // ];
 
-  static childContextTypes = {
-    theme: PropTypes.object
-  };
-
-  handleScroll(e) {
-    this.setState({ y: e.scrollPercentage });
-  }
-
-  getChildContext() {
-    return {
-      theme: theme
-    };
+  add(section, index ) {
+    this.sections[index] = section;
   }
 
   getWebsite() {
     const { getStructure } = this.props;
     getStructure();
-  }
-
-  handleWheel(deltaY, scrollMax) {
-    let scrollTop = this.state.scrollTop + deltaY;
-    if (scrollTop > scrollMax) {
-      scrollTop = scrollMax;
-    } else if (scrollTop < 0) {
-      scrollTop = 0;
-    }
-    this.setState({ scrollTop });
   }
 
   renderPages() {
@@ -186,30 +186,136 @@ class Home extends React.Component {
     });
   }
 
+  jump(sectionNo) {
+    const node = ReactDOM.findDOMNode(this.sections[sectionNo]);
+    this.setState({ scrollTop: node.offsetTop });
+  }
+
+  renderRandom() {
+    return (
+      <div>
+        <Section ref={c => this.add(c, 1)} startColor={8} endColor={5}>
+          <h1 className={css.title}>Tour</h1>
+          <Scrollable className={css.box}>
+            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+            totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+            dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+            sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
+            qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi
+            tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
+            quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+            Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
+            vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+          </Scrollable>
+        </Section>
+        <Section ref={c => this.add(c, 2)} startColor={5} endColor={7}>
+          <h1 className={css.title}>Case Studies</h1>
+          <View responsiveRow>
+            <div className={css.col2}>
+              <h2>Emelie</h2>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+              sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
+            </div>
+            <div className={css.col2}>
+              <h2>PT Fia</h2>
+              qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi
+              tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
+              quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+              Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
+              vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+            </div>
+          </View>
+        </Section>
+        <Section ref={c => this.add(c, 3)} startColor={7} endColor={12}>
+          <h1 className={css.title}>Blog</h1>
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+          totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+          sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
+          qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi
+          tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
+          quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+          Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
+          vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+        </Section>
+        <Section ref={c => this.add(c, 4)} startColor={12} endColor={4}>
+          <h1 className={css.title}>Press</h1>
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+          totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+          sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
+          qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi
+          tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
+          quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+          Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
+          vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+        </Section>
+        <Section ref={c => this.add(c, 5)} startColor={4} endColor={12}>
+          <h1 className={css.title}>About</h1>
+          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+          totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+          dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+          sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
+          qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi
+          tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
+          quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+          Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
+          vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+        </Section>
+        <Section ref={c => this.add(c, 6)} startColor={12} endColor={8} divider={false}>
+          <h1 className={css.title}>Contact</h1>
+          <View row>
+            <div className={css.col3}>
+              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+            </div>
+            <div className={css.col3}>
+              sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
+              qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi
+              tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam,
+            </div>
+            <div className={css.col3}>
+              quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+              Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur,
+              vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+            </div>
+          </View>
+        </Section>
+      </div>
+    )
+  }
+
+  test() {
+    this.props.go('/test');
+  }
+
   render() {
-    const pages = this.renderPages();
+    const pages = this.renderRandom();
     const { scrollTop } = this.state;
     // const { todos, dispatch } = this.props;
     // <RaisedButton label='Get Stuff' onClick={this.getWebsite.bind(this)}></RaisedButton>
 
               // {({ x }) =>
               // }
-            // <RaisedButton onClick={this.jump.bind(this)} label={'Jump'}/>
     return (
-      <Motion style={{ scrollTop: spring(scrollTop, {stiffness: 150, damping: 15}) }}>
-        {({ scrollTop }) =>
-          <Layout scrollTop={scrollTop} onContentWheel={this.handleWheel.bind(this)} >
-            <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
-              <div className={css.animationHolder}>
-                <div className={css.animationThumb} style={{
-                  transform: `translate3d(${scrollTop / 2}px, 0, 0)`
-                }}/>
-              </div>
-            </Toolbar>
-            {pages}
-          </Layout>
-        }
-      </Motion>
+      <Layout >
+        <Toolbar className={css.toolbar} primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
+          <RaisedButton secondary onClick={this.jump.bind(this, 1)} label={'Tour'}/>
+          <RaisedButton secondary onClick={this.jump.bind(this, 2)} label={'Case Studies'}/>
+          <RaisedButton secondary onClick={this.jump.bind(this, 3)} label={'Blog'}/>
+          <RaisedButton secondary onClick={this.jump.bind(this, 4)} label={'Press'}/>
+          <RaisedButton secondary onClick={this.jump.bind(this, 5)} label={'About'}/>
+          <RaisedButton secondary onClick={this.jump.bind(this, 6)} label={'Contact'}/>
+          <RaisedButton secondary onClick={this.test.bind(this)} label={'Test'}/>
+        </Toolbar>
+        <Scrollable scrollTop={scrollTop} className={css.content}>
+          <TransitionTest />
+          {pages}
+        </Scrollable>
+      </Layout>
     );
   }
 }

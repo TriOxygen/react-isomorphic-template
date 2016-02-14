@@ -1,22 +1,21 @@
+
 import React from 'react';
 import { render } from 'react-dom';
-import { Router } from 'react-router';
-import createBrowserHistory from 'history/lib/createBrowserHistory'
+import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import routes from 'routes';
 import AppWrapper from 'containers/AppWrapper';
-import configureStore from 'reducers/configureStore';
+
+import configureStore, { reduxRouterMiddleware } from 'reducers/configureStore';
 
 window.React = React;
 
-process.env.browser = true;
-
 const initialState = window.__INITIAL_STATE__;
-
-const history = createBrowserHistory();
-
-
 const store = configureStore(initialState);
+
+console.log(reduxRouterMiddleware);
+reduxRouterMiddleware.listenForReplays(store);
+
 
 require('images/favicon.png');
 require('styles/normalize.css');
@@ -26,7 +25,7 @@ require('oxygen-md-svg-icons/lib/bundle.css');
 render(
   <Provider store={store}>
     <AppWrapper>
-      <Router children={routes} history={history} />
+      <Router children={routes} history={browserHistory} />
     </AppWrapper>
   </Provider>,
   document.getElementById('app')
