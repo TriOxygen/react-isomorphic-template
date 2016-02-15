@@ -6,7 +6,8 @@ import Transition from 'react-motion-ui-pack';
 
 const css = oxygenCss({
   root: {
-    position: 'relative'
+    position: 'relative',
+    flex: 1
   },
   content: {
     overflow: 'hidden',
@@ -61,7 +62,7 @@ export default class ScrollContent extends Component {
     const target = this._content;
     const rect = target.getBoundingClientRect();
     const { scrollHeight } = target;
-    const  scrollMax = scrollHeight - rect.height;
+    const scrollMax = scrollHeight - rect.height;
 
     if (this.state.scrollMax !== scrollMax) {
       this.setState({ scrollMax: scrollMax });

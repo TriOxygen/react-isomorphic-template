@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import Transition from 'react-motion-ui-pack';
-import { spring } from 'react-motion';
-import { RaisedButton } from 'oxygen-md';
 import shallowCompare from 'react-addons-shallow-compare';
+import Scrollable from 'components/Scrollable';
+import { Layout, Toolbar, RaisedButton } from 'oxygen-md';
+import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 
 import * as itemActions from 'reducers/Items';
 import { bindActionCreators } from 'redux';
@@ -10,12 +11,16 @@ import { connect } from 'react-redux';
 
 const css = oxygenCss({
   item: {
+    // transition: 'all ease 0.25s',
     position: 'relative',
   },
   container: {
     position: 'relative'
-  }
-})
+  },
+  content: {
+    flex: 1
+  },
+});
 
 class TransitionTest extends Component {
 
@@ -41,9 +46,11 @@ class TransitionTest extends Component {
   render() {
     const { items } = this.props;
     return (
-      <div>
-        <RaisedButton onClick={this.addItem.bind(this)} label={'Add'} />
-        <div>
+      <Layout >
+        <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
+          <RaisedButton onClick={this.addItem.bind(this)} label={'Add'} />
+        </Toolbar>
+        <Scrollable className={css.content} >
           <Transition
             component={'div'}
             className={css.container}
@@ -73,8 +80,8 @@ class TransitionTest extends Component {
               )
             }
           </Transition>
-        </div>
-      </div>
+        </Scrollable>
+      </Layout>
     );
   }
 }

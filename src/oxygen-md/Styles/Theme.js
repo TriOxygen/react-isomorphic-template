@@ -6,6 +6,10 @@ class Theme {
   main = 'light';
 
   constructor(primary, secondary, tertiary, main = 'light') {
+    this.setTheme(primary, secondary, tertiary, main);
+  }
+
+  setTheme(primary, secondary, tertiary, main) {
     const themeText = main === 'light' ? 'dark' : 'light';
     this.primary1 = primary[500].hex;
     this.primary1Text = primary[500].text.default;
@@ -37,6 +41,7 @@ class Theme {
     this.button = Colors.button[main];
     this.units = Units.phone;
     this.typography = Typography;
+
   }
 }
 

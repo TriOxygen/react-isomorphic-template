@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import { Motion, spring } from 'react-motion';
 import ScrollContent from './ScrollContent';
 
@@ -21,7 +20,7 @@ export default class Scrollable extends Component {
     this.scrollTo(scrollTop);
   }
 
-  scrollTo(y) {
+  scrollTo(y = 0) {
     let scrollTop = y;
     const content = this._content.getNode();
     const { scrollHeight } = content;
@@ -41,16 +40,17 @@ export default class Scrollable extends Component {
     }
   }
 
-
-
   render() {
     const { children, scrollTop, ...other } = this.props;
     return (
       <Motion style={{ y: spring(this.state.scrollTop, { stiffness: 150, damping: 20 }) }}>
-        {({ y }) =>
-          <ScrollContent ref={(c) => this._content = c} scrollTop={Math.round(y)} onContentWheel={this.handleWheel.bind(this)} {...other}>
-            {children}
-          </ScrollContent>
+        {({ y }) => {
+          return (
+            <ScrollContent ref={(c) => this._content = c} scrollTop={Math.round(y)} onContentWheel={this.handleWheel.bind(this)} {...other}>
+              {children}
+            </ScrollContent>
+          );
+        }
         }
       </Motion>
     );

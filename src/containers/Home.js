@@ -75,19 +75,6 @@ const css = oxygenCss({
   }
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getStructure: bindActionCreators(websiteActions.getStructure, dispatch),
-    go: bindActionCreators(routeActions.push, dispatch)
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    website: state.website,
-  }
-}
-
 class ImageModule extends React.Component {
 
   render() {
@@ -136,9 +123,16 @@ class Home extends React.Component {
     getStructure: PropTypes.func.isRequired
   };
 
-  // static needs = [
-  //   websiteActions.getStructure
-  // ];
+  static needs = [
+    websiteActions.getStructure
+  ];
+
+  componentDidMount() {
+    const { website } = this.props;
+    if (!website.loaded) {
+      this.props.getStructure();
+    }
+  }
 
   add(section, index ) {
     this.sections[index] = section;
@@ -179,7 +173,7 @@ class Home extends React.Component {
       });
       const divider = index < pageCount - 1;
       return (
-        <Section divider={divider} startColor={colors[index]} endColor={colors[index + 1]} key={id} className={name.replace(invalidChars, '-').toLowerCase()}>
+        <Section ref={c => this.add(c, index)} divider={divider} startColor={colors[index]} endColor={colors[index + 1]} key={id} className={name.replace(invalidChars, '-').toLowerCase()}>
           {rows}
         </Section>
       );
@@ -189,6 +183,21 @@ class Home extends React.Component {
   jump(sectionNo) {
     const node = ReactDOM.findDOMNode(this.sections[sectionNo]);
     this.setState({ scrollTop: node.offsetTop });
+  }
+
+  renderToolbar() {
+    const { website } = this.props;
+    return(
+      <Toolbar className={css.toolbar} primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
+        {
+          website.pages.map((page, index) => {
+            return <RaisedButton key={index} secondary onClick={this.jump.bind(this, index)} label={page.name} />
+          })
+        }
+        <RaisedButton secondary onClick={this.test.bind(this)} label={'Test'}/>
+        <RaisedButton secondary onClick={this.themeChanger.bind(this)} label={'Theme'}/>
+      </Toolbar>
+    );
   }
 
   renderRandom() {
@@ -292,31 +301,41 @@ class Home extends React.Component {
     this.props.go('/test');
   }
 
+  themeChanger() {
+    this.props.go('/theme');
+  }
+
   render() {
-    const pages = this.renderRandom();
+    // const pages = this.renderRandom();
+    // const pages = this.renderPages();
     const { scrollTop } = this.state;
     // const { todos, dispatch } = this.props;
     // <RaisedButton label='Get Stuff' onClick={this.getWebsite.bind(this)}></RaisedButton>
 
               // {({ x }) =>
               // }
+          // <TransitionTest />
     return (
       <Layout >
-        <Toolbar className={css.toolbar} primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
-          <RaisedButton secondary onClick={this.jump.bind(this, 1)} label={'Tour'}/>
-          <RaisedButton secondary onClick={this.jump.bind(this, 2)} label={'Case Studies'}/>
-          <RaisedButton secondary onClick={this.jump.bind(this, 3)} label={'Blog'}/>
-          <RaisedButton secondary onClick={this.jump.bind(this, 4)} label={'Press'}/>
-          <RaisedButton secondary onClick={this.jump.bind(this, 5)} label={'About'}/>
-          <RaisedButton secondary onClick={this.jump.bind(this, 6)} label={'Contact'}/>
-          <RaisedButton secondary onClick={this.test.bind(this)} label={'Test'}/>
-        </Toolbar>
+        {this.renderToolbar()}
         <Scrollable scrollTop={scrollTop} className={css.content}>
-          <TransitionTest />
-          {pages}
+          {this.renderPages()}
         </Scrollable>
       </Layout>
     );
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getStructure: bindActionCreators(websiteActions.getStructure, dispatch),
+    go: bindActionCreators(routeActions.push, dispatch)
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    website: state.website,
   }
 }
 

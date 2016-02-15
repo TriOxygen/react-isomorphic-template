@@ -13,7 +13,6 @@ window.React = React;
 const initialState = window.__INITIAL_STATE__;
 const store = configureStore(initialState);
 
-console.log(reduxRouterMiddleware);
 reduxRouterMiddleware.listenForReplays(store);
 
 

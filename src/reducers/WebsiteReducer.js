@@ -6,12 +6,16 @@ const GET_COURSE = 'website/getCourseById';
 const GET_PAGE = 'website/getPage';
 
 const initialState = {
-  pages: []
+  pages: [],
+  loading: false,
+  loaded: false,
 }
 
 export default createStore(initialState, {
   [GET_COURSE]: (state, action) => {
     return {
+      ...state,
+      loaded: true,
       pages: action.res
     };
   },
