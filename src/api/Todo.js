@@ -1,44 +1,59 @@
-import Todo from 'models/Todo';
+import getModel from 'models';
+const Todo = getModel('Todo');
+
+function UserException(message) {
+   this.message = message;
+   this.name = 'UserException';
+}
 
 export default router => {
 
   router.route('/todo')
-    .post((request, response) => {
+    .post((request, response, next) => {
       const todo = new Todo();
       todo.text = request.body.text;
 
       todo.save((error, createdTodo) => {
         if (error) {
-          response.send(error);
+          next(error);
+        } else {
+          response.data = createdTodo;
+          next();
         }
-        response.json(createdTodo);
-      })
+      });
     })
 
-    .get((request, response) => {
+    .get((request, response, next) => {
       Todo.find({}).select('text completed date').exec(function (error, todos) {
+        next( new UserException(' adsf asd as aasddf asdf asdf ut'));
         if (error) {
-          return console.error(error);
+          next(error);
+        } else {
+          response.data = todos || [];
+          next();
         }
-        response.json(todos);
       });
     });
 
   router.route('/todo/:id')
-    .put((request, response) => {
+    .put((request, response, next) => {
       Todo.findByIdAndUpdate(request.params.id, request.body, { new: true }, function (error, todo) {
         if (error) {
-          return console.error(error);
+          next(error);
+        } else {
+          response.data = todo;
+          next();
         }
-        response.json(todo);
       });
     })
-    .delete((request, response) => {
+    .delete((request, response, next) => {
       Todo.findByIdAndRemove(request.params.id, request.body, function (error, post) {
         if (error) {
-          return console.error(error);
+          return next(error);
+        } else {
+          response.data = post;
+          next();
         }
-        response.json(post);
       });
     });
 }

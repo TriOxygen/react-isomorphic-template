@@ -52,7 +52,8 @@ class Toggle extends Component {
     disabled: PropTypes.bool,
     primary: PropTypes.bool,
     theme: PropTypes.object,
-    secondary: PropTypes.bool
+    secondary: PropTypes.bool,
+    onChange: PropTypes.func
   };
 
   static contextTypes = {
@@ -65,9 +66,13 @@ class Toggle extends Component {
   };
 
   handleClick() {
-    if (!this.props.disabled) {
+    const { disabled, onChange } = this.props;
+    if (!disabled) {
       const { checked } = this.state;
       this.setState({ checked: !checked });
+      if (onChange) {
+        onChange(!checked);
+      }
     }
   }
 

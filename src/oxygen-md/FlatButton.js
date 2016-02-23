@@ -120,7 +120,7 @@ class FlatButton extends Component {
 
   render() {
     const theme = this.props.theme || this.context.theme;
-    const { dense, disabled, fullWidth, label, children } = this.props;
+    const { dense, disabled, fullWidth, label, children, ...other } = this.props;
     const ink = !disabled && <Ink />;
     const buttonClasses = classNames(styles.button, {
       [styles.dense]: dense,
@@ -128,7 +128,7 @@ class FlatButton extends Component {
     });
 
     return (
-      <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)}>
+      <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)} {...other} >
         {ink}
         {label}
         {children}

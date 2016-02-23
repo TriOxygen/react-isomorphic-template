@@ -1,14 +1,10 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import mongoose from 'mongoose';
 import todo from './Todo';
 
+export default function api (app) {
 
-export default function (app) {
-
-  const router = express.Router();
-
-  mongoose.connect('mongodb://localhost/todo');
+  const router = new express.Router();
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());

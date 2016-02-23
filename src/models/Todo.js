@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 
 const Todo = new Schema({
     text: String,
@@ -6,4 +6,6 @@ const Todo = new Schema({
     date: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('Todo', Todo);
+export default Todo;
+
+//export default mongoose.model('Todo', Todo);

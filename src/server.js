@@ -8,10 +8,10 @@ import fetchComponentData from 'lib/fetchComponentData';
 import path from 'path';
 import Html from 'containers/Html';
 import WebpackIsomorphicTools from 'webpack-isomorphic-tools';
-import api from 'api';
 import chokidar from 'chokidar';
 import AppWrapper from 'containers/AppWrapper';
 import configureStore from 'reducers/configureStore';
+import mongoose from 'mongoose';
 // import routes from 'routes';
 
 const app = express();
@@ -28,8 +28,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/static', express.static(path.resolve(__dirname, '../static')));
 }
 
+mongoose.connect('mongodb://localhost/spiders_nest');
 
-app.use('/api', api(app));
 
 /**
  * Removes a module from the cache
@@ -64,7 +64,15 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
     function init () {
 
       var routes = require('./routes').default;
-      app.use( function main(req, res) {
+
+      const api = require('api').default;
+      console.log(api);
+      app.use('/api', api(app) );
+
+      app.use( function main(error, req, res, next) {
+        if (error) {
+          next(error);
+        }
         const location = createLocation(req.url);
 
         const store = configureStore();
@@ -76,12 +84,15 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           }
 
           if(err) {
-            console.error(err);
-            return res.status(500).end('Internal server error');
+            return next(err);
+            // return res.status(500).end('Internal server error');
           }
 
-          if(!renderProps)
-            return res.status(404).end('Not found');
+          if(!renderProps) {
+            res.status(404);
+            return next('Not found');
+            // return res.status(404).end('Not found');
+          }
 
           renderProps.radiumConfig ={ userAgent: req.headers['user-agent'] };
           function renderView() {
@@ -111,9 +122,53 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
         });
       });
 
+      app.use(function apiHandler(req, res) {
+        if (res.data) {
+          res.json({
+            error: false,
+            data: res.data
+          });
+        } else {
+          res.status(404);
+          res.json({
+            error: {
+              status: 404,
+              code: 'Need a bigger magnifier'
+            }
+          });
+        }
+      });
+
+
+      app.use(function errorHandler(error, req, res, next) {
+        if (res.headersSent) {
+          return next(error);
+        }
+        res.status(500);
+        if (error) {
+          res.json({
+            error
+          });
+        } else {
+          res.json({
+            error: {
+              code: 'End of the road, man'
+            }
+          });
+        }
+      });
     }
 
     chokidar.watch('./src', {}).on('all', (event, pathToFile) => {
+      const blacklistedRoutes = {
+        urlencodedParser: true,
+        jsonParser: true,
+        main: true,
+        router: true,
+        apiHandler: true,
+        notFoundHandler: true,
+        errorHandler: true
+      }
       if (event === 'change') {
         try {
           require.uncache(pathToFile);
@@ -121,8 +176,9 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           require.uncache('src/containers/Html.js');
           require.uncache('src/containers/App.js');
           require.uncache('src/containers/Home.js');
+          require.uncache('src/api/index.js');
           app._router.stack = app._router.stack.filter(route => {
-            return route.name !== 'main';
+            return !blacklistedRoutes[route.name];
           });
           init();
         } catch (e) {
@@ -131,6 +187,8 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
       }
     });
     init();
+
+
   });
 
 export default app;
