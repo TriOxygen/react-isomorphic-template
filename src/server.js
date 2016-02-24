@@ -66,13 +66,9 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
       var routes = require('./routes').default;
 
       const api = require('api').default;
-      console.log(api);
       app.use('/api', api(app) );
 
-      app.use( function main(error, req, res, next) {
-        if (error) {
-          next(error);
-        }
+      app.use( function main(req, res, next) {
         const location = createLocation(req.url);
 
         const store = configureStore();
@@ -89,8 +85,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           }
 
           if(!renderProps) {
-            res.status(404);
-            return next('Not found');
+            return next();
             // return res.status(404).end('Not found');
           }
 

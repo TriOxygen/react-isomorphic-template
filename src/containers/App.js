@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-
+import { setLocale } from 'lib/I18n';
 
 const appStyles = oxygenCss({
   root: {
@@ -14,11 +14,12 @@ const { material } = Colors;
 class App extends React.Component {
 
   static childContextTypes = {
-    theme: PropTypes.object
+    theme: PropTypes.object,
   };
 
   static propTypes = {
     children: PropTypes.object,
+    locale: PropTypes.object,
     theme: PropTypes.object
   };
 
@@ -34,11 +35,15 @@ class App extends React.Component {
     };
   }
 
-
   componentWillReceiveProps(nextProps) {
     if (this.props.theme !== nextProps.theme) {
       const { primary, secondary, tertiary, main } = nextProps.theme;
       this.theme.setTheme(material[primary], material[secondary], material[tertiary], main);
+      this.forceUpdate();
+    }
+    if (this.props.locale !== nextProps.locale) {
+      const { locale, defaultCurrency } = nextProps.locale;
+      setLocale(locale, defaultCurrency);
       this.forceUpdate();
     }
   }
@@ -54,7 +59,8 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    theme: state.theme
+    theme: state.theme,
+    locale: state.locale
   }
 }
 

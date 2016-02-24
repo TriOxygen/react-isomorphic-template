@@ -1,13 +1,28 @@
 import React, { Component, PropTypes } from 'react';
 import Scrollable from 'components/Scrollable';
-import { Layout, Toolbar } from 'oxygen-md';
+import { Layout, Toolbar, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as themeActions from 'reducers/ThemeReducer';
+import * as localeActions from 'reducers/LocaleReducer';
 import { Units, Colors } from 'oxygen-md/Styles';
 import MaterialTest from 'containers/MaterialTest';
 const { material } = Colors;
+import { addMessages, translate as _l } from 'lib/I18n';
+
+addMessages({
+  ['en-US']: {
+    'Hello {0}, {1} moneyz on {2}': 'Hello {0}, {1} moneyz on {2}',
+    'English': 'English',
+    'Swedish': 'Swedish',
+  },
+  ['sv-SE']: {
+    'Hello {0}, {1} moneyz on {2}': 'Hello {0}, {1} moneyz on {2}',
+    'English': 'Engelska',
+    'Swedish': 'Svenska',
+  },
+});
 
 
 
@@ -35,7 +50,8 @@ class ThemeChanger extends Component {
 
   static propTypes = {
     theme: PropTypes.object,
-    changeTheme: PropTypes.func
+    changeTheme: PropTypes.func,
+    setLocale: PropTypes.func
   };
 
   renderPrimary() {
@@ -98,7 +114,14 @@ class ThemeChanger extends Component {
     this.props.changeTheme(primary, secondary, tertiary, main);
   }
 
+  setLocale(locale, defaultCurrency) {
+    this.props.setLocale(locale, defaultCurrency);
+  }
+
   render() {
+    const name = 'Öz';
+    const amount = 2000000;
+    const date = new Date();
     return (
       <Layout >
         <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
@@ -108,6 +131,9 @@ class ThemeChanger extends Component {
           {this.renderPrimary()}
           {this.renderSecondary()}
           {/*this.renderTertiary()*/}
+          {_l`Hello ${name}, ${amount}:c(EUR) moneyz on ${date}:d`}
+          <RaisedButton label={_l`Swedish`} onClick={this.setLocale.bind(this, 'sv-SE', 'SEK')}/>
+          <RaisedButton label={_l`English`} onClick={this.setLocale.bind(this, 'en-US', 'EUR')} />
           <div className={css.testContainer}>
             <MaterialTest />
           </div>
@@ -120,6 +146,7 @@ class ThemeChanger extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     changeTheme: bindActionCreators(themeActions.changeTheme, dispatch),
+    setLocale: bindActionCreators(localeActions.setLocale, dispatch),
   }
 }
 

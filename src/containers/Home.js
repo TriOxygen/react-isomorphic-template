@@ -17,7 +17,6 @@ import TransitionTest from 'components/TransitionTest';
 import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux'
 
-
 const invalidChars = /[^_a-z0-9-]/ig;
 
 const css = oxygenCss({
