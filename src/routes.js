@@ -4,11 +4,13 @@ import App from 'containers/App';
 import Home from 'containers/Home';
 import TransitionTest from 'components/TransitionTest';
 import ThemeChanger from 'containers/ThemeChanger';
+import NotFound from 'containers/NotFound';
 
 export default (
   <Route name="App" component={App} path="/">
       <IndexRoute component={Home}/>
       <Route path="/test" component={TransitionTest} />
       <Route path="/theme" component={ThemeChanger} />
+      <Route path="*" component={NotFound}/>
   </Route>
 );

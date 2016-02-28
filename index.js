@@ -10,6 +10,7 @@ try {
 }
 
 require('babel-core/register')(babelConfig);
+require('babel-polyfill');
 process.env.SERVER = true;
 
 // webpack-isomorphic-tools is all set now.

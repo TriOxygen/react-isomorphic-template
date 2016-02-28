@@ -1,10 +1,6 @@
-import getModel from 'models';
+import getModel from 'schemas';
+import { NotFoundException } from 'Exceptions';
 const Todo = getModel('Todo');
-
-function UserException(message) {
-   this.message = message;
-   this.name = 'UserException';
-}
 
 export default router => {
 
@@ -25,7 +21,7 @@ export default router => {
 
     .get((request, response, next) => {
       Todo.find({}).select('text completed date').exec(function (error, todos) {
-        next( new UserException(' adsf asd as aasddf asdf asdf ut'));
+        next( new NotFoundException());
         if (error) {
           next(error);
         } else {

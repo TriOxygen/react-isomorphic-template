@@ -12,7 +12,10 @@ import chokidar from 'chokidar';
 import AppWrapper from 'containers/AppWrapper';
 import configureStore from 'reducers/configureStore';
 import mongoose from 'mongoose';
+import { NotFoundException } from 'Exceptions';
 // import routes from 'routes';
+
+ mongoose.Promise = global.Promise;
 
 const app = express();
 
@@ -66,7 +69,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
       var routes = require('./routes').default;
 
       const api = require('api').default;
-      app.use('/api', api(app) );
+      app.use('/api/v1', api(app) );
 
       app.use( function main(req, res, next) {
         const location = createLocation(req.url);
@@ -85,7 +88,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           }
 
           if(!renderProps) {
-            return next();
+            return next(new NotFoundException());
             // return res.status(404).end('Not found');
           }
 
@@ -117,28 +120,11 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
         });
       });
 
-      app.use(function apiHandler(req, res) {
-        if (res.data) {
-          res.json({
-            error: false,
-            data: res.data
-          });
-        } else {
-          res.status(404);
-          res.json({
-            error: {
-              status: 404,
-              code: 'Need a bigger magnifier'
-            }
-          });
-        }
-      });
-
-
       app.use(function errorHandler(error, req, res, next) {
         if (res.headersSent) {
           return next(error);
         }
+        res.setHeader('Content-Type', 'application/json');
         res.status(500);
         if (error) {
           res.json({
