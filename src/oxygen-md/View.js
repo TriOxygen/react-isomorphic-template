@@ -56,13 +56,12 @@ export default class View extends Component {
   };
 
   render() {
-    const style = mixProps({}, this.props);
-    const { className, row, column, children, responsiveRow, ...other } = this.props;
+    const { className, row, column, children, responsiveRow, style, ...other } = this.props;
     const classes = classNames(className, styles.root, {
       [styles.row]: row,
       [styles.responsiveRow]: responsiveRow,
       [styles.column]: !row && column
     });
-    return <div className={classes} {...other} style={style}>{children}</div>;
+    return <div className={classes} {...other} style={mixProps({}, this.props)}>{children}</div>;
   }
 }

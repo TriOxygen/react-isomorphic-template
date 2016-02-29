@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Transition from 'react-motion-ui-pack';
 import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
-import { Layout, Toolbar, RaisedButton } from 'oxygen-md';
+import { View, Layout, Toolbar, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
 
@@ -91,9 +91,11 @@ class TransitionTest extends Component {
             {
               courses.map(course =>
                 <ListItem key={course._id}>
-                  {course.name}
-                  <RaisedButton secondary onClick={this.edit.bind(this, course)} label='Edit' />
-                  <RaisedButton primary onClick={this.delete.bind(this, course)} label='Del' />
+                  <View grow={1}>{course.name}</View>
+                  <View grow={0}>
+                    <RaisedButton secondary onClick={this.edit.bind(this, course)} label='Edit' />
+                    <RaisedButton primary onClick={this.delete.bind(this, course)} label='Del' />
+                  </View>
                 </ListItem>
               )
             }

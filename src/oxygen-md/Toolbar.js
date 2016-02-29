@@ -84,10 +84,10 @@ class Toolbar extends Component {
   }
 
   render() {
-    const { children, leftIcon, rightIcon, className, primary, secondary } = this.props;
+    const { children, leftIcon, rightIcon, className, primary, secondary, ...other } = this.props;
     const classes = classNames(styles.root, className);
     return (
-      <View row className={classes} style={this.getStyle()}>
+      <View row className={classes} style={this.getStyle()} {...other}>
         <View grow={0} ><IconButton>{leftIcon}</IconButton></View>
         <View grow={1}>{children}</View>
         <View grow={0} ><IconButton>{rightIcon}</IconButton></View>

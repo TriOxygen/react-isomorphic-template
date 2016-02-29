@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { mergeStyles, Units } from '../Styles';
 import Ink from '../Ink';
+import View from '../View';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
@@ -93,8 +94,10 @@ class ListItem extends Component {
     return (
       <div onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyle()} className={rootClasses} {...other}>
         <Ink />
-        {iconElement}
-        {children}
+        <View>
+          {iconElement}
+          {children}
+        </View>
       </div>
     );
   }
