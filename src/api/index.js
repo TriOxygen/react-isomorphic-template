@@ -2,9 +2,9 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import todo from './Todo';
 import course from './Course';
-import { Exception } from 'Exceptions';
+import { UnknownError } from 'Errors';
 
-export class NoSuchEndpointException extends Exception {
+export class NoSuchEndpointError extends UnknownError {
   static messages = [
     'This tree doesn\'t have that many leaves'
   ];
@@ -26,6 +26,23 @@ export function apiCall(fn) {
   });
 }
 
+export function makeMiddleware() {
+  const middlewares = [...arguments];
+  const apiFunc = middlewares.pop();
+  return wrap(async function (req, res, next) {
+    try {
+      middlewares.forEach(middleware => middleware(req.body, req.params));
+      const data = await apiFunc(req.body, req.params);
+      if (data) {
+        res.data = data;
+        next();
+      }
+    } catch (e) {
+      next(e);
+    }
+  })
+}
+
 export default function api (app) {
 
   const router = new express.Router();
@@ -37,12 +54,13 @@ export default function api (app) {
   course(router);
 
   router.get('/', function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
+    res.set({ 'content-type': 'application/json; charset=utf-8' });
     res.json({ message: 'hooray! welcome to our api!' });
   });
 
   router.use(function apiHandler(req, res) {
-    res.setHeader('Content-Type', 'application/json');
+    res.set({ 'content-type': 'application/json; charset=utf-8' });
+    // res.set('ETag', '1235');
     if (res.data) {
       res.json({
         error: false,
@@ -51,7 +69,7 @@ export default function api (app) {
     } else {
       res.status(404);
       res.json({
-        error: new NoSuchEndpointException()
+        error: new NoSuchEndpointError()
       });
     }
   });

@@ -12,7 +12,7 @@ import chokidar from 'chokidar';
 import AppWrapper from 'containers/AppWrapper';
 import configureStore from 'reducers/configureStore';
 import mongoose from 'mongoose';
-import { NotFoundException } from 'Exceptions';
+import { NotFoundError } from 'Errors';
 // import routes from 'routes';
 
  mongoose.Promise = global.Promise;
@@ -77,7 +77,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
         const store = configureStore();
         // const routes = require('./routes');
 
-        match({ routes, location }, (err, redirectLocation, renderProps) => {
+        match({ routes, location }, async (err, redirectLocation, renderProps) => {
           if (process.env.NODE_ENV !== 'production') {
             webpackIsomorphicTools.refresh()
           }
@@ -88,7 +88,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           }
 
           if(!renderProps) {
-            return next(new NotFoundException());
+            return next(new NotFoundError());
             // return res.status(404).end('Not found');
           }
 
@@ -104,19 +104,17 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
 
             const initialState = store.getState();
 
-            const HTML = '<!doctype html>\n' +
+            return '<!doctype html>\n' +
               renderToString(<Html assets={webpackIsomorphicTools.assets()} component={initialView} store={initialState}/>);
-
-            return HTML;
           }
 
-          // One-liner for current directory, ignores .dotfiles
+          try {
+            await fetchComponentData(store.dispatch, renderProps.components, renderProps.params);
+            res.end(renderView());
+          } catch (err) {
+            res.end(err.message);
+          }
 
-
-          fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
-            .then(renderView)
-            .then(html => res.end(html))
-            .catch(err => res.end(err.message));
         });
       });
 

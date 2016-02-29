@@ -1,10 +1,12 @@
+
 export class UnknownError {
   static messages = [];
 
   constructor(message = null) {
     const { messages } = this.constructor;
     this.message = message || messages[Math.floor(Math.random()*messages.length)];
-    this.code = this.constructor.name;
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor.name);
   }
 }
 

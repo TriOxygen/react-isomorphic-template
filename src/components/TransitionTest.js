@@ -4,6 +4,9 @@ import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
 import { Layout, Toolbar, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
+import fetchComponentData from 'lib/fetchComponentData';
+
+import {List, ListDivider, ListItem} from 'oxygen-md';
 
 import * as itemActions from 'reducers/Items';
 import * as courseActions from 'reducers/CourseReducer';
@@ -29,6 +32,9 @@ class TransitionTest extends Component {
     courseActions.getCourses
   ];
 
+  componentWillMount() {
+    fetchComponentData(this.props.dispatch, [this.constructor]);
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
@@ -56,40 +62,43 @@ class TransitionTest extends Component {
   render() {
     const { courses } = this.props;
     return (
-      <Layout >
+      <Layout>
         <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
-          <RaisedButton onClick={this.addItem.bind(this)} label={'Add'} />
+          <RaisedButton onClick={this.addItem.bind(this)} fullWidth label={'Add'} />
         </Toolbar>
         <Scrollable className={css.content} >
+          <List>
           <Transition
-            component={'div'}
             className={css.container}
             enter={{
-              height: 48,
-              left: 0,
+              height: 56,
+              // left: 0,
+              scale: 1,
               opacity: 1,
             }}
             leave={{
               height: 0,
-              left: 800,
-              opacity: 0,
+              scale: 0.5,
+              opacity: -1,
             }}
             appear={{
               height: 0,
-              left: -200,
-              opacity: 0,
+              scale: 0.5,
+              // left: 0,
+              opacity: 1,
             }}
           >
             {
               courses.map(course =>
-                <div className={css.course} key={course._id}>
+                <ListItem key={course._id}>
                   {course.name}
                   <RaisedButton secondary onClick={this.edit.bind(this, course)} label='Edit' />
                   <RaisedButton primary onClick={this.delete.bind(this, course)} label='Del' />
-                </div>
+                </ListItem>
               )
             }
           </Transition>
+          </List>
         </Scrollable>
       </Layout>
     );
@@ -98,6 +107,7 @@ class TransitionTest extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
+    dispatch,
     addItem: bindActionCreators(itemActions.addItem, dispatch),
     editItem: bindActionCreators(itemActions.editItem, dispatch),
     deleteItem: bindActionCreators(itemActions.deleteItem, dispatch),

@@ -1,5 +1,5 @@
 import getModel from 'schemas';
-import { NotFoundException } from 'Exceptions';
+import { NotFoundError } from 'Errors';
 const Todo = getModel('Todo');
 
 export default router => {
@@ -21,7 +21,7 @@ export default router => {
 
     .get((request, response, next) => {
       Todo.find({}).select('text completed date').exec(function (error, todos) {
-        next( new NotFoundException());
+        next( new NotFoundError());
         if (error) {
           next(error);
         } else {

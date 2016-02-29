@@ -1,13 +1,19 @@
 import getModel from 'schemas';
 import { NotFoundError } from 'Errors';
-import { apiCall } from 'api';
+import { makeMiddleware } from 'api';
 const Course = getModel('Course');
 const Chapter = getModel('Chapter');
 const Page = getModel('Page');
 
+const apiCall = makeMiddleware;
+
 // function apiCall(fn) {
-//   return fn;
+//   return makeMiddleware((body, params) => {
+//     // throw new NotFoundError('asdasdf');
+//     console.log(body, params);
+//   }, fn);
 // }
+
 
 export default router => {
   router.route('/courses')

@@ -12,7 +12,7 @@ const styles = oxygenCss({
   },
   root: {
     userSelect: 'none',
-    transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+    transition: 'background-color 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     position: 'relative',
     overflow: 'hidden',
     cursor: 'pointer',
@@ -41,6 +41,7 @@ class ListItem extends Component {
 
   static propTypes = {
     theme: PropTypes.object,
+    style: PropTypes.object,
     dense: PropTypes.bool,
     active: PropTypes.bool,
     icon: PropTypes.node,
@@ -58,7 +59,7 @@ class ListItem extends Component {
   getStyle() {
     const theme = this.props.theme || this.context.theme;
     const { hover } = this.state;
-    const { active } = this.props;
+    const { active, style } = this.props;
     return mergeStyles(
       hover ? {
         backgroundColor: theme.primary3,
@@ -68,6 +69,7 @@ class ListItem extends Component {
         backgroundColor: theme.primary2,
         color: theme.primary2Text
       } : null,
+      style
     );
   }
 
@@ -80,7 +82,7 @@ class ListItem extends Component {
   }
 
   render() {
-    const { dense, children, icon } = this.props;
+    const { dense, children, icon, style, ...other } = this.props;
     let iconElement;
     if (icon) {
       iconElement = React.cloneElement(icon, { className: styles.icon });
@@ -89,7 +91,7 @@ class ListItem extends Component {
       [styles.dense]: dense
     });
     return (
-      <div onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyle()} className={rootClasses}>
+      <div onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyle()} className={rootClasses} {...other}>
         <Ink />
         {iconElement}
         {children}
