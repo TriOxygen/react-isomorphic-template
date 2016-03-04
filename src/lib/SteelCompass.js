@@ -1,6 +1,6 @@
 import request from 'axios';
 
-const API_URL = 'http://sc.dune/api';
+const API_URL = 'http://localhost/api/v1/';
 const COURSE_ID = 1699;
 // const COURSE_ID = 2580;
 
