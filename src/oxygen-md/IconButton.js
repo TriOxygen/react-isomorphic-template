@@ -5,7 +5,7 @@ import { Units } from './Styles';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
-  button: {
+  'iconButton': {
     position: 'relative',
     borderRadius: '50%',
     border: 'none',
@@ -36,7 +36,7 @@ const styles = oxygenCss({
       },
     },
   },
-  icon: {
+  'icon': {
     zIndex: 2
   }
 });
@@ -104,9 +104,14 @@ class IconButton extends Component {
     const { dense, disabled, children, ...other } = this.props;
     const theme = this.props.theme || this.context.theme;
     const ink = !disabled && <Ink />;
-    const buttonClasses = classNames(styles.button, dense ? styles.dense : null);
+    const buttonClasses = classNames(styles.iconButton, dense ? styles.dense : null);
     return (
-      <button className={buttonClasses} style={this.getButtonStyles(theme)} disabled={disabled} {...other}>
+      <button
+        className={buttonClasses}
+        style={this.getButtonStyles(theme)}
+        disabled={disabled}
+        {...other}
+      >
         {ink}
         {children}
       </button>

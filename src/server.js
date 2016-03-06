@@ -13,6 +13,10 @@ import AppWrapper from 'containers/AppWrapper';
 import configureStore from 'reducers/configureStore';
 import mongoose from 'mongoose';
 import { NotFoundError } from 'Errors';
+import Config from 'Config';
+import session from 'express-session';
+import connectMongo from 'connect-mongo';
+const MongoStore = connectMongo(session);
 // import routes from 'routes';
 
  mongoose.Promise = global.Promise;
@@ -22,7 +26,6 @@ const app = express();
 // this must be equal to your Webpack configuration "context" parameter
 var projectBasePath = require('path').join(__dirname, '..');
 
-
 if (process.env.NODE_ENV !== 'production') {
   require('../webpack/webpack.dev.config').default(app);
 }
@@ -31,8 +34,16 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/static', express.static(path.resolve(__dirname, '../static')));
 }
 
-mongoose.connect('mongodb://localhost/spiders_nest');
+mongoose.connect(Config.mongodb.url);
 
+app.use(session({
+    secret: 'Very secret stuffs',
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection,
+    })
+}));
 
 /**
  * Removes a module from the cache
@@ -72,6 +83,10 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
       app.use('/api/v1', api(app) );
 
       app.use( function main(req, res, next) {
+        const { session } = req;
+        session.calls = session.calls || 0;
+        session.calls++;
+        console.log(session)
         const location = createLocation(req.url);
 
         const store = configureStore();

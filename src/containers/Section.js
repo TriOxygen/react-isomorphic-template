@@ -16,7 +16,7 @@ const sectionStyles = oxygenCss({
       width: Units.desktop.keylineIncrement * 15,
     },
   },
-  header: {
+  heading: {
     textAlign: 'center',
     fontSize: Typography.phone.display1.fontSize,
     fontWeight: Typography.phone.display1.fontWeight,

@@ -5,7 +5,7 @@ import { Units } from './Styles';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
-  button: {
+  'flatButton': {
     border: 'none',
     display: 'inline-block',
     fontWeight: 500,
@@ -43,11 +43,11 @@ const styles = oxygenCss({
         lineHeight: `${Units.desktop.button.dense.height}px`
       },
     },
+    '&fullWidth': {
+      display: 'block'
+    },
   },
 
-  fullWidth: {
-    display: 'block'
-  },
 });
 
 class FlatButton extends Component {
@@ -122,13 +122,18 @@ class FlatButton extends Component {
     const theme = this.props.theme || this.context.theme;
     const { dense, disabled, fullWidth, label, children, ...other } = this.props;
     const ink = !disabled && <Ink />;
-    const buttonClasses = classNames(styles.button, {
+    const buttonClasses = classNames(styles.flatButton, {
       [styles.dense]: dense,
       [styles.fullWidth]: fullWidth
     });
 
     return (
-      <button className={buttonClasses} disabled={disabled} style={this.getButtonStyles(theme)} {...other} >
+      <button
+        className={buttonClasses}
+        disabled={disabled}
+        style={this.getButtonStyles(theme)}
+        {...other}
+      >
         {ink}
         {label}
         {children}

@@ -5,13 +5,16 @@ import View from '../View';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
+  listItem: {
+    alignItems: 'center',
+  },
   icon: {
     marginRight: `${Units.phone.list.padding}px`,
     '@desktop': {
       marginRight: `${Units.desktop.list.padding}px`
     }
   },
-  root: {
+  'root': {
     userSelect: 'none',
     transition: 'background-color 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     position: 'relative',
@@ -94,7 +97,7 @@ class ListItem extends Component {
     return (
       <div onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyle()} className={rootClasses} {...other}>
         <Ink />
-        <View>
+        <View className={styles.listItem}>
           {iconElement}
           {children}
         </View>

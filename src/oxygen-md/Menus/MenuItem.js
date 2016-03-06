@@ -4,13 +4,13 @@ import Ink from '../Ink';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
-  icon: {
+  'icon': {
     marginRight: `${Units.phone.menu.padding}px`,
     '@desktop': {
       marginRight: `${Units.desktop.menu.padding}px`
     }
   },
-  root: {
+  'root': {
     userSelect: 'none',
     transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     position: 'relative',

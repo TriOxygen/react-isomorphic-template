@@ -3,7 +3,7 @@ import Paper from '../Paper';
 import { Typography, Units } from '../Styles';
 
 const styles = oxygenCss({
-  root: {
+  'root': {
     fontSize: `${Typography.phone.base.fontSize}`,
     fontFamily: `${Typography.phone.base.fontFamily}`,
     width: `${Units.phone.keylineIncrement * 12}`,

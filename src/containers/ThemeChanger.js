@@ -132,8 +132,8 @@ class ThemeChanger extends Component {
           {this.renderSecondary()}
           {/*this.renderTertiary()*/}
           {_l`Hello ${name}, ${amount}:c(EUR) moneyz on ${date}:d`}
-          <RaisedButton label={_l`Swedish`} onClick={this.setLocale.bind(this, 'sv-SE', 'SEK')}/>
-          <RaisedButton label={_l`English`} onClick={this.setLocale.bind(this, 'en-US', 'EUR')} />
+          <RaisedButton label={_l`Swedish`} onTouchTap={this.setLocale.bind(this, 'sv-SE', 'SEK')}/>
+          <RaisedButton label={_l`English`} onTouchTap={this.setLocale.bind(this, 'en-US', 'EUR')} />
           <div className={css.testContainer}>
             <MaterialTest />
           </div>

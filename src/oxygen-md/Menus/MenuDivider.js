@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 const styles = oxygenCss({
-  divider: {
+  'divider': {
     height: 1,
     border: 'none',
     margin: 0,

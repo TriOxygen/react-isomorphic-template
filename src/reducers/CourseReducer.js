@@ -1,8 +1,7 @@
-import request from 'axios';
+import api from 'lib/api';
 import createStore from 'lib/createStore';
 
 //const API_URL = 'https://webtask.it.auth0.com/api/run/wt-milomord-gmail_com-0/redux-tutorial-backend?webtask_no_cache=1';
-const API_URL = 'http://localhost:3001/api/v1';
 const GET_COURSES = 'courses/get';
 const CREATE_COURSE = 'courses/create';
 const EDIT_COURSE = 'courses/edit';
@@ -35,27 +34,27 @@ export default createStore([], {
 export function getCourses () {
   return {
     type: GET_COURSES,
-    promise: request.get(`${API_URL}/courses`)
+    promise: api.get(`courses`)
   };
 }
 
 export function createCourse (course) {
   return {
     type: CREATE_COURSE,
-    promise: request.post(`${API_URL}/courses`, course)
+    promise: api.post(`courses`, course)
   };
 }
 
 export function editCourse (id, course) {
   return {
     type: EDIT_COURSE,
-    promise: request.put(`${API_URL}/courses/${id}`, course)
+    promise: api.put(`courses/${id}`, course)
   };
 }
 
 export function deleteCourse (id) {
   return {
     type: DELETE_COURSE,
-    promise: request.delete(`${API_URL}/courses/${id}`)
+    promise: api.delete(`courses/${id}`)
   };
 }

@@ -65,7 +65,7 @@ class Toggle extends Component {
     active: false
   };
 
-  handleClick() {
+  handleTouchTap() {
     const { disabled, onChange } = this.props;
     if (!disabled) {
       const { checked } = this.state;
@@ -86,7 +86,7 @@ class Toggle extends Component {
 
   handleKeyPress(e) {
     if (e.keyCode === 0 || e.keyCode === 32 || e.keyCode == 13) {
-      this.handleClick();
+      this.handleTouchTap();
       e.preventDefault();
     }
   }
@@ -151,7 +151,7 @@ class Toggle extends Component {
         tabIndex={tabIndex}
         className={labelClasses}
         style={this.getStyles()}
-        onClick={this.handleClick.bind(this)}
+        onTouchTap={this.handleTouchTap.bind(this)}
       >
         <div className={labelStyles.toggle} style={this.getToggleStyles()}>
           {ink}

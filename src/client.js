@@ -5,6 +5,8 @@ import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import routes from 'routes';
 import AppWrapper from 'containers/AppWrapper';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
 
 import configureStore, { reduxRouterMiddleware } from 'reducers/configureStore';
 

@@ -1,6 +1,10 @@
 import request from 'axios';
+import Config from 'Config';
 
-const API_URL = 'http://localhost/api/v1/';
+const { version, host, route } = Config.api;
+
+
+const API_URL = `//${host}/${route}/${version}`;
 const COURSE_ID = 1699;
 // const COURSE_ID = 2580;
 

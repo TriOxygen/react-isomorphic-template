@@ -17,6 +17,7 @@ import TransitionTest from 'components/TransitionTest';
 import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux'
 
+// console.log(__CONFIG__)
 
 const invalidChars = /[^_a-z0-9-]/ig;
 
@@ -59,7 +60,7 @@ const css = oxygenCss({
       width: '100%'
     }
   },
-  title: {
+  heading1: {
     display: 'block',
     fontSize: Typography.desktop.title.fontSize,
     fontWeight: Typography.desktop.title.fontWeight,
@@ -195,7 +196,7 @@ class Home extends React.Component {
     return (
       <div>
         <Section ref={c => this.add(c, 1)} startColor={8} endColor={5}>
-          <h1 className={css.title}>Tour</h1>
+          <h1 className={css.heading1}>Tour</h1>
           <Scrollable className={css.box}>
             Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
             totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
@@ -209,7 +210,7 @@ class Home extends React.Component {
           </Scrollable>
         </Section>
         <Section ref={c => this.add(c, 2)} startColor={5} endColor={7}>
-          <h1 className={css.title}>Case Studies</h1>
+          <h1 className={css.heading1}>Case Studies</h1>
           <View responsiveRow>
             <div className={css.col2}>
               <h2>Emelie</h2>
@@ -229,7 +230,7 @@ class Home extends React.Component {
           </View>
         </Section>
         <Section ref={c => this.add(c, 3)} startColor={7} endColor={12}>
-          <h1 className={css.title}>Blog</h1>
+          <h1 className={css.heading1}>Blog</h1>
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
           totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
           dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
@@ -241,7 +242,7 @@ class Home extends React.Component {
           vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
         </Section>
         <Section ref={c => this.add(c, 4)} startColor={12} endColor={4}>
-          <h1 className={css.title}>Press</h1>
+          <h1 className={css.heading1}>Press</h1>
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
           totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
           dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
@@ -253,7 +254,7 @@ class Home extends React.Component {
           vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
         </Section>
         <Section ref={c => this.add(c, 5)} startColor={4} endColor={12}>
-          <h1 className={css.title}>About</h1>
+          <h1 className={css.heading1}>About</h1>
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
           totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
           dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
@@ -265,7 +266,7 @@ class Home extends React.Component {
           vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
         </Section>
         <Section ref={c => this.add(c, 6)} startColor={12} endColor={8} divider={false}>
-          <h1 className={css.title}>Contact</h1>
+          <h1 className={css.heading1}>Contact</h1>
           <View row>
             <div className={css.col3}>
               Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,

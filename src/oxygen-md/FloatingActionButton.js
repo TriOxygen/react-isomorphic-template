@@ -5,7 +5,7 @@ import { Shadow, Units } from './Styles';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
-  button: {
+  floatingActionButton: {
     border: 'none',
     display: 'inline-block',
     position: 'relative',
@@ -121,7 +121,7 @@ class FloatingActionButton extends Component {
   render() {
     const { disabled, children, mini, icon } = this.props;
     const ink = !disabled && <Ink />;
-    const classes = classNames(styles.button, {
+    const classes = classNames(styles.floatingActionButton, {
       [styles.mini]: mini
     });
     return (

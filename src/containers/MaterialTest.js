@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import { Checkbox, IconButton, Toggle, TextField, Menu, MenuDivider, MenuItem, List, ListDivider, ListItem, RaisedButton, FlatButton, FloatingActionButton, ButtonContainer, Styles } from 'oxygen-md';
+import { Radio, RadioGroup, Checkbox, IconButton, Toggle, TextField, Menu, MenuDivider, MenuItem, List, ListDivider, ListItem, RaisedButton, FlatButton, FloatingActionButton, ButtonContainer, Styles } from 'oxygen-md';
 
 import ContentClear from 'oxygen-md-svg-icons/lib/SvgIcons/ContentClear';
 import ActionAccessibility from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccessibility';
 import ActionAccountBalance from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBalance';
 import ActionAccountBalanceWallet from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBalanceWallet';
 import ActionAccountBox from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBox';
+import Hammer from 'components/Hammer';
 
 const styles = oxygenCss({
   root: {
@@ -14,19 +15,39 @@ const styles = oxygenCss({
 });
 
 class MaterialTest extends Component {
-  static displayName = 'MaterialTest';
+
+  say = (what) => {
+    console.log('Say', what);
+  };
 
   render() {
     return (
       <div className={styles.root}>
+
+        <Hammer
+          onTap={this.say.bind(this, 'tap')}
+          onPress={this.say.bind(this, 'press')}
+          onSwipe={this.say.bind(this, 'swipe')}
+        >
+          <div style={{ padding: 10, backgroundColor: '#777'}}>Do Stuff with me</div>
+        </Hammer>
+        <RadioGroup value={5}>
+          <Radio value={1}/>
+          <Radio value={2} primary checked disabled/>
+          <Radio value={3} secondary/>
+          <Radio value={4} />
+          <Radio value={5} disabled checked/>
+        </RadioGroup>
+
         <Toggle />
         <Toggle primary checked disabled/>
         <Toggle secondary/>
         <Toggle disabled/>
         <Toggle disabled checked/>
 
+
         <Checkbox />
-        <Checkbox primary checked/>
+        <Checkbox primary checked disabled/>
         <Checkbox secondary/>
         <Checkbox disabled/>
         <Checkbox disabled checked/>

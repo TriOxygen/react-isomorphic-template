@@ -16,9 +16,10 @@ const checkStyles = oxygenCss({
     borderStyle: 'solid',
     borderWidth: 2,
     borderColor: Colors.material.grey[500].hex,
-    transitionDelay: '0.2s',
+    transition: 'border-color .25s, background-color .25s',
     display: 'inline-block',
     overflow: 'visible',
+    boxSizing: 'border-box',
     '&active': {
       boxShadow: '0 0 10px rgba(255 , 255, 0, 1)',
     },
@@ -27,7 +28,7 @@ const checkStyles = oxygenCss({
       borderColor: Colors.material.teal[500].hex,
       ' check': {
         opacity: 1,
-        transform: 'translate(-2px, -2px) scale(1) rotate(45deg) '
+        transform: 'translate(-4px, -4px) scale(1) rotate(45deg) '
       }
     },
     '&disabled': {
@@ -38,7 +39,7 @@ const checkStyles = oxygenCss({
   check: {
     display: 'block',
     position: 'absolute',
-    transitionDuration: '.3s',
+    transition: 'opacity .25s, transform .25s',
     top: 0,
     left: 7,
     width: 7,
@@ -75,7 +76,6 @@ class Checkbox extends Toggle {
     const { disabled } = this.props;
     const { checked, active } = this.state;
     let tabIndex = null;
-    let ink;
 
     const rootClasses = classNames(checkStyles.root, {
       [checkStyles.checked]: checked,
@@ -86,7 +86,6 @@ class Checkbox extends Toggle {
 
     if (!disabled) {
       tabIndex = 0;
-      ink = <Ink radius={80}/>;
     }
 
     return (
@@ -95,13 +94,12 @@ class Checkbox extends Toggle {
         disabled={disabled}
         className={rootClasses}
         tabIndex={tabIndex}
-        onClick={this.handleClick.bind(this)}
+        onTouchTap={this.handleTouchTap.bind(this)}
         onKeyPress={this.handleKeyPress.bind(this)}
         onFocus={this.handleFocus.bind(this)}
         onBlur={this.handleBlur.bind(this)}
       >
         <span className={checkStyles.check}/>
-        {ink}
       </div>
     );
   }
