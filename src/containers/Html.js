@@ -15,17 +15,33 @@ export default class Html extends Component
   render() {
     const { assets, component, store } = this.props;
     let styles;
+    let styleAssets;
+    let cleaner;
     if (process.env.NODE_ENV === 'development') {
       const css = [
         ['static', 'styles/normalize.css'],
         ['static', 'styles/bundle.css'],
         ['node_modules', 'oxygen-md-svg-icons/lib/bundle.css']
       ];
-
+      const scripts = [];
       styles = css.map((cssFile, index) => {
-        return <style type="text/css" key={index} dangerouslySetInnerHTML={{ __html: fs.readFileSync(path.resolve(path.join(...cssFile))) }}/>;
+        scripts.push('script_' + index);
+        return <style type="text/css" id={'script_' + index} key={index} dangerouslySetInnerHTML={{ __html: fs.readFileSync(path.resolve(path.join(...cssFile))) }}/>;
       });
+      cleaner = (
+        <script dangerouslySetInnerHTML={{ __html: `
+          setTimeout(() => {
+            ${JSON.stringify(scripts)}.forEach(script => {
+              document.getElementById(script).remove();
+            });
+          }, 1000);
+        ` }}
+        />
+      );
     }
+    styleAssets = Object.keys(assets.styles).map((style, i) => {
+      return <link href={assets.styles[style]} key={i} media="screen, projection" rel="stylesheet" type="text/css"/>
+    });
     const html =
     (
       <html lang="en-us">
@@ -37,10 +53,7 @@ export default class Html extends Component
           <link rel="shortcut icon" href={assets.assets['./static/images/favicon.png']} />
 
           {/* styles (will be present only in production with webpack extract text plugin) */}
-          {Object.keys(assets.styles).map((style, i) =>
-            <link href={assets.styles[style]} key={i} media="screen, projection"
-                  rel="stylesheet" type="text/css"/>)}
-
+          {styleAssets}
           {styles}
         </head>
 
@@ -58,6 +71,7 @@ export default class Html extends Component
           {Object.keys(assets.javascript).map((script, i) =>
             <script src={assets.javascript[script]} key={i}/>
           )}
+          {cleaner}
         </body>
       </html>
     );

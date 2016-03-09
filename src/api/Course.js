@@ -28,9 +28,13 @@ export default router => {
   router.route('/courses/:courseId')
     .post(apiCall(newChapter));
 
-  router.route('/courses/:courseId/chapter/:chapterId')
+  router.route('/courses/:courseId/:chapterId')
     .put(apiCall(updateChapter))
     .delete(apiCall(deleteChapter));
+
+  router.route('/courses/:courseId/:chapterId/:pageId')
+    .put(apiCall(updatePage))
+    .delete(apiCall(deletePage));
 }
 
 async function newCourse(body, params) {
@@ -86,21 +90,51 @@ async function updateChapter(body, params) {
   course.children.every(chapter => {
     if (chapter.id === chapterId) {
       foundChapter = chapter;
+      return false;
     }
   });
   if (foundChapter) {
     Object.assign(foundChapter, body);
     await foundChapter.save();
   }
-
-  return await course.save();
 }
 
 async function deleteChapter(body, params) {
   const { courseId, chapterId } = params;
   return await Course.findByIdAndUpdate(courseId, {
-    '$pull': {
-      'children': { _id: chapterId }
+    $pull: {
+      children: { _id: chapterId }
+    }
+  });
+}
+
+async function updatePage(body, params) {
+  const { courseId, chapterId, pageId } = params;
+  const course = await Course.findById(courseId);
+
+  let foundPage;
+  course.children.every(chapter => {
+    if (chapter.id === chapterId) {
+      chapter.children.every(page => {
+        if (page.id === pageId) {
+          foundPage = page;
+          return false;
+        }
+      });
+      return false;
+    }
+  });
+  if (foundPage) {
+    Object.assign(foundPage, body);
+    await foundPage.save();
+  }
+}
+
+async function deletePage(body, params) {
+  const { chapterId, pageId } = params;
+  return await Chapter.findByIdAndUpdate(chapterId, {
+    $pull: {
+      children: { _id: pageId }
     }
   });
 }

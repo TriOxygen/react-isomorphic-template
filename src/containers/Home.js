@@ -293,6 +293,10 @@ class Home extends React.Component {
     this.props.go('/test');
   }
 
+  go = (link) => {
+    this.props.go(link);
+  };
+
   render() {
     const pages = this.renderRandom();
     const { scrollTop } = this.state;
@@ -310,7 +314,8 @@ class Home extends React.Component {
           <RaisedButton secondary onClick={this.jump.bind(this, 4)} label={'Press'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 5)} label={'About'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 6)} label={'Contact'}/>
-          <RaisedButton secondary onClick={this.test.bind(this)} label={'Test'}/>
+          <RaisedButton secondary link href="/theme" onTouchTap={this.go} label={'Theme'}/>
+          <RaisedButton secondary link href="/test" onTouchTap={this.go} label={'Test'}/>
         </Toolbar>
         <Scrollable scrollTop={scrollTop} className={css.content}>
           {pages}

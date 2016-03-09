@@ -58,7 +58,7 @@ const config = {
   },
   output: {
     path: path.join(__dirname, '..', 'static'),
-    filename: 'dist/bundle.js',
+    filename: 'dist/bundle.[hash].js',
     publicPath: '/'
   },
   plugins: [
@@ -90,7 +90,7 @@ const config = {
       },
       {
         test: /\.css$/, // Only .css files
-        loader: 'style-loader!css-loader', // Run both loaders
+        loader: 'style-loader!css-loader?name=[path][name].[hash].[ext]', // Run both loaders
       },
     ]
   },

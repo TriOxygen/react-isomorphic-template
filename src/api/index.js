@@ -12,20 +12,6 @@ export class NoSuchEndpointError extends UnknownError {
 
 const wrap = fn => (...args) => fn(...args).catch(args[2]);
 
-export function apiCall(fn) {
-  return wrap(async function (req, res, next) {
-    try {
-      const result = await fn(req.body, req.params);
-      if (result) {
-        res.data = result;
-        next();
-      }
-    } catch (e) {
-      next(e);
-    }
-  });
-}
-
 export function makeMiddleware() {
   const middlewares = [...arguments];
   const apiFunc = middlewares.pop();

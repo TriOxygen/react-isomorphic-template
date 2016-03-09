@@ -11,11 +11,15 @@ class Radio extends Component {
       React.PropTypes.array,
       React.PropTypes.object,
     ]),
+    fullWidth: PropTypes.bool,
+    label: PropTypes.node,
+    left: PropTypes.bool,
     checked: PropTypes.bool,
     disabled: PropTypes.bool,
     primary: PropTypes.bool,
     theme: PropTypes.object,
     secondary: PropTypes.bool,
+    onTouchTap: PropTypes.func
   };
 
   static contextTypes = {
@@ -27,8 +31,8 @@ class Radio extends Component {
   };
 
   handleTouchTap() {
-    const { disabled, onChange } = this.props;
-    !disabled && this.props.onClick && this.props.onClick(this.props.value);
+    const { disabled, } = this.props;
+    !disabled && this.props.onTouchTap && this.props.onTouchTap(this.props.value);
   }
 
   handleFocus() {
@@ -79,7 +83,7 @@ class Radio extends Component {
   }
 
   render() {
-    const { disabled, checked } = this.props;
+    const { disabled, checked, label, left, fullWidth } = this.props;
     const { active } = this.state;
     let tabIndex = null;
 
@@ -87,7 +91,7 @@ class Radio extends Component {
       tabIndex = 0;
     }
 
-    const classes = classNames(radioStyles.root, {
+    const classes = classNames(radioStyles.border, {
       [radioStyles.active]: active,
       [radioStyles.checked]: checked,
       [radioStyles.disabled]: disabled
@@ -99,12 +103,15 @@ class Radio extends Component {
         onKeyPress={this.handleKeyPress.bind(this)}
         onFocus={this.handleFocus.bind(this)}
         onBlur={this.handleBlur.bind(this)}
-        className={classes}
+        className={classNames(radioStyles.root, { [radioStyles.fullWidth]: fullWidth })}
         tabIndex={tabIndex}
-        style={this.getStyles()}
         onTouchTap={this.handleTouchTap.bind(this)}
       >
-        <span className={radioStyles.check} style={this.getCheckStyles()}/>
+        {left ? label : null}
+        <div className={classes} style={this.getStyles()}>
+          <span className={radioStyles.check} style={this.getCheckStyles()}/>
+        </div>
+        {!left ? label : null}
       </div>
     );
   }
@@ -113,17 +120,26 @@ class Radio extends Component {
 const radioStyles = oxygenCss({
   root: {
     display: 'inline-block',
-    width: 20,
+    outline: 'none',
+    cursor: 'pointer',
+    padding: Units.phone.gutter.mini / 2,
+    position: 'relative',
+    '&fullWidth': {
+      display: 'block',
+    },
+  },
+  border: {
+    display: 'inline-block',
     height: 20,
+    width: 20,
+    marginRight: Units.phone.gutter.mini,
     borderWidth: 2,
     borderStyle: 'solid',
     borderColor: Colors.material.grey[500].hex,
     borderRadius: '50%',
-    outline: 'none',
-    cursor: 'pointer',
     transition: 'border-color .25s ease',
     boxSizing: 'border-box',
-    position: 'relative',
+    verticalAlign: 'middle',
     '&active': {
       boxShadow: '0 0 10px rgba(255 , 255, 0, 1)',
     },
@@ -139,21 +155,22 @@ const radioStyles = oxygenCss({
         opacity: 1
       }
     },
+    check: {
+      transformOrigin: '50% 50%',
+      verticalAlign: 'middle',
+      display: 'inline-block',
+      transform: 'scale(1, 1)',
+      height: 16,
+      width: 16,
+      boxSizing: 'border-box',
+      // margin: 4,
+      backgroundColor: Colors.material.grey[500].hex,
+      borderRadius: '50%',
+      opacity: 0,
+      zIndex: -1,
+      transition: 'transform .25s ease, opacity .25s ease, background-color .25s ease',
+    }
   },
-  check: {
-    display: 'block',
-    transform: 'scale(1, 1)',
-    height: 16,
-    width: 16,
-    boxSizing: 'border-box',
-    // margin: 4,
-    display: 'block',
-    backgroundColor: Colors.material.grey[500].hex,
-    borderRadius: '50%',
-    opacity: 0,
-    zIndex: -1,
-    transition: 'transform .25s ease, opacity .25s ease, background-color .25s ease',
-  }
 });
 
 export default Radio;

@@ -31,12 +31,12 @@ class MaterialTest extends Component {
         >
           <div style={{ padding: 10, backgroundColor: '#777'}}>Do Stuff with me</div>
         </Hammer>
-        <RadioGroup value={5}>
-          <Radio value={1}/>
-          <Radio value={2} primary checked disabled/>
-          <Radio value={3} secondary/>
-          <Radio value={4} />
-          <Radio value={5} disabled checked/>
+        <RadioGroup value={1}>
+          <Radio fullWidth label={'1'} value={1} disabled/>
+          <Radio fullWidth label={'2'} value={2} primary />
+          <Radio fullWidth label={'3'} value={3} secondary/>
+          <Radio fullWidth label={'4'} value={4} />
+          <Radio fullWidth label={'5'} value={5} />
         </RadioGroup>
 
         <Toggle />

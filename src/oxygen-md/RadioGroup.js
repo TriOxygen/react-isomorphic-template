@@ -1,7 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import Radio from './Radio';
-import { Units, Colors } from './Styles';
-import classNames from 'classnames';
 
 class RadioGroup extends Component {
   static propTypes = {
@@ -29,9 +27,11 @@ class RadioGroup extends Component {
       if (child.type == Radio) {
         return React.cloneElement(child, {
           checked: this.state.value === child.props.value,
-          onClick: value => {
+          onTouchTap: value => {
             if (this.state.value !== value) {
-              this.props.onChange && this.prop.onChange(value);
+              if (this.props.onChange) {
+                this.prop.onChange(value);
+              }
               this.setState({ value });
             }
           }
@@ -43,7 +43,7 @@ class RadioGroup extends Component {
 
   render() {
     return (
-      <div>{this.renderChildren()}</div>
+      <div style={{ margin: 10 }}>{this.renderChildren()}</div>
     );
   }
 }

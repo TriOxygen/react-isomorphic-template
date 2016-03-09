@@ -13,6 +13,9 @@ class RaisedButton extends Component {
     theme: PropTypes.object,
     fullWidth: PropTypes.bool,
     label: PropTypes.string,
+    link: PropTypes.bool,
+    href: PropTypes.string,
+    onTouchTap: PropTypes.func,
     children: PropTypes.node
   };
 
@@ -73,34 +76,55 @@ class RaisedButton extends Component {
     return [specStyles];
   }
 
+  handleTouchTap = (event) => {
+    const { link, disabled, onTouchTap, href } = this.props;
+    if (!disabled && onTouchTap) {
+      onTouchTap(href);
+      if (link) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }
+  };
+
+  handleKeyPress = (event) => {
+    const { keyCode } = event;
+    if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
+      this.handleTouchTap();
+      event.preventDefault();
+    }
+  };
+
   render() {
     const theme = this.props.theme || this.context.theme;
-    const { disabled, fullWidth, dense, label, children, ...other } = this.props;
+    const { link, disabled, fullWidth, dense, label, children, onTouchTap, ...other } = this.props;
     const ink = !disabled && <Ink />;
     const buttonClasses = classNames(styles.raisedButton, {
       [styles.dense]: dense,
       [styles.fullWidth]: fullWidth
     });
-    return (
-      <button
-        className={buttonClasses}
-        disabled={disabled}
-        style={this.getButtonStyles(theme)}
-        {...other}
-      >
-        {ink}
-        {children}
-        {label}
-      </button>
-    );
+    const props = {
+      className: buttonClasses,
+      disabled,
+      style: this.getButtonStyles(theme),
+      ...other,
+      onKeyPress: this.handleKeyPress,
+      onTouchTap: this.handleTouchTap,
+    };
+    const containerElement = link ? (disabled ? 'span' : 'a') : 'button';
+    return React.createElement(containerElement, props, ink, children, label);
   }
 }
+
+
 
 const styles = oxygenCss({
   raisedButton: {
     border: 'none',
     display: 'inline-block',
-    fontWeight: 500,
+    fontWeight: 300,
+    textAlign: 'center',
+    textDecoration: 'none',
     backgroundColor: 'rgba(158, 158, 158, 0.2)',
     color: 'inherit',
     overflow: 'hidden',
@@ -120,7 +144,8 @@ const styles = oxygenCss({
     minWidth: Units.phone.button.width,
     margin: `auto ${Units.phone.gutter.mini}px`,
     ':hover': {
-      boxShadow: Shadow[2]
+      boxShadow: Shadow[2],
+      textDecoration: 'none',
     },
     ':focus': {
       boxShadow: Shadow[2]

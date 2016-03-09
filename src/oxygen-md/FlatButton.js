@@ -5,7 +5,7 @@ import { Units } from './Styles';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
-  'flatButton': {
+  flatButton: {
     border: 'none',
     display: 'inline-block',
     fontWeight: 500,
@@ -58,6 +58,9 @@ class FlatButton extends Component {
     theme: PropTypes.object,
     fullWidth: PropTypes.bool,
     secondary: PropTypes.bool,
+    link: PropTypes.bool,
+    href: PropTypes.string,
+    onTouchTap: PropTypes.func,
     label: PropTypes.string,
     children: PropTypes.node
   };
@@ -118,28 +121,45 @@ class FlatButton extends Component {
     return [specStyles];
   }
 
+  handleTouchTap = (event) => {
+    const { link, disabled, onTouchTap, href } = this.props;
+    if (!disabled && onTouchTap) {
+      onTouchTap(href);
+      if (link) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }
+  };
+
+  handleKeyPress = (event) => {
+    const { keyCode } = event;
+    if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
+      this.handleTouchTap();
+      event.preventDefault();
+    }
+  };
+
   render() {
     const theme = this.props.theme || this.context.theme;
-    const { dense, disabled, fullWidth, label, children, ...other } = this.props;
+    const { link, disabled, fullWidth, dense, label, children, onTouchTap, ...other } = this.props;
     const ink = !disabled && <Ink />;
     const buttonClasses = classNames(styles.flatButton, {
       [styles.dense]: dense,
       [styles.fullWidth]: fullWidth
     });
-
-    return (
-      <button
-        className={buttonClasses}
-        disabled={disabled}
-        style={this.getButtonStyles(theme)}
-        {...other}
-      >
-        {ink}
-        {label}
-        {children}
-      </button>
-    );
+    const props = {
+      className: buttonClasses,
+      disabled,
+      style: this.getButtonStyles(theme),
+      ...other,
+      onKeyPress: this.handleKeyPress,
+      onTouchTap: this.handleTouchTap,
+    };
+    const containerElement = link ? (disabled ? 'span' : 'a') : 'button';
+    return React.createElement(containerElement, props, ink, children, label);
   }
+
 }
 
 export default radium(FlatButton);

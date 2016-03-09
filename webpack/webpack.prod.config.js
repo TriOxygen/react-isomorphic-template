@@ -44,13 +44,13 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, '..'),
-    filename: 'static/dist/bundle.js',
+    filename: 'static/dist/bundle.[hash].js',
     publicPath: '/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
-    new ExtractTextPlugin('static/dist/main.css'),
+    new ExtractTextPlugin('static/dist/main.[hash].css'),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
@@ -70,12 +70,12 @@ module.exports = {
       },
       {
         test: webpackIsomorphicToolsPlugin.regular_expression('images'),
-        loader: 'file-loader?name=[path][name].[ext]?[hash]'
+        loader: 'file-loader?name=[path][name].[hash].[ext]'
       },
       {
         test: /\.css$/, // Only .css files
         // loader: 'style-loader!css-loader', // Run both loaders
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
       },
     ]
   },
