@@ -94,7 +94,7 @@ class Radio extends Component {
     const classes = classNames(radioStyles.border, {
       [radioStyles.active]: active,
       [radioStyles.checked]: checked,
-      [radioStyles.disabled]: disabled
+      [radioStyles.disabled]: disabled,
     });
 
     return (
@@ -103,7 +103,7 @@ class Radio extends Component {
         onKeyPress={this.handleKeyPress.bind(this)}
         onFocus={this.handleFocus.bind(this)}
         onBlur={this.handleBlur.bind(this)}
-        className={classNames(radioStyles.root, { [radioStyles.fullWidth]: fullWidth })}
+        className={classNames(radioStyles.root, { [radioStyles.left]: left, [radioStyles.fullWidth]: fullWidth })}
         tabIndex={tabIndex}
         onTouchTap={this.handleTouchTap.bind(this)}
       >
@@ -119,13 +119,23 @@ class Radio extends Component {
 
 const radioStyles = oxygenCss({
   root: {
+    userSelect: 'none',
     display: 'inline-block',
     outline: 'none',
     cursor: 'pointer',
-    padding: Units.phone.gutter.mini / 2,
+    padding: Units.phone.gutter.mini / 4,
     position: 'relative',
     '&fullWidth': {
       display: 'block',
+    },
+    '&left': {
+      textAlign: 'right'
+    }
+  },
+  left: {
+    border: {
+      marginLeft: Units.phone.gutter.mini,
+      marginRight: 0,
     },
   },
   border: {
@@ -157,8 +167,7 @@ const radioStyles = oxygenCss({
     },
     check: {
       transformOrigin: '50% 50%',
-      verticalAlign: 'middle',
-      display: 'inline-block',
+      display: 'block',
       transform: 'scale(1, 1)',
       height: 16,
       width: 16,

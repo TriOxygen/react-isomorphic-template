@@ -31,26 +31,27 @@ class MaterialTest extends Component {
         >
           <div style={{ padding: 10, backgroundColor: '#777'}}>Do Stuff with me</div>
         </Hammer>
-        <RadioGroup value={1}>
-          <Radio fullWidth label={'1'} value={1} disabled/>
-          <Radio fullWidth label={'2'} value={2} primary />
-          <Radio fullWidth label={'3'} value={3} secondary/>
-          <Radio fullWidth label={'4'} value={4} />
-          <Radio fullWidth label={'5'} value={5} />
-        </RadioGroup>
+        <div style={{ width: 240 }}>
+          <RadioGroup value={1}>
+            <Radio fullWidth label={'1'} value={1} disabled/>
+            <Radio fullWidth label={'2'} value={2} primary />
+            <Radio fullWidth label={'3'} value={3} secondary/>
+            <Radio fullWidth label={'4'} value={4} />
+            <Radio fullWidth label={'5'} value={5} />
+          </RadioGroup>
+        </div>
+        <Toggle label={'1'}/>
+        <Toggle label={'1'} primary checked disabled/>
+        <Toggle left label={'1'} secondary/>
+        <Toggle label={'1'} disabled/>
+        <Toggle label={'1'} disabled checked/>
 
-        <Toggle />
-        <Toggle primary checked disabled/>
-        <Toggle secondary/>
-        <Toggle disabled/>
-        <Toggle disabled checked/>
 
-
-        <Checkbox />
-        <Checkbox primary checked disabled/>
-        <Checkbox secondary/>
-        <Checkbox disabled/>
-        <Checkbox disabled checked/>
+        <Checkbox label={'Test'} />
+        <Checkbox label={'Test'} primary checked disabled/>
+        <Checkbox label={'Test'} secondary/>
+        <Checkbox label={'Test'} disabled/>
+        <Checkbox label={'Test'} disabled checked/>
 
         <ActionAccountBox hoverColor='red'/>
         <br />

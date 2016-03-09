@@ -1,56 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Toggle from './Toggle';
-import Ink from './Ink';
 import { Units, Colors } from './Styles';
-
-const checkStyles = oxygenCss({
-  root: {
-    width: 20,
-    height: 20,
-    position: 'relative',
-    cursor: 'pointer',
-    margin: Units.phone.gutter.mini,
-    outline: 'none',
-    borderRadius: 2,
-    borderStyle: 'solid',
-    borderWidth: 2,
-    borderColor: Colors.material.grey[500].hex,
-    transition: 'border-color .25s, background-color .25s',
-    display: 'inline-block',
-    overflow: 'visible',
-    boxSizing: 'border-box',
-    '&active': {
-      boxShadow: '0 0 10px rgba(255 , 255, 0, 1)',
-    },
-    '&checked': {
-      background: Colors.material.teal[500].hex,
-      borderColor: Colors.material.teal[500].hex,
-      ' check': {
-        opacity: 1,
-        transform: 'translate(-4px, -4px) scale(1) rotate(45deg) '
-      }
-    },
-    '&disabled': {
-      cursor: 'default',
-      opacity: 0.25
-    }
-  },
-  check: {
-    display: 'block',
-    position: 'absolute',
-    transition: 'opacity .25s, transform .25s',
-    top: 0,
-    left: 7,
-    width: 7,
-    height: 15,
-    border: '3px solid #fff',
-    borderRadius: 2,
-    borderTop: 'none',
-    borderLeft: 'none',
-    opacity: 0,
-  }
-});
 
 class Checkbox extends Toggle {
   getStyles() {
@@ -73,14 +24,13 @@ class Checkbox extends Toggle {
   }
 
   render() {
-    const { disabled } = this.props;
+    const { disabled, left, fullWidth, label } = this.props;
     const { checked, active } = this.state;
     let tabIndex = null;
 
-    const rootClasses = classNames(checkStyles.root, {
+    const toggleClasses = classNames(checkStyles.border, {
       [checkStyles.checked]: checked,
-      [checkStyles.active]: active,
-      [checkStyles.disabled]: disabled
+      [checkStyles.active]: active
     });
 
 
@@ -90,19 +40,99 @@ class Checkbox extends Toggle {
 
     return (
       <div
-        style={this.getStyles()}
-        disabled={disabled}
-        className={rootClasses}
-        tabIndex={tabIndex}
+        className={classNames(checkStyles.root, {
+          [checkStyles.left]: left,
+          [checkStyles.fullWidth]: fullWidth,
+          [checkStyles.disabled]: disabled
+        })}
         onTouchTap={this.handleTouchTap.bind(this)}
         onKeyPress={this.handleKeyPress.bind(this)}
         onFocus={this.handleFocus.bind(this)}
         onBlur={this.handleBlur.bind(this)}
+        disabled={disabled}
+        tabIndex={tabIndex}
       >
-        <span className={checkStyles.check}/>
+        {left ? label : null}
+        <div
+          style={this.getStyles()}
+          className={toggleClasses}
+        >
+          <span className={checkStyles.check}/>
+        </div>
+        {!left ? label : null}
       </div>
     );
   }
 }
 
 export default Checkbox;
+
+const checkStyles = oxygenCss({
+  root: {
+    userSelect: 'none',
+    padding: Units.phone.gutter.mini / 4,
+    outline: 'none',
+    cursor: 'pointer',
+    position: 'relative',
+    '&fullWidth': {
+      display: 'block'
+    },
+    '&left': {
+      textAlign: 'right'
+    },
+    '&disabled': {
+      cursor: 'default',
+      border: {
+        opacity: 0.25
+      }
+    }
+  },
+  left: {
+    border: {
+      marginLeft: Units.phone.gutter.mini,
+      marginRight: 0,
+    },
+  },
+  border: {
+    width: 20,
+    height: 20,
+    marginRight: Units.phone.gutter.mini,
+    position: 'relative',
+    outline: 'none',
+    borderRadius: 2,
+    borderStyle: 'solid',
+    borderWidth: 2,
+    borderColor: Colors.material.grey[500].hex,
+    transition: 'border-color .25s, background-color .25s',
+    verticalAlign: 'middle',
+    display: 'inline-block',
+    overflow: 'visible',
+    boxSizing: 'border-box',
+    '&active': {
+      boxShadow: '0 0 10px rgba(255 , 255, 0, 1)',
+    },
+    '&checked': {
+      background: Colors.material.teal[500].hex,
+      borderColor: Colors.material.teal[500].hex,
+      ' check': {
+        opacity: 1,
+        transform: 'translate(-4px, -4px) scale(1) rotate(45deg) '
+      }
+    },
+  },
+  check: {
+    display: 'block',
+    position: 'absolute',
+    transition: 'opacity .25s, transform .25s',
+    top: 0,
+    left: 7,
+    width: 7,
+    height: 15,
+    border: '3px solid #fff',
+    borderRadius: 2,
+    borderTop: 'none',
+    borderLeft: 'none',
+    opacity: 0,
+    marginRight: Units.phone.gutter.mini,
+  }
+});
