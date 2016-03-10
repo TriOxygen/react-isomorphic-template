@@ -3,7 +3,6 @@ import Units from './Units';
 import Typography from './Typography';
 
 class Theme {
-  main = 'light';
 
   constructor(primary, secondary, tertiary, main = 'light') {
     this.setTheme(primary, secondary, tertiary, main);
@@ -41,7 +40,6 @@ class Theme {
     this.button = Colors.button[main];
     this.units = Units.phone;
     this.typography = Typography;
-
   }
 }
 

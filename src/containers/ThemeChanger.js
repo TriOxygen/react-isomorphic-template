@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Scrollable from 'components/Scrollable';
-import { Layout, Toolbar, RaisedButton } from 'oxygen-md';
+import { Layout, Toolbar, Paper, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -114,6 +114,12 @@ class ThemeChanger extends Component {
     this.props.changeTheme(primary, secondary, tertiary, main);
   }
 
+  setShading(shading) {
+    const { primary, secondary, tertiary } = this.props.theme;
+    this.props.changeTheme(primary, secondary, tertiary, shading);
+
+  }
+
   setLocale(locale, defaultCurrency) {
     this.props.setLocale(locale, defaultCurrency);
   }
@@ -134,9 +140,10 @@ class ThemeChanger extends Component {
           {_l`Hello ${name}, ${amount}:c(EUR) moneyz on ${date}:d`}
           <RaisedButton label={_l`Swedish`} onTouchTap={this.setLocale.bind(this, 'sv-SE', 'SEK')}/>
           <RaisedButton label={_l`English`} onTouchTap={this.setLocale.bind(this, 'en-US', 'EUR')} />
-          <div className={css.testContainer}>
-            <MaterialTest />
-          </div>
+
+          <RaisedButton label={`Dark`} onTouchTap={this.setShading.bind(this, 'dark')}/>
+          <RaisedButton label={`Light`} onTouchTap={this.setShading.bind(this, 'light')}/>
+          <MaterialTest />
         </Scrollable>
       </Layout>
     );

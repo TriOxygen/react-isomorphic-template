@@ -3,6 +3,7 @@ import { mergeStyles, Units } from '../Styles';
 import Ink from '../Ink';
 import View from '../View';
 import classNames from 'classnames';
+import Divider from '../Divider';
 
 const styles = oxygenCss({
   listItem: {
@@ -24,6 +25,9 @@ const styles = oxygenCss({
     padding: `0 ${Units.phone.list.item.padding}px`,
     lineHeight: `${Units.phone.list.item.height}px`,
     height: `${Units.phone.list.item.height}px`,
+    borderStyle: 'none none solid none',
+    borderWidth: 1,
+    borderColor: 'transparent',
     '@desktop': {
       lineHeight: `${Units.desktop.list.item.height}px`,
       height: `${Units.desktop.list.item.height}px`,
@@ -48,6 +52,7 @@ class ListItem extends Component {
     style: PropTypes.object,
     dense: PropTypes.bool,
     active: PropTypes.bool,
+    divider: PropTypes.bool,
     icon: PropTypes.node,
     children: PropTypes.node
   };
@@ -63,11 +68,14 @@ class ListItem extends Component {
   getStyle() {
     const theme = this.props.theme || this.context.theme;
     const { hover } = this.state;
-    const { active, style } = this.props;
+    const { divider, active, style } = this.props;
     return mergeStyles(
       hover ? {
         backgroundColor: theme.primary3,
         color: theme.primary3Text
+      } : null,
+      divider ? {
+        borderColor: theme.text.divider,
       } : null,
       active ? {
         backgroundColor: theme.primary2,
@@ -96,9 +104,9 @@ class ListItem extends Component {
     });
     return (
       <div onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyle()} className={rootClasses} {...other}>
-        <Ink />
         <View className={styles.listItem}>
           {iconElement}
+          <Ink />
           {children}
         </View>
       </div>

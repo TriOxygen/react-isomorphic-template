@@ -71,9 +71,9 @@ class FloatingActionButton extends Component {
       };
     } else if (primary) {
       specStyles = {
-        backgroundColor: theme.primary.A200.hex,
+        backgroundColor: theme.primary[500].hex,
         boxShadow: Shadow[2],
-        color: theme.primary.A200.text.default,
+        color: theme.primary[500].text.default,
 
         ':hover': {
           backgroundColor: theme.primary[600].hex,
@@ -88,8 +88,8 @@ class FloatingActionButton extends Component {
       };
     } else if (secondary) {
       specStyles = {
-        backgroundColor: theme.secondary.A200.hex,
-        color: theme.secondary.A200.text.default,
+        backgroundColor: theme.secondary[500].hex,
+        color: theme.secondary[500].text.default,
         boxShadow: Shadow[2],
         ':hover': {
           backgroundColor: theme.secondary[600].hex,

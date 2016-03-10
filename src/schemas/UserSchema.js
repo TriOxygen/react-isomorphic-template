@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+const { ObjectId } = Schema;
 
 const User = new Schema({
   id: ObjectId,

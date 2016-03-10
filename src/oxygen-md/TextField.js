@@ -92,6 +92,8 @@ class TextField extends Component {
     type: PropTypes.string,
     fullWidth: PropTypes.bool,
     floatingLabelText: PropTypes.string,
+    value: PropTypes.string,
+    defaultValue: PropTypes.string,
     placeholder: PropTypes.string
   };
 
@@ -101,7 +103,24 @@ class TextField extends Component {
 
   state = {
     focused: false,
-    hasValue: false
+    value: this.props.value,
+    defaultValue: this.props.defaultValue
+  };
+
+  handleBlur = () => {
+    this.setState({ focused: false });
+  };
+
+  handleFocus = () => {
+    this.setState({ focused: true });
+  };
+
+  handleChange = (event) => {
+    this.setState({ value: event.target.value });
+  };
+
+  focus = () => {
+    this.refs.input.focus();
   };
 
   // getInputStyle() {
@@ -150,11 +169,11 @@ class TextField extends Component {
 
   getPlaceholderStyle() {
     const theme = this.props.theme || this.context.theme;
-    const { focused } = this.state;
     return Object.assign({}, {
       color: theme.text.disabled
     });
   }
+
   getUnderlineStyle(active = false) {
     const theme = this.props.theme || this.context.theme;
     const { focused } = this.state;
@@ -164,31 +183,24 @@ class TextField extends Component {
     });
   }
 
-  handleBlur() {
-    this.setState({ focused: false });
+  componentWillReceiveProps(nextProps) {
+    const { value, defaultValue } = nextProps;
+    this.setState({ value, defaultValue });
   }
 
-  handleFocus() {
-    this.setState({ focused: true });
-  }
-
-  handleChange(event) {
-    this.setState({ hasValue: !!event.target.value });
-  }
-
-  focus() {
-    this.refs.input.focus();
+  getValue() {
+    return this.refs.input.value;
   }
 
   render() {
-    const { type, placeholder, floatingLabelText } = this.props;
-    const { focused, hasValue } = this.state;
+    const { type, placeholder, floatingLabelText, ...other } = this.props;
+    const { focused, value } = this.state;
     let placeholderText;
     let floatingLabelEl;
     if (floatingLabelText) {
-      placeholderText = focused && !hasValue ? placeholder : null;
+      placeholderText = focused && !value ? placeholder : null;
     } else {
-      placeholderText = !hasValue ? placeholder : null;
+      placeholderText = !value ? placeholder : null;
     }
     const inputClasses = classNames(inputStyles.root, {
       [inputStyles.hasFloatingLabel]: floatingLabelText,
@@ -205,15 +217,15 @@ class TextField extends Component {
 
     if (floatingLabelText) {
       const labelClasses = classNames(labelStyles.root, {
-        [labelStyles.focus]: focused || hasValue
+        [labelStyles.focus]: focused || value
       });
-      floatingLabelEl = <label className={labelClasses} onTouchTap={this.focus.bind(this)}>{floatingLabelText}</label>;
+      floatingLabelEl = <label className={labelClasses} onTouchTap={this.focus}>{floatingLabelText}</label>;
     }
     return (
       <div className={rootClasses}>
         <div className={placeHolderClasses} style={this.getPlaceholderStyle()}>{placeholderText}</div>
         {floatingLabelEl}
-        <input ref="input" className={inputClasses} type={type} onChange={this.handleChange.bind(this)} onBlur={this.handleBlur.bind(this)} onFocus={this.handleFocus.bind(this)}/>
+        <input ref="input" className={inputClasses} type={type} onChange={this.handleChange} onBlur={this.handleBlur} onFocus={this.handleFocus} {...other} value={value}/>
         <hr className={underlineStyles.root} style={this.getUnderlineStyle()}/>
         <hr className={underlineClasses} style={this.getUnderlineStyle(true)}/>
       </div>

@@ -64,7 +64,7 @@ class TransitionTest extends Component {
     return (
       <Layout>
         <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
-          <RaisedButton onClick={this.addItem.bind(this)} fullWidth label={'Add'} />
+          <RaisedButton onTouchTap={this.addItem.bind(this)} fullWidth label={'Add'} />
         </Toolbar>
         <Scrollable className={css.content} >
           <List>
@@ -90,11 +90,11 @@ class TransitionTest extends Component {
           >
             {
               courses.map(course =>
-                <ListItem key={course._id}>
+                <ListItem divider key={course._id}>
                   <View grow={1}>{course.name}</View>
                   <View grow={0}>
-                    <RaisedButton secondary onClick={this.edit.bind(this, course)} label='Edit' />
-                    <RaisedButton primary onClick={this.delete.bind(this, course)} label='Del' />
+                    <RaisedButton secondary onTouchTap={this.edit.bind(this, course)} label='Edit' />
+                    <RaisedButton primary onTouchTap={this.delete.bind(this, course)} label='Del' />
                   </View>
                 </ListItem>
               )

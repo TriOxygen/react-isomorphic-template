@@ -47,7 +47,7 @@ const menu = {
 };
 
 const list = {
-  padding: 16,
+  padding: 8,
   margin: 16,
   item: {
     padding: 16,
@@ -108,4 +108,4 @@ export default {
   phone,
   tablet,
   desktop
-};
+}

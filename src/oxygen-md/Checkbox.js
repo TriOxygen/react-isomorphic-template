@@ -96,8 +96,8 @@ const checkStyles = oxygenCss({
   border: {
     width: 20,
     height: 20,
-    marginRight: Units.phone.gutter.mini,
-    position: 'relative',
+    margin: `${Units.phone.gutter.mini / 2}px  ${Units.phone.gutter.mini}px ${Units.phone.gutter.mini /2}px ${Units.phone.gutter.mini}px`,     margin: `${Units.phone.gutter.mini / 2}px  ${Units.phone.gutter.mini}px ${Units.phone.gutter.mini /2}px ${Units.phone.gutter.mini}px`,
+position: 'relative',
     outline: 'none',
     borderRadius: 2,
     borderStyle: 'solid',

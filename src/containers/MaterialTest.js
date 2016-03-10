@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Radio, RadioGroup, Checkbox, IconButton, Toggle, TextField, Menu, MenuDivider, MenuItem, List, ListDivider, ListItem, RaisedButton, FlatButton, FloatingActionButton, ButtonContainer, Styles } from 'oxygen-md';
+import { Radio, RadioGroup, Checkbox, IconButton, Toggle, TextField, Menu, MenuItem, List, Paper, ListItem, RaisedButton, FlatButton, FloatingActionButton, ButtonContainer, Styles } from 'oxygen-md';
 
 import ContentClear from 'oxygen-md-svg-icons/lib/SvgIcons/ContentClear';
 import ActionAccessibility from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccessibility';
@@ -115,22 +115,18 @@ class MaterialTest extends Component {
           <FloatingActionButton disabled secondary>A</FloatingActionButton>
         </ButtonContainer>
         <List>
-          <ListItem dense icon={<ContentClear/>}>Test</ListItem>
-          <ListItem dense icon={<ActionAccessibility/>}>Test</ListItem>
-          <ListDivider />
-          <ListItem active dense icon={<ActionAccountBalance/>}>Test</ListItem>
-          <ListItem dense icon={<ActionAccountBalanceWallet/>}>Test</ListItem>
-          <ListDivider />
-          <ListItem dense icon={<ActionAccountBox/>}>Test</ListItem>
-          <ListItem dense icon={<ActionAccountBox/>}>Test</ListItem>
+          <ListItem divider dense icon={<ContentClear/>}>Test</ListItem>
+          <ListItem divider dense icon={<ActionAccessibility/>}>Test</ListItem>
+          <ListItem divider dense icon={<ActionAccountBalance/>}>Test</ListItem>
+          <ListItem divider dense icon={<ActionAccountBalanceWallet/>}>Test</ListItem>
+          <ListItem divider dense icon={<ActionAccountBox/>}>Test</ListItem>
+          <ListItem divider dense icon={<ActionAccountBox/>}>Test</ListItem>
         </List>
         <Menu>
           <MenuItem icon={<ContentClear/>} dense>Test</MenuItem>
           <MenuItem active icon={<ActionAccessibility/>} dense>Test</MenuItem>
-          <MenuDivider />
           <MenuItem icon={<ActionAccountBalance/>} dense>Test</MenuItem>
-          <MenuItem icon={<ActionAccountBalanceWallet/>} dense>Test</MenuItem>
-          <MenuDivider />
+          <MenuItem divider icon={<ActionAccountBalanceWallet/>} dense>Test</MenuItem>
           <MenuItem icon={<ActionAccountBox/>} dense>Test</MenuItem>
           <MenuItem icon={<ActionAccountBox/>} dense>Test</MenuItem>
         </Menu>

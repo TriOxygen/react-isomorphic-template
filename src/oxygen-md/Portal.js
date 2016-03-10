@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import CSSPropertyOperations from 'react/lib/CSSPropertyOperations';
 import shallowEquals from 'shallow-equals';
-import ReactDOM, {unmountComponentAtNode} from 'react-dom';
+import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 export default class Portal extends Component {
   static displayName = 'Portal';

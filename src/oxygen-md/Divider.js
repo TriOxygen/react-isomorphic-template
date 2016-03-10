@@ -8,8 +8,7 @@ const styles = oxygenCss({
   }
 })
 
-class MenuDivider extends Component {
-  static displayName = 'MenuDivider';
+class Divider extends Component {
 
   static propTypes = {
     theme: PropTypes.object,
@@ -33,4 +32,4 @@ class MenuDivider extends Component {
   }
 }
 
-export default MenuDivider;
+export default Divider;

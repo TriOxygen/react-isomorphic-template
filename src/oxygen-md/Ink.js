@@ -20,7 +20,6 @@ const styles = oxygenCss({
 });
 
 class Ink extends Component {
-  static displayName = 'Ink';
 
   static propTypes = {
     background: PropTypes.bool,
@@ -112,14 +111,16 @@ class Ink extends Component {
       });
     });
   }
-
   touchEvents() {
     if (this.props.hasTouch) {
       return {
         onTouchStart: this._onPress.bind(this),
         onTouchEnd: this._onRelease.bind(this),
         onTouchCancel: this._onRelease.bind(this),
-        onTouchLeave: this._onRelease.bind(this)
+        onTouchLeave: this._onRelease.bind(this),
+        onMouseDown: this._onPress.bind(this),
+        onMouseUp: this._onRelease.bind(this),
+        onMouseLeave: this._onRelease.bind(this)
       };
     }
     return {

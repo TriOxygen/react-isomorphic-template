@@ -17,6 +17,9 @@ const styles = oxygenCss({
     overflow: 'hidden',
     cursor: 'pointer',
     boxSizing: 'border-box',
+    borderStyle: 'none none solid none',
+    borderWidth: 1,
+    borderColor: 'transparent',
     padding: `0 ${Units.phone.menu.item.padding}px`,
     lineHeight: `${Units.phone.menu.item.height}px`,
     height: `${Units.phone.menu.item.height}px`,
@@ -37,13 +40,13 @@ const styles = oxygenCss({
 });
 
 class MenuItem extends Component {
-  static displayName = 'MenuItem';
 
   static propTypes = {
     theme: PropTypes.object,
     dense: PropTypes.bool,
     active: PropTypes.bool,
     icon: PropTypes.node,
+    divider: PropTypes.bool,
     children: PropTypes.node
   };
 
@@ -58,11 +61,14 @@ class MenuItem extends Component {
   getStyle() {
     const theme = this.props.theme || this.context.theme;
     const { hover } = this.state;
-    const { active } = this.props;
+    const { active, divider } = this.props;
     return mergeStyles(
       hover ? {
         backgroundColor: theme.primary3,
         color: theme.primary3Text
+      } : null,
+      divider ? {
+        borderColor: theme.text.divider,
       } : null,
       active ? {
         backgroundColor: theme.primary2,
@@ -79,13 +85,13 @@ class MenuItem extends Component {
     });
   }
 
-  handleMouseEnter() {
+  handleMouseEnter = () => {
     this.setState({ hover: true });
-  }
+  };
 
-  handleMouseLeave() {
+  handleMouseLeave = () => {
     this.setState({ hover: false });
-  }
+  };
 
   render() {
     const { children, icon, dense } = this.props;
@@ -97,9 +103,9 @@ class MenuItem extends Component {
       [styles.dense]: dense,
     });
     return (
-      <div onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyle()} className={rootClasses}>
-        <Ink />
+      <div onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} style={this.getStyle()} className={rootClasses}>
         {iconElement}
+        <Ink />
         {children}
       </div>
     );

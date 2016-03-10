@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import todo from './Todo';
 import course from './Course';
+import user from './User';
 import { UnknownError } from 'Errors';
 
 export class NoSuchEndpointError extends UnknownError {
@@ -36,7 +37,7 @@ export default function api (app) {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  todo(router);
+  user(router);
   course(router);
 
   router.get('/', function(req, res) {

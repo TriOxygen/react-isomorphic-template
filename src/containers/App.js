@@ -4,7 +4,7 @@ import { setLocale } from 'lib/I18n';
 
 const appStyles = oxygenCss({
   root: {
-    height: '100%'
+    height: '100%',
   }
 })
 
@@ -48,9 +48,17 @@ class App extends React.Component {
     }
   }
 
+  getStyle() {
+    const theme = this.theme;
+    return {
+      backgroundColor: theme.theme.card.hex,
+      color: theme.text.default,
+    };
+  }
+
   render() {
     return (
-      <div className={appStyles.root}>
+      <div className={appStyles.root} style={this.getStyle()}>
         {this.props.children}
       </div>
     );

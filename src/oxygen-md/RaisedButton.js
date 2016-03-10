@@ -108,10 +108,11 @@ class RaisedButton extends Component {
       disabled,
       style: this.getButtonStyles(theme),
       ...other,
+      tabIndex: 0,
       onKeyPress: this.handleKeyPress,
       onTouchTap: this.handleTouchTap,
     };
-    const containerElement = link ? (disabled ? 'span' : 'a') : 'button';
+    const containerElement = link ? (disabled ? 'span' : 'a') : 'div';
     return React.createElement(containerElement, props, ink, children, label);
   }
 }
@@ -143,6 +144,7 @@ const styles = oxygenCss({
     fontSize: `${Units.phone.button.fontSize}px`,
     minWidth: Units.phone.button.width,
     margin: `auto ${Units.phone.gutter.mini}px`,
+    boxSizing: 'border-box',
     ':hover': {
       boxShadow: Shadow[2],
       textDecoration: 'none',
@@ -169,7 +171,6 @@ const styles = oxygenCss({
     },
     '&fullWidth': {
       display: 'block',
-      width: '100%'
     }
   }
 });

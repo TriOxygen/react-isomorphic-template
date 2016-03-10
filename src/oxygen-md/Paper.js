@@ -42,7 +42,8 @@ class Paper extends Component {
     const theme = this.props.theme || this.context.theme;
     const { zDepth, transparent } = this.props;
     return transparent ? null : {
-      backgroundColor: theme.theme.card.material,
+      backgroundColor: theme.theme.card.hex,
+      color: theme.text.default,
       boxShadow: Shadow[zDepth]
     };
   }
