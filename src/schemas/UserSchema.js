@@ -11,6 +11,7 @@ const User = new Schema({
   password: String,
   loginAttempts: Number,
   lastLogin: { type: Date, default: Date.now },
+  lastUpdate: { type: Date, default: Date.now },
   active: Boolean,
   locked: Boolean
 });

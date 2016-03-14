@@ -6,7 +6,7 @@ import { Portal, View, Paper, Layout, Toolbar, TextField, RaisedButton } from 'o
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
 
-import {List, ListItem} from 'oxygen-md';
+import { List, ListItem } from 'oxygen-md';
 
 import * as userActions from 'reducers/UserReducer';
 import { bindActionCreators } from 'redux';
@@ -22,7 +22,8 @@ addMessages({
     'Add': 'Add',
     'Clear': 'Clear',
     'Save': 'Save',
-    'Portal': 'Portal'
+    'Portal': 'Portal',
+    'Password': 'Password',
   },
 });
 
@@ -47,6 +48,10 @@ class TransitionTest extends Component {
     portal: false
   };
 
+  static propTypes = {
+    dispatch: PropTypes.func,
+  };
+
   static needs = [
     userActions.getUsers
   ];
@@ -66,7 +71,8 @@ class TransitionTest extends Component {
         first: this.refs.first.getValue(),
         last: this.refs.last.getValue(),
       },
-      email: this.refs.email.getValue()
+      email: this.refs.email.getValue(),
+      password: this.refs.password.getValue(),
     });
   };
 
@@ -81,7 +87,7 @@ class TransitionTest extends Component {
     } else {
       this.addUser();
     }
-    this.setState({ edit : null});
+    this.setState({ edit: null});
   };
 
   edit(user) {
@@ -96,7 +102,8 @@ class TransitionTest extends Component {
         first: this.refs.first.getValue(),
         last: this.refs.last.getValue(),
       },
-      email: this.refs.email.getValue()
+      email: this.refs.email.getValue(),
+      password: this.refs.password.getValue(),
     });
   }
 
@@ -116,13 +123,13 @@ class TransitionTest extends Component {
     const label = edit ? _l`Save` : _l`Add`;
     return (
       <Layout>
-        <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
-        </Toolbar>
+        <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>} />
         <Scrollable className={css.content} >
           <Paper padded spaced>
             <TextField ref="first" value={edit && name.first} floatingLabelText={_l`First name`}/>
             <TextField ref="last" value={edit && name.last} floatingLabelText={_l`Last name`}/>
             <TextField ref="email" value={edit && email} floatingLabelText={_l`E-mail`}/>
+            <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
             <View row>
               <View grow={1} column>
                 <RaisedButton onTouchTap={this.save} fullWidth primary label={label}/>

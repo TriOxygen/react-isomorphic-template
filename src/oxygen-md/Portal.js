@@ -6,22 +6,21 @@ import classNames from 'classnames';
 export default class Portal extends Component {
 
   static propTypes = {
+    className: PropTypes.string,
     children: PropTypes.node,
     style: PropTypes.object,
     dialog: PropTypes.bool,
     tooltip: PropTypes.bool,
-    className: PropTypes.string
   };
 
   componentWillMount() {
     const { style, className, dialog, tooltip } = this.props;
-    const classes = classNames(className, {
-      [css.dialog]: dialog,
-      [css.tooltip]: tooltip
-    })
     this.node = document.createElement('div');
-    if (classes) {
-      this.node.className = classes;
+    if (className) {
+      this.node.className = classNames(className, {
+        [css.dialog]: dialog,
+        [css.tooltip]: tooltip
+      });
     }
     CSSPropertyOperations.setValueForStyles(this.node, style);
     document.body.appendChild(this.node);
@@ -61,4 +60,4 @@ const css = oxygenCss({
   tooltip: {
     zIndex: 101
   }
-})
+});

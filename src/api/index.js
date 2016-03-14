@@ -18,8 +18,8 @@ export function makeMiddleware() {
   const apiFunc = middlewares.pop();
   return wrap(async function (req, res, next) {
     try {
-      middlewares.forEach(middleware => middleware(req.body, req.params));
-      const data = await apiFunc(req.body, req.params);
+      middlewares.forEach(middleware => middleware(req.body, req.params, req.session.user));
+      const data = await apiFunc(req.body, req.params, req.session.user);
       if (data) {
         res.data = data;
         next();
@@ -36,6 +36,14 @@ export default function api (app) {
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+
+  app.use(function (req, res, next) {
+    const { session } = req;
+    session.user = session.user || {
+      name: 'Oz'
+    };
+    next();
+  });
 
   user(router);
   course(router);
