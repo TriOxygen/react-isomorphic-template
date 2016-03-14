@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Transition from 'react-motion-ui-pack';
 import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
-import { View, Paper, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
+import { Portal, View, Paper, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
 
@@ -21,7 +21,8 @@ addMessages({
     'E-mail': 'E-mail',
     'Add': 'Add',
     'Clear': 'Clear',
-    'Save': 'Save'
+    'Save': 'Save',
+    'Portal': 'Portal'
   },
 });
 
@@ -42,7 +43,8 @@ const css = oxygenCss({
 
 class TransitionTest extends Component {
   state = {
-    edit: null
+    edit: null,
+    portal: false
   };
 
   static needs = [
@@ -102,9 +104,13 @@ class TransitionTest extends Component {
     this.setState({ edit: null });
   };
 
+  portal = () => {
+    this.setState({ portal: !this.state.portal });
+  };
+
   render() {
     const { users } = this.props;
-    const { edit } = this.state;
+    const { edit, portal } = this.state;
     const { name, email } = edit || {};
 
     const label = edit ? _l`Save` : _l`Add`;
@@ -126,6 +132,7 @@ class TransitionTest extends Component {
               </View>
             </View>
           </Paper>
+          <RaisedButton onTouchTap={this.portal} fullWidth label={_l`Portal`} />
           <List>
           <Transition
             className={css.container}
@@ -161,6 +168,11 @@ class TransitionTest extends Component {
           </Transition>
           </List>
         </Scrollable>
+        {portal ? <Portal tooltip>
+          <p>
+            Hiiiii
+          </p>
+        </Portal> : null}
       </Layout>
     );
   }

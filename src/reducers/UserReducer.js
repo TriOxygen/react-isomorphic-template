@@ -15,17 +15,20 @@ export default createStore([], {
   },
   [UPDATE_USER]: (state, action) => {
     const updatedUser = action.data.data;
-    return state.map((todo) => {
-      if (todo._id === updatedUser._id) {
-        return updatedUser;
+    return state.map((user) => {
+      if (user._id === updatedUser._id) {
+        return {
+          ...user,
+          ...updatedUser
+        };
       }
-      return todo;
+      return user;
     })
   },
   [DELETE_USER]: (state, action) => {
     const deletedUser = action.data.data;
-    return state.filter(todo => {
-      return todo._id !== deletedUser._id;
+    return state.filter(user => {
+      return user._id !== deletedUser._id;
     });
   }
 })

@@ -19,7 +19,7 @@ export Layout from './Layout';
 export View from './View';
 export Paper from './Paper';
 export Divider from './Divider';
-// export Portal from './Portal';
+export Portal from './Portal';
 export TextField from './TextField';
 // export CircularProgress from './CircularProgress';
 
