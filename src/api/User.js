@@ -1,10 +1,11 @@
 import getModel from 'schemas';
-import { NotFoundError } from 'Errors';
+import { AccessDeniedError, NotFoundError } from 'Errors';
 import { makeMiddleware } from 'api';
+import bcrypt from 'bcrypt';
+
 const User = getModel('User');
 
 const apiCall = makeMiddleware;
-
 
 export default router => {
   router.route('/users')
@@ -19,6 +20,9 @@ export default router => {
 
 async function newUser(body, params) {
   const user = new User(body);
+
+  user.password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(10));
+
   return await user.save();
 }
 
@@ -34,11 +38,20 @@ async function getUser(body, params) {
   return user;
 }
 
-async function updateUser(body, params) {
-  const user = await User.findByIdAndUpdate(params.userId, body, { new: true });
+async function updateUser(body, params, loggedInUser) {
+  const user = await User.findById(params.userId);
   if (!user) {
     throw new NotFoundError();
   }
+  if (!bcrypt.compareSync(body.password, user.password)) {
+    throw new AccessDeniedError();
+  }
+  delete body.password;
+  user.lastUpdate = Date.now();
+  Object.keys(body).forEach(field => {
+    user[field] = body[field];
+  });
+  await user.save();
   return user;
 }
 
