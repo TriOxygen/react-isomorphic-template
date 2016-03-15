@@ -183,6 +183,14 @@ class TextField extends Component {
     });
   }
 
+  getLabelStyle() {
+    const theme = this.props.theme || this.context.theme;
+    const { focused, value } = this.state;
+    return Object.assign({
+      color: ( focused && !value) ? theme.primary1 : theme.text.disabled,
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
     const { value, defaultValue } = nextProps;
     this.setState({ value, defaultValue });
@@ -219,7 +227,7 @@ class TextField extends Component {
       const labelClasses = classNames(labelStyles.root, {
         [labelStyles.focus]: focused || value
       });
-      floatingLabelEl = <label className={labelClasses} onTouchTap={this.focus}>{floatingLabelText}</label>;
+      floatingLabelEl = <label className={labelClasses} style={this.getLabelStyle()} onTouchTap={this.focus}>{floatingLabelText}</label>;
     }
     return (
       <div className={rootClasses}>

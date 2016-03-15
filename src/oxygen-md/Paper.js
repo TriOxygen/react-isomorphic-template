@@ -26,6 +26,7 @@ class Paper extends Component {
     rounded: PropTypes.bool,
     children: PropTypes.node,
     style: PropTypes.object,
+    className: PropTypes.string,
     theme: PropTypes.object
   };
 
@@ -40,23 +41,24 @@ class Paper extends Component {
 
   getStyle() {
     const theme = this.props.theme || this.context.theme;
-    const { zDepth, transparent } = this.props;
-    return transparent ? null : {
-      backgroundColor: theme.theme.card.hex,
-      color: theme.text.default,
-      boxShadow: Shadow[zDepth]
-    };
+    const { zDepth, transparent, style } = this.props;
+    return Object.assign({},
+      transparent ? null : {
+        backgroundColor: theme.theme.card.hex,
+        color: theme.text.default,
+        boxShadow: Shadow[zDepth]
+      }, style);
   }
 
   render() {
-    const { children, spaced, padded, rounded } = this.props;
-    const classes = classNames(styles.root, {
+    const { children, spaced, padded, rounded, className, ...other } = this.props;
+    const classes = classNames(className, styles.root, {
       [styles.spaced]: spaced,
       [styles.padded]: padded,
       [styles.rounded]: rounded,
     })
     return (
-      <div className={classes} style={this.getStyle()}>
+      <div className={classes} style={this.getStyle()} {...other}>
         {children}
       </div>
     );

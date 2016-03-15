@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Transition from 'react-motion-ui-pack';
 import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
-import { Portal, View, Paper, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
+import { Dialog, DialogTitle, DialogContent, DialogActions, View, FlatButton, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
 
@@ -22,7 +22,8 @@ addMessages({
     'Add': 'Add',
     'Clear': 'Clear',
     'Save': 'Save',
-    'Portal': 'Portal',
+    'Dialog': 'Dialog',
+    'User': 'User',
     'Password': 'Password',
   },
 });
@@ -50,6 +51,10 @@ class TransitionTest extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
+    createUser: PropTypes.func,
+    deleteUser: PropTypes.func,
+    updateUser: PropTypes.func,
+    users: PropTypes.array
   };
 
   static needs = [
@@ -87,11 +92,11 @@ class TransitionTest extends Component {
     } else {
       this.addUser();
     }
-    this.setState({ edit: null});
+    this.setState({ edit: null });
   };
 
   edit(user) {
-    this.setState({ edit: user });
+    this.setState({ edit: user, portal: true });
   }
 
   updateUser() {
@@ -125,21 +130,9 @@ class TransitionTest extends Component {
       <Layout>
         <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>} />
         <Scrollable className={css.content} >
-          <Paper padded spaced>
-            <TextField ref="first" value={edit && name.first} floatingLabelText={_l`First name`}/>
-            <TextField ref="last" value={edit && name.last} floatingLabelText={_l`Last name`}/>
-            <TextField ref="email" value={edit && email} floatingLabelText={_l`E-mail`}/>
-            <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
-            <View row>
-              <View grow={1} column>
-                <RaisedButton onTouchTap={this.save} fullWidth primary label={label}/>
-              </View>
-              <View grow={1} column>
-                <RaisedButton onTouchTap={this.clear} fullWidth label={_l`Clear`}/>
-              </View>
-            </View>
-          </Paper>
-          <RaisedButton onTouchTap={this.portal} fullWidth label={_l`Portal`} />
+          <View row>
+            <View grow={1} column><RaisedButton onTouchTap={this.portal} fullWidth label={_l`Dialog`} /></View>
+          </View>
           <List>
           <Transition
             className={css.container}
@@ -175,11 +168,21 @@ class TransitionTest extends Component {
           </Transition>
           </List>
         </Scrollable>
-        {portal ? <Portal tooltip>
-          <p>
-            Hiiiii
-          </p>
-        </Portal> : null}
+        {portal ? <Dialog onRequestClose={this.portal}>
+          <div>
+            <DialogTitle>{_l`User`}</DialogTitle>
+            <DialogContent>
+              <TextField ref="first" value={edit && name.first} floatingLabelText={_l`First name`}/>
+              <TextField ref="last" value={edit && name.last} floatingLabelText={_l`Last name`}/>
+              <TextField ref="email" value={edit && email} floatingLabelText={_l`E-mail`}/>
+              <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
+            </DialogContent>
+            <DialogActions>
+              <FlatButton primary onTouchTap={this.save} label={label}/>
+              <FlatButton onTouchTap={this.clear} label={_l`Clear`}/>
+            </DialogActions>
+          </div>
+        </Dialog> : null}
       </Layout>
     );
   }

@@ -20,13 +20,23 @@ export View from './View';
 export Paper from './Paper';
 export Divider from './Divider';
 export Portal from './Portal';
+export Overlay from './Overlay';
+export Dialog from './Dialog/Dialog';
+export DialogTitle from './Dialog/DialogTitle';
+export DialogContent from './Dialog/DialogContent';
+export DialogActions from './Dialog/DialogActions';
+// export Dialog from './Dialog/Dialog';
+// export Dialog from './Dialog/Dialog';
 export TextField from './TextField';
 // export CircularProgress from './CircularProgress';
 
 import * as Menus from './Menus';
 import * as Lists from './Lists';
-const { Menu, MenuItem  } = Menus;
+const { Menu, MenuItem } = Menus;
 const { List, ListItem } = Lists;
+
+
+
 
 export * as Styles from './Styles';
 // export * as Utils from './Utils';
