@@ -5,6 +5,8 @@ import Overlay from '../Overlay';
 import Paper from '../Paper';
 import { Units } from '../Styles';
 
+const ESC = 27;
+
 export default class Dialog extends Component {
 
   static propTypes = {
@@ -14,6 +16,21 @@ export default class Dialog extends Component {
 
   handleTap = () => {
     if (this.props.onRequestClose) {
+      this.props.onRequestClose();
+    }
+  };
+
+  componentWillMount() {
+    document.addEventListener('keyup', this.handleKey);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keyup', this.handleKey);
+  }
+
+  handleKey = (event) => {
+    const { keyCode } = event;
+    if (keyCode === ESC && this.props.onRequestClose) {
       this.props.onRequestClose();
     }
   };
@@ -36,7 +53,7 @@ export default class Dialog extends Component {
             opacity: 0,
           }}
         >
-          <Overlay onTouchTap={this.handleTap} key="dialog">
+          <Overlay onTouchTap={this.handleTap} key="dialog" onKeyup={this.handleKey}>
             <Paper className={css.container} onTouchTap={this.stop}>
               {children}
             </Paper>

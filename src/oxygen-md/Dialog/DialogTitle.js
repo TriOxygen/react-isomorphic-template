@@ -20,7 +20,7 @@ export default class DialogTitle extends Component {
 
 const css = oxygenCss({
   title: {
-    padding: Units.phone.gutter.mini,
+    padding: Units.phone.gutter.default,
     fontSize: Typography.phone.title.fontSize,
     fontWeight: Typography.phone.title.fontWeight,
   },

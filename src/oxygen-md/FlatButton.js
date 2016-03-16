@@ -6,6 +6,9 @@ import classNames from 'classnames';
 
 const styles = oxygenCss({
   flatButton: {
+    '+flatButton': {
+      marginLeft: Units.phone.gutter.mini
+    },
     border: 'none',
     display: 'inline-block',
     fontWeight: 500,
@@ -24,7 +27,7 @@ const styles = oxygenCss({
     borderRadius: Units.phone.borderRadius,
     fontSize: `${Units.phone.button.fontSize}px`,
     position: 'relative',
-    margin: `0 ${Units.phone.gutter.mini}px`,
+    // margin: `0 ${Units.phone.gutter.mini}px`,
     minWidth: Units.phone.button.width,
     '@desktop': {
       margin: `0 ${Units.desktop.gutter.mini}px`,

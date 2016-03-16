@@ -24,7 +24,7 @@ export default class Portal extends Component {
     }
     CSSPropertyOperations.setValueForStyles(this.node, style);
     document.body.appendChild(this.node);
-    this.renderPortal();
+    this.renderPortal(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -43,8 +43,8 @@ export default class Portal extends Component {
     this.node = null;
   }
 
-  renderPortal() {
-    const { children } = this.props;
+  renderPortal(props) {
+    const { children } = props;
     ReactDOM.unstable_renderSubtreeIntoContainer(this, React.Children.only(children), this.node);
   }
 

@@ -20,6 +20,6 @@ export default class DialogContent extends Component {
 
 const css = oxygenCss({
   content: {
-    padding: Units.phone.gutter.mini,
+    padding: Units.phone.gutter.default,
   },
 });

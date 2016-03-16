@@ -1,25 +1,16 @@
 import React, { PropTypes, Component } from 'react';
-import { Units } from '../Styles';
-import classNames from 'classnames';
+import ButtonContainer from '../ButtonContainer';
 
 export default class DialogContent extends Component {
 
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
   };
 
   render() {
-    const { children, className, ...other } = this.props;
-    const classes = classNames(className, css.content);
+    const { children, ...other } = this.props;
     return (
-      <div className={classes} {...other}>{children}</div>
+      <ButtonContainer alignRight fullWidth {...other}>{children}</ButtonContainer>
     );
   }
 }
-
-const css = oxygenCss({
-  content: {
-    padding: Units.phone.gutter.mini,
-  },
-});

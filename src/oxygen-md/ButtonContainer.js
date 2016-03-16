@@ -2,20 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 import { Units } from './Styles';
 
-const styles = oxygenCss({
-  root: {
-    display: 'inline-block',
-    lineHeight: `${Units.phone.gutter.mini * 2 + Units.phone.button.height}px`,
-    '@desktop': {
-      lineHeight: `${Units.desktop.gutter.mini * 2 + Units.desktop.button.height}px`,
-    }
-    // padding: `${Units.gutter.mini}px 0`,
-  },
-  fullWidth: {
-    display: 'block'
-  },
-});
-
 class ButtonContainer extends Component {
 
   static displayName = 'ButtonContainer';
@@ -23,6 +9,8 @@ class ButtonContainer extends Component {
   static propTypes = {
     fullWidth: PropTypes.bool,
     children: PropTypes.node,
+    className: PropTypes.string,
+    alignRight: PropTypes.bool,
     theme: PropTypes.object
   };
 
@@ -35,12 +23,13 @@ class ButtonContainer extends Component {
   };
 
   render() {
-    const { children, fullWidth } = this.props;
-    const rootClasses = classNames(styles.root, {
+    const { children, alignRight, fullWidth, className, ...other } = this.props;
+    const rootClasses = classNames(styles.root, className, {
       [styles.fullWidth]: fullWidth,
+      [styles.alignRight]: alignRight
     });
     return (
-      <div className={rootClasses}>
+      <div className={rootClasses} {...other}>
         {children}
       </div>
     );
@@ -48,3 +37,20 @@ class ButtonContainer extends Component {
 }
 
 export default ButtonContainer;
+
+const styles = oxygenCss({
+  root: {
+    display: 'inline-block',
+    padding: `${(Units.phone.button.lineHeight - Units.phone.button.height) / 2}px`,
+    '@desktop': {
+      padding: `${(Units.desktop.button.lineHeight - Units.desktop.button.height) / 2}px`,
+    }
+    // padding: `${Units.gutter.mini}px 0`,
+  },
+  fullWidth: {
+    display: 'block'
+  },
+  alignRight: {
+    textAlign: 'right'
+  }
+});

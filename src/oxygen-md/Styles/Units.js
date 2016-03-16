@@ -4,6 +4,7 @@ const button = {
   height: 36,
   width: 64,
   fontSize: 14,
+  lineHeight: 48,
   dense: {
     height: 32,
     width: 64,
