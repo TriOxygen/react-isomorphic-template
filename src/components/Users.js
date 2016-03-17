@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import Transition from 'react-motion-ui-pack';
 import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
-import { Dialog, DialogTitle, DialogContent, DialogActions, View, FlatButton, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
+import { Drawer, Dialog, DialogTitle, DialogContent, DialogActions, View, FlatButton, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
 
@@ -24,6 +24,7 @@ addMessages({
     'Save': 'Save',
     'Dialog': 'Dialog',
     'User': 'User',
+    'Drawer': 'Drawer',
     'Password': 'Password',
   },
 });
@@ -46,7 +47,8 @@ const css = oxygenCss({
 class TransitionTest extends Component {
   state = {
     edit: null,
-    portal: false
+    portal: false,
+    drawer: false
   };
 
   static propTypes = {
@@ -120,9 +122,13 @@ class TransitionTest extends Component {
     this.setState({ portal: !this.state.portal });
   };
 
+  drawer = () => {
+    this.setState({ drawer: !this.state.drawer });
+  };
+
   render() {
     const { users } = this.props;
-    const { edit, portal } = this.state;
+    const { edit, portal, drawer } = this.state;
     const { name, email } = edit || {};
 
     const label = edit ? _l`Save` : _l`Add`;
@@ -132,6 +138,7 @@ class TransitionTest extends Component {
         <Scrollable className={css.content} >
           <View row>
             <View grow={1} column><RaisedButton onTouchTap={this.portal} fullWidth label={_l`Dialog`} /></View>
+            <View grow={1} column><RaisedButton onTouchTap={this.drawer} fullWidth label={_l`Drawer`} /></View>
           </View>
           <List>
           <Transition
@@ -168,6 +175,9 @@ class TransitionTest extends Component {
           </Transition>
           </List>
         </Scrollable>
+        {drawer ? <Drawer onRequestClose={this.drawer}>
+          test
+        </Drawer> : null}
         {portal ? <Dialog onRequestClose={this.portal}>
           <div>
             <DialogTitle>{_l`User`}</DialogTitle>

@@ -11,14 +11,16 @@ export default class Portal extends Component {
     style: PropTypes.object,
     dialog: PropTypes.bool,
     tooltip: PropTypes.bool,
+    menu: PropTypes.bool
   };
 
   componentWillMount() {
-    const { style, className, dialog, tooltip } = this.props;
+    const { style, className, menu, dialog, tooltip } = this.props;
     this.node = document.createElement('div');
     if (className) {
       this.node.className = classNames(className, {
         [css.dialog]: dialog,
+        [css.menu]: menu,
         [css.tooltip]: tooltip
       });
     }
@@ -54,6 +56,9 @@ export default class Portal extends Component {
 }
 
 const css = oxygenCss({
+  menu: {
+    zIndex: 99
+  },
   dialog: {
     zIndex: 100
   },

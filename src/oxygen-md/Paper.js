@@ -51,12 +51,13 @@ class Paper extends Component {
   }
 
   render() {
-    const { children, spaced, padded, rounded, className, ...other } = this.props;
+    const { children, spaced, padded, rounded, className, style, ...other } = this.props;
     const classes = classNames(className, styles.root, {
       [styles.spaced]: spaced,
       [styles.padded]: padded,
       [styles.rounded]: rounded,
-    })
+    });
+    console.log(this.getStyle());
     return (
       <div className={classes} style={this.getStyle()} {...other}>
         {children}

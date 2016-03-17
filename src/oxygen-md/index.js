@@ -30,6 +30,9 @@ export DialogActions from './Dialog/DialogActions';
 export TextField from './TextField';
 // export CircularProgress from './CircularProgress';
 
+export Drawer from './Drawer/Drawer';
+
+
 import * as Menus from './Menus';
 import * as Lists from './Lists';
 const { Menu, MenuItem } = Menus;
