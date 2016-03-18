@@ -57,7 +57,6 @@ class Paper extends Component {
       [styles.padded]: padded,
       [styles.rounded]: rounded,
     });
-    console.log(this.getStyle());
     return (
       <div className={classes} style={this.getStyle()} {...other}>
         {children}

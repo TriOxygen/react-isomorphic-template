@@ -47,7 +47,7 @@ export default class Portal extends Component {
 
   renderPortal(props) {
     const { children } = props;
-    ReactDOM.unstable_renderSubtreeIntoContainer(this, React.Children.only(children), this.node);
+    ReactDOM.unstable_renderSubtreeIntoContainer(this, <div>{children}</div>, this.node);
   }
 
   render() {

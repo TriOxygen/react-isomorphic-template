@@ -175,10 +175,10 @@ class TransitionTest extends Component {
           </Transition>
           </List>
         </Scrollable>
-        {drawer ? <Drawer onRequestClose={this.drawer}>
+        <Drawer onRequestClose={this.drawer} onRequestOpen={this.drawer} open={drawer}>
           test
-        </Drawer> : null}
-        {portal ? <Dialog onRequestClose={this.portal}>
+        </Drawer>
+        <Dialog onRequestClose={this.portal} onRequestOpen={this.portal} open={portal}>
           <div>
             <DialogTitle>{_l`User`}</DialogTitle>
             <DialogContent>
@@ -192,7 +192,7 @@ class TransitionTest extends Component {
               <FlatButton onTouchTap={this.clear} label={_l`Clear`}/>
             </DialogActions>
           </div>
-        </Dialog> : null}
+        </Dialog>
       </Layout>
     );
   }
