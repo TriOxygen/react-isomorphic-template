@@ -21,6 +21,8 @@ export Paper from './Paper';
 export Divider from './Divider';
 export Portal from './Portal';
 export Overlay from './Overlay';
+export Grid from './Grid/Grid';
+export GridCell from './Grid/GridCell';
 export Dialog from './Dialog/Dialog';
 export DialogTitle from './Dialog/DialogTitle';
 export DialogContent from './Dialog/DialogContent';

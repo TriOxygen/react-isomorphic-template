@@ -3,7 +3,6 @@ import Portal from '../Portal';
 import Overlay from '../Overlay';
 import Paper from '../Paper';
 import { Units } from '../Styles';
-import classNames from 'classnames';
 
 const ESC = 27;
 
@@ -51,8 +50,19 @@ export default class DialogContainer extends Component {
     const { children, top, y, opacity } = this.props;
     return (
       <Portal dialog>
-        <Overlay onTouchTap={this.handleTap} key="dialog" onKeyup={this.handleKey} style={{ top: `${top}%`, opacity }} />
-        <Paper className={css.container} onTouchTap={this.stop} style={{ opacity, transform: `translate3d(0, ${y * Units.phone.keylineIncrement * 2 / 100}px, 0)` }}>
+        <Overlay
+          onTouchTap={this.handleTap}
+          key="dialog" onKeyup={this.handleKey}
+          style={{ top: `${top}%`, opacity }}
+        />
+        <Paper
+          className={css.container}
+          onTouchTap={this.stop}
+          style={{
+            opacity,
+            transform: `translate3d(0, ${y * Units.phone.keylineIncrement * 2 / 100}px, 0)`
+          }}
+        >
           {children}
         </Paper>
       </Portal>
