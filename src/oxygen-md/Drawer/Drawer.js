@@ -12,7 +12,7 @@ export default class Drawer extends Component {
   };
 
   static defaultProps = {
-    open: false
+    open: false,
   };
 
   handleRequestOpen = () => {
@@ -30,13 +30,19 @@ export default class Drawer extends Component {
   };
 
   render() {
-    const { open, children } = this.props;
+    const { open, children, onRequestOpen, onRequestClose, ...other } = this.props;
 
     return (
-      <Motion style={{ left: spring(open ? 0 : -256, { stiffness: 300, damping: 25 }), top: open ? 0 : -100, opacity: spring(open ? 1 : 0) }}>
+      <Motion
+        style={{
+          position: spring(open ? 1 : 0, { stiffness: 300, damping: 25, precision: 0.1 }),
+          overlayPosition: open ? 0 : -100,
+          opacity: spring(open ? 1 : 0, { stiffness: 300, damping: 25, precision: 0.01 })
+        }}
+      >
         {interpolated => {
           if (interpolated.opacity > 0) {
-            return <DrawerContainer {...interpolated} onRequestClose={this.handleRequestClose} onRequestOpen={this.handleRequestOpen}>{children}</DrawerContainer>;
+            return <DrawerContainer {...interpolated} onRequestClose={this.handleRequestClose} onRequestOpen={this.handleRequestOpen} {...other}>{children}</DrawerContainer>;
           }
           return null;
         }}

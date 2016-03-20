@@ -8,6 +8,9 @@ import Divider from '../Divider';
 const styles = oxygenCss({
   listItem: {
     alignItems: 'center',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
   },
   icon: {
     marginRight: `${Units.phone.list.padding}px`,
@@ -48,13 +51,15 @@ class ListItem extends Component {
   static displayName = 'ListItem';
 
   static propTypes = {
+    payload: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.array]),
     theme: PropTypes.object,
     style: PropTypes.object,
     dense: PropTypes.bool,
     active: PropTypes.bool,
     divider: PropTypes.bool,
     icon: PropTypes.node,
-    children: PropTypes.node
+    children: PropTypes.node,
+    onTouchTap: PropTypes.func
   };
 
   static contextTypes = {
@@ -93,8 +98,16 @@ class ListItem extends Component {
     this.setState({ hover: false });
   }
 
+  handleTouchTap = () => {
+    const { onTouchTap, payload } = this.props;
+    if ( onTouchTap) {
+      onTouchTap(payload);
+    }
+  };
+
+
   render() {
-    const { dense, children, icon, style, ...other } = this.props;
+    const { dense, children, icon, style, onTouchTap, ...other } = this.props;
     let iconElement;
     if (icon) {
       iconElement = React.cloneElement(icon, { className: styles.icon });
@@ -103,8 +116,15 @@ class ListItem extends Component {
       [styles.dense]: dense
     });
     return (
-      <div onMouseEnter={this.handleMouseEnter.bind(this)} onMouseLeave={this.handleMouseLeave.bind(this)} style={this.getStyle()} className={rootClasses} {...other}>
-        <View className={styles.listItem}>
+      <div
+        onMouseEnter={this.handleMouseEnter.bind(this)}
+        onMouseLeave={this.handleMouseLeave.bind(this)}
+        style={this.getStyle()}
+        onTouchTap={this.handleTouchTap}
+        className={rootClasses}
+        {...other}
+      >
+        <View className={styles.listItem} row>
           {iconElement}
           <Ink />
           {children}

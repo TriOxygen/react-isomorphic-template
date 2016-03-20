@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import radium from 'radium';
 import Ink from './Ink';
 import { Units } from './Styles';
 import classNames from 'classnames';
@@ -68,6 +67,11 @@ class FlatButton extends Component {
     children: PropTypes.node
   };
 
+  state = {
+    active: false,
+    hover: false
+  };
+
   static contextTypes = {
     theme: PropTypes.object
   };
@@ -78,60 +82,37 @@ class FlatButton extends Component {
 
   getButtonStyles(theme) {
     const { disabled, primary, secondary } = this.props;
-    let specStyles;
+    const { hover, active } = this.state;
+    let style;
     if (disabled) {
-      specStyles = {
-        color: theme.text.disabled,
-        ':hover': {
-          color: theme.text.disabled
-        }
+      style = {
+        color: hover && active ? theme.text.disabled : theme.text.disabled,
       };
     } else if (primary) {
-      specStyles = {
-        color: theme.primary[500].hex,
-        ':hover': {
-          backgroundColor: theme.button.flat.hover,
-          color: theme.primary[600].hex,
-        },
-        ':active': {
-          backgroundColor: theme.button.flat.active,
-          color: theme.primary[700].hex,
-        }
+      style = {
+        color: active ? theme.primary[700].hex : hover ? theme.primary[600].hex : theme.primary[500].hex,
+        backgroundColor: active ? theme.button.flat.active : hover ? theme.button.flat.hover : null,
       };
     } else if (secondary) {
-      specStyles = {
-        color: theme.secondary[500].hex,
-        ':hover': {
-          backgroundColor: theme.button.flat.hover,
-          color: theme.secondary[600].hex,
-        },
-        ':active': {
-          backgroundColor: theme.button.flat.active,
-          color: theme.secondary[700].hex,
-        }
+      style = {
+        color: active ? theme.secondary[700].hex : hover ? theme.secondary[600].hex : theme.secondary[500].hex,
+        backgroundColor: active ? theme.button.flat.active : hover ? theme.button.flat.hover : null,
       };
     } else {
-      specStyles = {
+      style = {
         color: theme.text.default,
-        ':hover': {
-          backgroundColor: theme.button.flat.hover,
-        },
-        ':active': {
-          backgroundColor: theme.button.flat.active,
-        }
+        backgroundColor: active? theme.button.flat.active : hover ? theme.button.flat.hover : null
       };
     }
-    return [specStyles];
+    return style;
   }
 
   handleTouchTap = (event) => {
-    const { link, disabled, onTouchTap, href } = this.props;
+    const { disabled, onTouchTap, href } = this.props;
     if (!disabled && onTouchTap) {
       onTouchTap(href);
-      if (link) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
+      event.preventDefault();
+      event.stopPropagation();
     }
   };
 
@@ -140,6 +121,30 @@ class FlatButton extends Component {
     if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
       this.handleTouchTap();
       event.preventDefault();
+    }
+  };
+
+  handleFocus = () => {
+    if (!this.state.active) {
+      this.setState({ active: true });
+    }
+  };
+
+  handleBlur = () => {
+    if (this.state.active) {
+      this.setState({ active: false });
+    }
+  };
+
+  handleMouseEnter = () => {
+    if (!this.state.hover) {
+      this.setState({ hover: true });
+    }
+  };
+
+  handleMouseLeave = () => {
+    if (this.state.hover) {
+      this.setState({ hover: false });
     }
   };
 
@@ -158,6 +163,10 @@ class FlatButton extends Component {
       ...other,
       onKeyPress: this.handleKeyPress,
       onTouchTap: this.handleTouchTap,
+      onFocus: this.handleFocus,
+      onBlur: this.handleBlur,
+      onMouseEnter: this.handleMouseEnter,
+      onMouseLeave: this.handleMouseLeave,
     };
     const containerElement = link ? (disabled ? 'span' : 'a') : 'button';
     return React.createElement(containerElement, props, ink, children, label);
@@ -165,4 +174,4 @@ class FlatButton extends Component {
 
 }
 
-export default radium(FlatButton);
+export default FlatButton;

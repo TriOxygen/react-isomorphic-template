@@ -1,8 +1,120 @@
 import React, { PropTypes, Component } from 'react';
-import radium from 'radium';
 import Ink from './Ink';
 import { Units } from './Styles';
 import classNames from 'classnames';
+
+class IconButton extends Component {
+
+  static propTypes = {
+    disabled: PropTypes.bool,
+    dense: PropTypes.bool,
+    primary: PropTypes.bool,
+    secondary: PropTypes.bool,
+    color: PropTypes.string,
+    hoverColor: PropTypes.string,
+    children: PropTypes.node,
+    link: PropTypes.bool,
+    href: PropTypes.string,
+    onTouchTap: PropTypes.func,
+    theme: PropTypes.object
+  };
+
+  state = {
+    hover: false,
+    active: false
+  };
+
+  static contextTypes = {
+    theme: PropTypes.object
+  };
+
+  getButtonStyles(theme) {
+    const { disabled, primary, secondary } = this.props;
+    const { hover, active } = this.state;
+    let style;
+    if (disabled) {
+      style = {
+      };
+    } else if (primary) {
+      style = {
+        backgroundColor: active ? theme.button.flat.active : hover ? theme.button.flat.hover : null,
+      };
+    } else if (secondary) {
+      style = {
+        backgroundColor: active ? theme.button.flat.active : hover ? theme.button.flat.hover : null,
+      };
+    } else {
+      style = {
+        backgroundColor: active? theme.button.flat.active : hover ? theme.button.flat.hover : null
+      };
+    }
+    return style;
+  }
+
+  handleFocus = () => {
+    if (!this.state.active) {
+      this.setState({ active: true });
+    }
+  };
+
+  handleBlur = () => {
+    if (this.state.active) {
+      this.setState({ active: false });
+    }
+  };
+
+  handleMouseEnter = () => {
+    if (!this.state.hover) {
+      this.setState({ hover: true });
+    }
+  };
+
+  handleMouseLeave = () => {
+    if (this.state.hover) {
+      this.setState({ hover: false });
+    }
+  };
+
+  handleKeyPress = (event) => {
+    const { keyCode } = event;
+    if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
+      this.handleTouchTap();
+      event.preventDefault();
+    }
+  };
+
+  handleTouchTap = (event) => {
+    const { disabled, onTouchTap, href } = this.props;
+    if (!disabled && onTouchTap) {
+      onTouchTap(href);
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
+
+  render() {
+    const { dense, disabled, children, link, ...other } = this.props;
+    const theme = this.props.theme || this.context.theme;
+    const ink = !disabled && <Ink />;
+    const buttonClasses = classNames(styles.iconButton, dense ? styles.dense : null);
+    const props = {
+      className: buttonClasses,
+      disabled,
+      style: this.getButtonStyles(theme),
+      ...other,
+      onKeyPress: this.handleKeyPress,
+      onTouchTap: this.handleTouchTap,
+      onFocus: this.handleFocus,
+      onBlur: this.handleBlur,
+      onMouseEnter: this.handleMouseEnter,
+      onMouseLeave: this.handleMouseLeave,
+    };
+    const containerElement = link ? (disabled ? 'span' : 'a') : 'button';
+    return React.createElement(containerElement, props, ink, children);
+  }
+}
+
+export default IconButton;
 
 const styles = oxygenCss({
   'iconButton': {
@@ -40,83 +152,3 @@ const styles = oxygenCss({
     zIndex: 2
   }
 });
-
-class IconButton extends Component {
-
-  static propTypes = {
-    disabled: PropTypes.bool,
-    dense: PropTypes.bool,
-    primary: PropTypes.bool,
-    secondary: PropTypes.bool,
-    color: PropTypes.string,
-    hoverColor: PropTypes.string,
-    children: PropTypes.node,
-    theme: PropTypes.object
-  };
-
-  static contextTypes = {
-    theme: PropTypes.object
-  };
-
-  static defaultProps = {
-    label: ''
-  };
-
-  getButtonStyles(theme) {
-    const { disabled, primary, secondary } = this.props;
-    let specStyles;
-    if (disabled) {
-      specStyles = {
-        color: theme.text.disabled,
-        ':hover': {
-          color: theme.text.disabled
-        }
-      };
-    } else if (primary) {
-      specStyles = {
-        color: theme.primary[500].hex,
-        ':hover': {
-          backgroundColor: theme.button.flat.hover,
-          color: theme.primary[600].hex,
-        },
-        ':active': {
-          backgroundColor: theme.button.flat.active,
-          color: theme.primary[700].hex,
-        }
-      };
-    } else if (secondary) {
-      specStyles = {
-        color: theme.secondary[500].hex,
-        ':hover': {
-          backgroundColor: theme.button.flat.hover,
-          color: theme.secondary[600].hex,
-        },
-        ':active': {
-          backgroundColor: theme.button.flat.active,
-          color: theme.secondary[700].hex,
-        }
-      };
-    }
-    return [specStyles];
-  }
-
-  render() {
-    const { dense, disabled, children, ...other } = this.props;
-    const theme = this.props.theme || this.context.theme;
-    const ink = !disabled && <Ink />;
-    const buttonClasses = classNames(styles.iconButton, dense ? styles.dense : null);
-    return (
-      <button
-        className={buttonClasses}
-        style={this.getButtonStyles(theme)}
-        disabled={disabled}
-        {...other}
-      >
-        {ink}
-        {children}
-      </button>
-    );
-  }
-}
-
-export default radium(IconButton);

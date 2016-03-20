@@ -20,7 +20,6 @@ const styles = oxygenCss({
 });
 
 class Toolbar extends Component {
-  static displayName = 'Toolbar';
 
   static propTypes = {
     zDepth: PropTypes.number,
@@ -31,7 +30,9 @@ class Toolbar extends Component {
     leftIcon: PropTypes.node,
     rightIcon: PropTypes.node,
     theme: PropTypes.object,
-    className: PropTypes.string
+    className: PropTypes.string,
+    onTouchTapLeftIcon: PropTypes.func,
+    onTouchTapRightIcon: PropTypes.func,
   };
 
   static contextTypes = {
@@ -80,17 +81,30 @@ class Toolbar extends Component {
         color: theme.primary1Text
       } : null,
     );
-
   }
+
+  handleTouchTapLeftIcon = () => {
+    const { onTouchTapLeftIcon } = this.props;
+    if (onTouchTapLeftIcon) {
+      onTouchTapLeftIcon();
+    }
+  };
+
+  handleTouchTapRightIcon = () => {
+    const { onTouchTapRightIcon } = this.props;
+    if (onTouchTapRightIcon) {
+      onTouchTapRightIcon();
+    }
+  };
 
   render() {
     const { children, leftIcon, rightIcon, className, primary, secondary, ...other } = this.props;
     const classes = classNames(styles.root, className);
     return (
       <View row className={classes} style={this.getStyle()} {...other}>
-        <View grow={0} ><IconButton>{leftIcon}</IconButton></View>
+        <View grow={0} ><IconButton onTouchTap={this.handleTouchTapLeftIcon}>{leftIcon}</IconButton></View>
         <View grow={1}>{children}</View>
-        <View grow={0} ><IconButton>{rightIcon}</IconButton></View>
+        <View grow={0} ><IconButton onTouchTap={this.handleTouchTapLeftIcon}>{rightIcon}</IconButton></View>
       </View>
     );
   }

@@ -86,7 +86,6 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
         const { session } = req;
         session.calls = session.calls || 0;
         session.calls++;
-        console.log(session)
         const location = createLocation(req.url);
 
         const store = configureStore();
@@ -138,7 +137,8 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           return next(error);
         }
         res.setHeader('Content-Type', 'application/json');
-        res.status(500);
+        console.log(error);
+        res.status(error.code || 500);
         if (error) {
           res.json({
             error

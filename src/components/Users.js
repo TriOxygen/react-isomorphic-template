@@ -3,16 +3,26 @@ import Transition from 'react-motion-ui-pack';
 import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
 import { Drawer, Dialog, DialogTitle, DialogContent, DialogActions, View, FlatButton, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
-import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
 
-import { List, ListItem } from 'oxygen-md';
+import NavigationMenu from 'oxygen-md-svg-icons/lib/SvgIcons/NavigationMenu';
+import EditorModeEdit from 'oxygen-md-svg-icons/lib/SvgIcons/EditorModeEdit';
+import ActionDelete from 'oxygen-md-svg-icons/lib/SvgIcons/ActionDelete';
+
+import { List, ListItem, DrawerHeader, IconButton, MenuItem } from 'oxygen-md';
 
 import * as userActions from 'reducers/UserReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { addMessages, translate as _l } from 'lib/I18n';
+
+import ContentClear from 'oxygen-md-svg-icons/lib/SvgIcons/ContentClear';
+import ActionAccessibility from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccessibility';
+import ActionAccountBalance from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBalance';
+import ActionAccountBalanceWallet from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBalanceWallet';
+import ActionAccountBox from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountBox';
+
 
 addMessages({
   ['en-US']: {
@@ -44,7 +54,7 @@ const css = oxygenCss({
   },
 });
 
-class TransitionTest extends Component {
+class Users extends Component {
   state = {
     edit: null,
     portal: false,
@@ -126,20 +136,27 @@ class TransitionTest extends Component {
     this.setState({ drawer: !this.state.drawer });
   };
 
+  handleUserTap = user => {
+    this.edit(user);
+  };
+
   render() {
     const { users } = this.props;
     const { edit, portal, drawer } = this.state;
     const { name, email } = edit || {};
 
     const label = edit ? _l`Save` : _l`Add`;
+//          <View row>
+//            <View grow={1} column><RaisedButton primary inversed onTouchTap={this.portal} fullWidth label={_l`Dialog`} /></View>
+//          </View>
     return (
       <Layout>
-        <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>} />
+        <Toolbar
+          primary
+          onTouchTapLeftIcon={this.drawer}
+          leftIcon={<NavigationMenu block/>}
+        />
         <Scrollable className={css.content} >
-          <View row>
-            <View grow={1} column><RaisedButton onTouchTap={this.portal} fullWidth label={_l`Dialog`} /></View>
-            <View grow={1} column><RaisedButton onTouchTap={this.drawer} fullWidth label={_l`Drawer`} /></View>
-          </View>
           <List>
           <Transition
             className={css.container}
@@ -163,11 +180,11 @@ class TransitionTest extends Component {
           >
             {
               users.map(user =>
-                <ListItem divider key={user._id}>
-                  <View grow={1}><span>{user.name.first} {user.name.last} ({user.email})</span></View>
-                  <View grow={0}>
-                    <RaisedButton secondary onTouchTap={this.edit.bind(this, user)} label='Edit' />
-                    <RaisedButton primary onTouchTap={this.delete.bind(this, user)} label='Del' />
+                <ListItem divider key={user._id} payload={user} onTouchTap={this.handleUserTap}>
+                  <View column grow={1}><span>{user.name.first} {user.name.last} ({user.email})</span></View>
+                  <View row grow={0}>
+                    <IconButton onTouchTap={this.edit.bind(this, user)} ><EditorModeEdit block/></IconButton>
+                    <IconButton onTouchTap={this.delete.bind(this, user)}><ActionDelete block/></IconButton>
                   </View>
                 </ListItem>
               )
@@ -176,22 +193,26 @@ class TransitionTest extends Component {
           </List>
         </Scrollable>
         <Drawer onRequestClose={this.drawer} onRequestOpen={this.drawer} open={drawer}>
-          test
+          <DrawerHeader primary>Test</DrawerHeader>
+          <MenuItem autoFocus icon={<ContentClear/>}>Test</MenuItem>
+          <MenuItem icon={<ActionAccessibility/>}>Test</MenuItem>
+          <MenuItem icon={<ActionAccountBalance/>}>Test</MenuItem>
+          <MenuItem divider icon={<ActionAccountBalanceWallet/>}>Test</MenuItem>
+          <MenuItem icon={<ActionAccountBox/>}>Test</MenuItem>
+          <MenuItem icon={<ActionAccountBox/>}>Test</MenuItem>
         </Drawer>
         <Dialog onRequestClose={this.portal} onRequestOpen={this.portal} open={portal}>
-          <div>
-            <DialogTitle>{_l`User`}</DialogTitle>
-            <DialogContent>
-              <TextField ref="first" value={edit && name.first} floatingLabelText={_l`First name`}/>
-              <TextField ref="last" value={edit && name.last} floatingLabelText={_l`Last name`}/>
-              <TextField ref="email" value={edit && email} floatingLabelText={_l`E-mail`}/>
-              <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
-            </DialogContent>
-            <DialogActions>
-              <FlatButton primary onTouchTap={this.save} label={label}/>
-              <FlatButton onTouchTap={this.clear} label={_l`Clear`}/>
-            </DialogActions>
-          </div>
+          <DialogTitle>{_l`User`}</DialogTitle>
+          <DialogContent>
+            <TextField autoFocus ref="first" value={edit && name.first} floatingLabelText={_l`First name`}/>
+            <TextField ref="last" value={edit && name.last} floatingLabelText={_l`Last name`}/>
+            <TextField ref="email" value={edit && email} floatingLabelText={_l`E-mail`}/>
+            <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
+          </DialogContent>
+          <DialogActions>
+            <FlatButton primary onTouchTap={this.save} label={label}/>
+            <FlatButton onTouchTap={this.clear} label={_l`Clear`}/>
+          </DialogActions>
         </Dialog>
       </Layout>
     );
@@ -213,4 +234,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TransitionTest);
+export default connect(mapStateToProps, mapDispatchToProps)(Users);

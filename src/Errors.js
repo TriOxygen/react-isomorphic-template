@@ -2,6 +2,8 @@
 export class UnknownError {
   static messages = [];
 
+  code = 500;
+
   constructor(message = null) {
     const { messages } = this.constructor;
     this.message = message || messages[Math.floor(Math.random()*messages.length)];
@@ -11,6 +13,8 @@ export class UnknownError {
 }
 
 export class NotFoundError extends UnknownError {
+  code = 404;
+
   static messages = [
     'I looked really hard, but I could not find it, sowwy.',
     'It is simply not here.',
@@ -19,6 +23,8 @@ export class NotFoundError extends UnknownError {
 }
 
 export class AccessDeniedError extends UnknownError {
+  code = 403;
+
   static messages = [
     'Can\'t touch this!',
     'Hammer time!'

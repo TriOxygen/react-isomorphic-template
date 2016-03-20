@@ -6,8 +6,10 @@ import user from './User';
 import { UnknownError } from 'Errors';
 
 export class NoSuchEndpointError extends UnknownError {
+  code = 404;
   static messages = [
-    'This tree doesn\'t have that many leaves'
+    'This tree doesn\'t have that many leaves',
+    'Are you sure this is where you left it?',
   ];
 }
 

@@ -63,10 +63,17 @@ export default class DialogContainer extends Component {
 const css = oxygenCss({
   container: {
     position: 'fixed',
-    left: '50%',
     top: 0,
-    marginTop: `${Units.phone.keylineIncrement * 2}px`,
-    marginLeft: `${-Units.phone.keylineIncrement * 4}px`,
-    width: `${Units.phone.keylineIncrement * 8}px`,
+    // marginTop: `${Units.phone.keylineIncrement * 2}px`,
+    '@phone': {
+      left: Units.phone.gutter.more,
+      right: Units.phone.gutter.more
+    },
+    '@desktop': {
+      left: '50%',
+      marginLeft: `${-Units.phone.keylineIncrement * 5}px`,
+      width: `${Units.desktop.keylineIncrement * 10}px`,
+    }
+
   },
 });

@@ -31,6 +31,7 @@ export TextField from './TextField';
 // export CircularProgress from './CircularProgress';
 
 export Drawer from './Drawer/Drawer';
+export DrawerHeader from './Drawer/DrawerHeader';
 
 
 import * as Menus from './Menus';

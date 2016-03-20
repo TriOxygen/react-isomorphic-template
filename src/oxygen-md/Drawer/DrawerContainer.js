@@ -9,14 +9,22 @@ const ESC = 27;
 export default class DrawerContainer extends Component {
 
   static propTypes = {
-    left: PropTypes.number,
-    top: PropTypes.number,
+    position: PropTypes.number,
+    overlayPosition: PropTypes.number,
+    width: PropTypes.number,
     opacity: PropTypes.number,
     children: PropTypes.node,
+    right: PropTypes.bool,
+    overlay: PropTypes.bool,
     onRequestClose: PropTypes.func,
     onRequestOpen: PropTypes.func,
   };
 
+  static defaultProps = {
+    overlay: true,
+    right: false,
+    width: Units.phone.keylineIncrement * 4
+  };
 
   handleTap = () => {
     if (this.props.onRequestClose) {
@@ -40,19 +48,38 @@ export default class DrawerContainer extends Component {
   };
 
   stop = (event) => {
-    if (this.props.onRequestOpen) {
-      this.props.onRequestOpen();
+    const { onRequestOpen } = this.props;
+    if (onRequestOpen) {
+      onRequestOpen();
     }
     event.preventDefault();
     event.stopPropagation();
   };
 
   render() {
-    const { left, top, opacity, children } = this.props;
+    const { overlay, width, right, overlayPosition, opacity, children } = this.props;
+    let position = this.props.position;
+    if (position > 1) {
+      position = 1;
+    } else if (position < 0) {
+      position = 0;
+    }
+    const transform = right ? `translate3d(100vw,0,0) translateX(${position * -100}%)` : `translate3d(${(position - 1) * 100}%, 0, 0)`;
     return (
       <Portal menu>
-        <Overlay center={false} onTouchTap={this.handleTap} onKeyup={this.handleKey} style={{ opacity, top: `${top}%` }}/>
-        <Paper style={{ transform: `translate3d(${left}px, 0, 0)` }} className={css.container} onTouchTap={this.stop}>
+        {overlay ?
+          <Overlay
+            center={false}
+            onTouchTap={this.handleTap}
+            onKeyup={this.handleKey}
+            style={{ opacity, top: `${overlayPosition}%` }}
+          /> : null }
+        <Paper
+          rounded={false}
+          style={{ width, transform }}
+          className={css.container}
+          onTouchTap={this.stop}
+        >
           {children}
         </Paper>
       </Portal>
@@ -63,7 +90,6 @@ export default class DrawerContainer extends Component {
 const css = oxygenCss({
   container: {
     position: 'absolute',
-    width: Units.phone.keylineIncrement * 4,
     top: 0,
     bottom: 0,
     // height: Units.phone.keylineIncrement * 6,

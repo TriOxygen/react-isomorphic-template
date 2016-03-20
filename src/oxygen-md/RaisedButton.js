@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import radium from 'radium';
 import Ink from './Ink';
 import classNames from 'classnames';
 import { Shadow, Units } from './Styles';
@@ -16,7 +15,13 @@ class RaisedButton extends Component {
     link: PropTypes.bool,
     href: PropTypes.string,
     onTouchTap: PropTypes.func,
-    children: PropTypes.node
+    children: PropTypes.node,
+    inversed: PropTypes.bool
+  };
+
+  state = {
+    hover: false,
+    active: false,
   };
 
   static contextTypes = {
@@ -28,62 +33,48 @@ class RaisedButton extends Component {
   };
 
   getButtonStyles(theme) {
-    const { disabled, primary, secondary } = this.props;
-    let specStyles;
+    const { disabled, primary, secondary, inversed } = this.props;
+    const { hover, active } = this.state;
+    let style;
     if (disabled) {
-      specStyles = {
+      style = {
         boxShadow: 'none',
         backgroundColor: theme.button.raised.disabled,
-        color: theme.text.disabled,
-        ':hover': {
-          backgroundColor: theme.button.raised.disabled
-        }
       };
     } else if (primary) {
-      specStyles = {
-        backgroundColor: theme.primary[500].hex,
-        color: theme.primary[500].text.default,
-        ':hover': {
-          backgroundColor: theme.primary[600].hex,
-          color: theme.primary[600].text.default,
-        },
-        ':active': {
-          backgroundColor: theme.primary[700].hex,
-          color: theme.primary[700].text.default,
-        }
+      style = inversed ? {
+        color: active ? theme.primary[700].hex : hover ? theme.primary[600].hex : theme.primary[500].hex,
+        backgroundColor: active ? theme.primary[700].text.default : hover ? theme.primary[600].text.default : theme.primary[500].text.default,
+      } : {
+        backgroundColor: active ? theme.primary[700].hex : hover ? theme.primary[600].hex : theme.primary[500].hex,
+        color: active ? theme.primary[700].text.default : hover ? theme.primary[600].text.default : theme.primary[500].text.default,
       };
     } else if (secondary) {
-      specStyles = {
-        backgroundColor: theme.secondary[500].hex,
-        color: theme.secondary[500].text.default,
-        ':hover': {
-          backgroundColor: theme.secondary[600].hex,
-          color: theme.secondary[600].text.default,
-        },
-        ':active': {
-          backgroundColor: theme.secondary[700].hex,
-          color: theme.secondary[700].text.default,
-        }
+      style = inversed ? {
+        color: active ? theme.secondary[700].hex : hover ? theme.secondary[600].hex : theme.secondary[500].hex,
+        backgroundColor: active ? theme.secondary[700].text.default : hover ? theme.secondary[600].text.default : theme.secondary[500].text.default,
+      } : {
+        backgroundColor: active ? theme.secondary[700].hex : hover ? theme.secondary[600].hex : theme.secondary[500].hex,
+        color: active ? theme.secondary[700].text.default : hover ? theme.secondary[600].text.default : theme.secondary[500].text.default,
       };
     } else {
-      specStyles = {
+      style = inversed ? {
+        backgroundColor: theme.text.default,
+        color: hover | active ? 'rgba(0, 0, 0, 0.1)' : theme.theme.card.hex,
+      } : {
         color: theme.text.default,
-        ':hover': {
-          backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        },
+        backgroundColor: hover | active ? 'rgba(0, 0, 0, 0.1)' : theme.theme.card.hex,
       };
     }
-    return [specStyles];
+    return style;
   }
 
   handleTouchTap = (event) => {
-    const { link, disabled, onTouchTap, href } = this.props;
+    const { disabled, onTouchTap, href } = this.props;
     if (!disabled && onTouchTap) {
-      onTouchTap(href);
-      if (link) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
+      onTouchTap(href, event);
+      event.preventDefault();
+      event.stopPropagation();
     }
   };
 
@@ -123,7 +114,7 @@ const styles = oxygenCss({
   raisedButton: {
     border: 'none',
     display: 'inline-block',
-    fontWeight: 300,
+    fontWeight: 500,
     textAlign: 'center',
     textDecoration: 'none',
     backgroundColor: 'rgba(158, 158, 158, 0.2)',
@@ -175,5 +166,4 @@ const styles = oxygenCss({
   }
 });
 
-
-export default radium(RaisedButton);
+export default RaisedButton;

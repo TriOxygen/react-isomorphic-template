@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { mergeStyles, Units } from '../Styles';
 import Ink from '../Ink';
 import classNames from 'classnames';
@@ -12,6 +13,7 @@ const styles = oxygenCss({
   },
   'root': {
     userSelect: 'none',
+    outline: 'none',
     transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     position: 'relative',
     overflow: 'hidden',
@@ -42,11 +44,16 @@ const styles = oxygenCss({
 class MenuItem extends Component {
 
   static propTypes = {
+    payload: PropTypes.oneOfType([PropTypes.object, PropTypes.string, PropTypes.bool, PropTypes.number, PropTypes.array]),
     theme: PropTypes.object,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
     dense: PropTypes.bool,
     active: PropTypes.bool,
     icon: PropTypes.node,
     divider: PropTypes.bool,
+    autoFocus: PropTypes.bool,
+    onTouchTap: PropTypes.func,
     children: PropTypes.node
   };
 
@@ -55,15 +62,16 @@ class MenuItem extends Component {
   };
 
   state = {
-    hover: false
+    hover: false,
+    hasFocus: false
   };
 
   getStyle() {
     const theme = this.props.theme || this.context.theme;
-    const { hover } = this.state;
+    const { hover, hasFocus } = this.state;
     const { active, divider } = this.props;
     return mergeStyles(
-      hover ? {
+      hover || hasFocus ? {
         backgroundColor: theme.primary3,
         color: theme.primary3Text
       } : null,
@@ -86,24 +94,79 @@ class MenuItem extends Component {
   }
 
   handleMouseEnter = () => {
-    this.setState({ hover: true });
+    const { disabled } = this.props;
+    if (!disabled) {
+      this.setState({ hover: true });
+    }
   };
 
   handleMouseLeave = () => {
-    this.setState({ hover: false });
+    const { disabled } = this.props;
+    if (!disabled) {
+      this.setState({ hover: false });
+    }
   };
 
+  handleTouchTap = () => {
+    const { disabled, onTouchTap, payload } = this.props;
+    if (!disabled && onTouchTap) {
+      onTouchTap(payload);
+    }
+  };
+
+  handleFocus = () => {
+    if (!this.state.hasFocus) {
+      this.setState({ hasFocus: true });
+    }
+  };
+
+  handleBlur = () => {
+    if (this.state.hasFocus) {
+      this.setState({ hasFocus: false });
+    }
+  };
+
+  componentDidMount() {
+    if (this.props.autoFocus) {
+      this._timer = setTimeout(() => {
+        ReactDOM.findDOMNode(this).focus();
+      }, 200);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._timer) {
+      clearTimeout(this._timer);
+    }
+  }
+
   render() {
-    const { children, icon, dense } = this.props;
+    const { disabled, children, icon, dense, className, ...other } = this.props;
     let iconElement;
+    let tabIndex;
     if (icon) {
       iconElement = React.cloneElement(icon, { className: styles.icon });
     }
-    const rootClasses = classNames(styles.root, {
+    const rootClasses = classNames(styles.root, className, {
       [styles.dense]: dense,
     });
+
+    if (!disabled) {
+      tabIndex = 0;
+    }
+
     return (
-      <div onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} style={this.getStyle()} className={rootClasses}>
+      <div
+        onTouchTap={this.handleTouchTap}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
+        style={this.getStyle()}
+        tabIndex={tabIndex}
+        className={rootClasses}
+        {...other}
+      >
         {iconElement}
         <Ink />
         {children}
