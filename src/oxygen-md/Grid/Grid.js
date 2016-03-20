@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import { Units } from '../Styles';
+import GridCell from './GridCell';
 
 class Grid extends Component {
 
@@ -32,7 +33,10 @@ class Grid extends Component {
     return (
       <div className={classes} {...other}>
         {React.Children.map(children, child => {
-          return React.cloneElement(child, { gutter });
+          if (child.type == GridCell) {
+            return React.cloneElement(child, { gutter });
+          }
+          return child;
         })}
       </div>
     );
