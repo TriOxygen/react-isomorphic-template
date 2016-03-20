@@ -4,7 +4,6 @@ import { render } from 'react-dom';
 import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import routes from 'routes';
-import AppWrapper from 'containers/AppWrapper';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
@@ -25,9 +24,7 @@ require('oxygen-md-svg-icons/lib/bundle.css');
 
 render(
   <Provider store={store}>
-    <AppWrapper>
-      <Router children={routes} history={browserHistory} />
-    </AppWrapper>
+    <Router children={routes} history={browserHistory} />
   </Provider>,
   document.getElementById('app')
 );

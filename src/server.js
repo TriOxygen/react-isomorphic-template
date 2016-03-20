@@ -9,7 +9,6 @@ import path from 'path';
 import Html from 'containers/Html';
 import WebpackIsomorphicTools from 'webpack-isomorphic-tools';
 import chokidar from 'chokidar';
-import AppWrapper from 'containers/AppWrapper';
 import configureStore from 'reducers/configureStore';
 import mongoose from 'mongoose';
 import { NotFoundError } from 'Errors';
@@ -106,13 +105,10 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
             // return res.status(404).end('Not found');
           }
 
-          renderProps.radiumConfig ={ userAgent: req.headers['user-agent'] };
           function renderView() {
             const initialView = (
               <Provider store={store} >
-                <AppWrapper radiumConfig={{ userAgent: req.headers['user-agent'] }}>
-                  <RouterContext {...renderProps} />
-                </AppWrapper>
+               <RouterContext {...renderProps} />
               </Provider>
             );
 

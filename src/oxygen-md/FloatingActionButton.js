@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import radium from 'radium';
 import Ink from './Ink';
 import { Shadow, Units } from './Styles';
 import classNames from 'classnames';
@@ -43,9 +42,17 @@ class FloatingActionButton extends Component {
     primary: PropTypes.bool,
     theme: PropTypes.object,
     secondary: PropTypes.bool,
+    link: PropTypes.bool,
+    onTouchTap: PropTypes.func,
+    href: PropTypes.string,
     style: PropTypes.object,
     icon: PropTypes.node,
     children: PropTypes.node
+  };
+
+  state = {
+    hover: false,
+    active: false
   };
 
   static contextTypes = {
@@ -56,82 +63,104 @@ class FloatingActionButton extends Component {
     primary: true
   };
 
-  getButtonStyles() {
-    const theme = this.props.theme || this.context.theme;
+  getButtonStyles(theme) {
     const { disabled, primary, secondary } = this.props;
-    let specStyles;
+    const { hover, active } = this.state;
+    let style;
     if (disabled) {
-      specStyles = {
+      style = {
         boxShadow: 'none',
         backgroundColor: theme.button.raised.disabled,
-        color: theme.text.disabled,
-        ':hover': {
-          backgroundColor: theme.button.raised.disabled
-        }
       };
     } else if (primary) {
-      specStyles = {
-        backgroundColor: theme.primary[500].hex,
-        boxShadow: Shadow[2],
-        color: theme.primary[500].text.default,
-
-        ':hover': {
-          backgroundColor: theme.primary[600].hex,
-          color: theme.primary[600].text.default,
-          boxShadow: Shadow[3],
-        },
-        ':active': {
-          backgroundColor: theme.primary[700].hex,
-          color: theme.primary[700].text.default,
-          boxShadow: Shadow[2]
-        }
+      style = {
+        boxShadow: hover ? Shadow[3] : Shadow[2],
+        backgroundColor: active ? theme.primary[700].hex : hover ? theme.primary[600].hex : theme.primary[500].hex,
+        color: active ? theme.primary[700].text.default : hover ? theme.primary[600].text.default : theme.primary[500].text.default,
       };
     } else if (secondary) {
-      specStyles = {
-        backgroundColor: theme.secondary[500].hex,
-        color: theme.secondary[500].text.default,
-        boxShadow: Shadow[2],
-        ':hover': {
-          backgroundColor: theme.secondary[600].hex,
-          color: theme.secondary[600].text.default,
-          boxShadow: Shadow[3],
-        },
-        ':active': {
-          backgroundColor: theme.secondary[700].hex,
-          color: theme.secondary[700].text.default,
-          boxShadow: Shadow[2],
-        }
+      style = {
+        boxShadow: hover ? Shadow[3] : Shadow[2],
+        backgroundColor: active ? theme.secondary[700].hex : hover ? theme.secondary[600].hex : theme.secondary[500].hex,
+        color: active ? theme.secondary[700].text.default : hover ? theme.secondary[600].text.default : theme.secondary[500].text.default,
       };
     } else {
-      specStyles = {
+      style = {
+        boxShadow: hover ? Shadow[3] : Shadow[2],
         color: theme.text.default,
-        boxShadow: Shadow[2],
-        ':hover': {
-          backgroundColor: 'rgba(0, 0, 0, 0.1)',
-          boxShadow: Shadow[3]
-        },
-        ':active': {
-          boxShadow: Shadow[2]
-        }
+        backgroundColor: hover | active ? 'rgba(0, 0, 0, 0.1)' : theme.theme.card.hex,
       };
     }
-    return [specStyles];
+    return style;
   }
 
+
+  handleTouchTap = (event) => {
+    const { disabled, onTouchTap, href } = this.props;
+    if (!disabled && onTouchTap) {
+      onTouchTap(href);
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
+
+  handleKeyPress = (event) => {
+    const { keyCode } = event;
+    if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
+      this.handleTouchTap();
+      event.preventDefault();
+    }
+  };
+
+  handleFocus = () => {
+    if (!this.state.active) {
+      this.setState({ active: true });
+    }
+  };
+
+  handleBlur = () => {
+    if (this.state.active) {
+      this.setState({ active: false });
+    }
+  };
+
+  handleMouseEnter = () => {
+    if (!this.state.hover) {
+      this.setState({ hover: true });
+    }
+  };
+
+  handleMouseLeave = () => {
+    if (this.state.hover) {
+      this.setState({ hover: false });
+    }
+  };
+
   render() {
-    const { disabled, children, mini, icon } = this.props;
+    const theme = this.props.theme || this.context.theme;
+    const { disabled, children, link, mini, icon, ...other } = this.props;
     const ink = !disabled && <Ink />;
     const classes = classNames(styles.floatingActionButton, {
       [styles.mini]: mini
     });
-    return (
-      <button className={classes} disabled={disabled} style={this.getButtonStyles()}>
-        {ink}
-        {icon}
-        {children}
-      </button>
-    );
+
+    const props = {
+      className: classes,
+      disabled,
+      style: this.getButtonStyles(theme),
+      ...other,
+      tabIndex: 0,
+      onKeyPress: this.handleKeyPress,
+      onTouchTap: this.handleTouchTap,
+      onFocus: this.handleFocus,
+      onBlur: this.handleBlur,
+      onMouseEnter: this.handleMouseEnter,
+      onMouseLeave: this.handleMouseLeave,
+    };
+
+    const containerElement = link ? (disabled ? 'span' : 'a') : 'div';
+    return React.createElement(containerElement, props, ink, icon, children);
   }
 }
 
-export default radium(FloatingActionButton);
+export default FloatingActionButton;
