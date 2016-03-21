@@ -1,8 +1,23 @@
 import React, { PropTypes } from 'react';
+import CSSPropertyOperations from 'react/lib/CSSPropertyOperations';
 import { connect } from 'react-redux';
 import { setLocale } from 'lib/I18n';
 
 const appStyles = oxygenCss({
+  HTML: {
+    width: '100%',
+    height: '100%',
+    fontFamily: `'Source Sans Pro', sans-serif`,
+    fontSize: 14,
+    fontWeight: 300,
+  },
+  BODY: {
+    width: '100%',
+    height: '100%',
+    fontFamily: `'Source Sans Pro', sans-serif`,
+    fontSize: 14,
+    fontWeight: 300,
+  },
   root: {
     height: '100%',
   }
@@ -35,6 +50,17 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const node = document.getElementById('app');
+    node.className = appStyles.root;
+    CSSPropertyOperations.setValueForStyles(node, this.getStyle());
+  }
+
+  componentDidUpdate() {
+    const node = document.getElementById('app');
+    CSSPropertyOperations.setValueForStyles(node, this.getStyle());
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.theme !== nextProps.theme) {
       const { primary, secondary, tertiary, main } = nextProps.theme;
@@ -51,17 +77,13 @@ class App extends React.Component {
   getStyle() {
     const theme = this.theme;
     return {
-      backgroundColor: theme.theme.card.hex,
+      backgroundColor: theme.theme.background.hex,
       color: theme.text.default,
     };
   }
 
   render() {
-    return (
-      <div className={appStyles.root} style={this.getStyle()}>
-        {this.props.children}
-      </div>
-    );
+    return React.Children.only(this.props.children);
   }
 }
 

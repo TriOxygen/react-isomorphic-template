@@ -1,58 +1,28 @@
 import React, { Component, PropTypes } from 'react';
-import { Motion, spring } from 'react-motion';
-import ScrollContent from './ScrollContent';
+import classNames from 'classnames';
+
+const css = oxygenCss({
+  root: {
+    position: 'relative',
+    flex: 1,
+    overflow: 'auto',
+  }
+});
 
 export default class Scrollable extends Component {
-  constructor() {
-    super(...arguments);
-    this.state = {
-      scrollTop: 0,
-    };
-  }
 
   static propTypes = {
     children: PropTypes.node,
-    scrollTop: PropTypes.number
+    className: PropTypes.string,
   };
 
-  handleWheel(deltaY) {
-    let scrollTop = this.state.scrollTop + deltaY;
-    this.scrollTo(scrollTop);
-  }
-
-  scrollTo(y = 0) {
-    let scrollTop = y;
-    const content = this._content.getNode();
-    const { scrollHeight } = content;
-    const rect = content.getBoundingClientRect();
-    const scrollMax = scrollHeight - rect.height;
-    if (scrollTop > scrollMax) {
-      scrollTop = scrollMax;
-    } else if (scrollTop < 0) {
-      scrollTop = 0;
-    }
-    this.setState({ scrollTop });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.scrollTop != this.state.scrollTop) {
-      this.scrollTo(nextProps.scrollTop);
-    }
-  }
-
   render() {
-    const { children, scrollTop, ...other } = this.props;
+    const { children, className, ...other } = this.props;
+    const classes = classNames(css.root, className);
     return (
-      <Motion style={{ y: spring(this.state.scrollTop, { stiffness: 150, damping: 20 }) }}>
-        {({ y }) => {
-          return (
-            <ScrollContent ref={(c) => this._content = c} scrollTop={Math.round(y)} onContentWheel={this.handleWheel.bind(this)} {...other}>
-              {children}
-            </ScrollContent>
-          );
-        }
-        }
-      </Motion>
+      <div className={classes} {...other}>
+        {children}
+      </div>
     );
   }
 }

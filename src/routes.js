@@ -9,10 +9,10 @@ import NotFound from 'containers/NotFound';
 
 export default (
   <Route name="App" component={App} path="/">
-      <IndexRoute component={Home}/>
-      <Route path="/test" component={TransitionTest} />
-      <Route path="/users" component={Users} />
-      <Route path="/theme" component={ThemeChanger} />
-      <Route path="*" component={NotFound}/>
+    <IndexRoute component={Home}/>
+    <Route path="/test" component={TransitionTest} />
+    <Route path="/users" component={Users} />
+    <Route path="/theme" component={ThemeChanger} />
+    <Route path="*" component={NotFound}/>
   </Route>
 );

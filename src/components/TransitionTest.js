@@ -2,11 +2,12 @@ import React, { PropTypes, Component } from 'react';
 import Transition from 'react-motion-ui-pack';
 import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
-import { Styles, Paper, View, Layout, Toolbar, RaisedButton } from 'oxygen-md';
+import { Styles, FlatButton, Layout, Toolbar, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
 
 import { Grid, GridCell } from 'oxygen-md';
+import { Card, CardContent, CardImage, CardTitle, CardActions } from 'oxygen-md';
 
 import * as itemActions from 'reducers/Items';
 import * as courseActions from 'reducers/CourseReducer';
@@ -86,18 +87,19 @@ class TransitionTest extends Component {
         <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
           <RaisedButton onTouchTap={this.addItem.bind(this)} fullWidth label={'Add'} />
         </Toolbar>
-        <Scrollable className={css.content} style={this.getStyle()}>
+        <Scrollable>
           <Grid gutter>
             {
               courses.map(course =>
-                <GridCell size={1/3} key={course._id}>
-                  <Paper className={css.course} style={{ height: 240 }}>
-                    <View grow={1}>{course.name}</View>
-                    <View grow={0}>
-                      <RaisedButton secondary onTouchTap={this.edit.bind(this, course)} label='Edit' />
-                      <RaisedButton primary onTouchTap={this.delete.bind(this, course)} label='Del' />
-                    </View>
-                  </Paper>
+                <GridCell size={1/4} key={course._id}>
+                  <Card zDepth={1} onTouchTap={this.edit.bind(this, course)} >
+                    <CardImage title={course.name} src="http://loremflickr.com/320/200/cat" />
+                    <CardContent>{course.description}</CardContent>
+                    <CardActions>
+                      <FlatButton secondary onTouchTap={this.edit.bind(this, course)} label='Edit' />
+                      <FlatButton primary onTouchTap={this.delete.bind(this, course)} label='Del' />
+                    </CardActions>
+                  </Card>
                 </GridCell>
               )
             }

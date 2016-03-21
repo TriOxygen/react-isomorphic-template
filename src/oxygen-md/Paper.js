@@ -2,21 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Units, Shadow } from './Styles';
 import classNames from 'classnames';
 
-const styles = oxygenCss({
-  root: {
-    boxSizing: 'border-box',
-    '&padded': {
-      padding: Units.phone.gutter.mini,
-    },
-    '&spaced': {
-      margin: Units.phone.gutter.mini,
-    },
-    '&rounded': {
-      borderRadius: Units.phone.borderRadius
-    }
-  },
-});
-
 class Paper extends Component {
   static propTypes = {
     zDepth: PropTypes.number,
@@ -66,3 +51,19 @@ class Paper extends Component {
 }
 
 export default Paper;
+
+const styles = oxygenCss({
+  root: {
+    boxSizing: 'border-box',
+    overflow: 'hidden',
+    '&padded': {
+      padding: Units.phone.gutter.mini,
+    },
+    '&spaced': {
+      margin: Units.phone.gutter.mini,
+    },
+    '&rounded': {
+      borderRadius: Units.phone.borderRadius
+    }
+  },
+});

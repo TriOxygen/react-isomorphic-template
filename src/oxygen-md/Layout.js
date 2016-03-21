@@ -1,19 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import View from './View';
-import classNames from 'classnames';
-
-const layoutStyles = oxygenCss({
-  root: {
-    height: '100%',
-  },
-  test: {
-    fontSize: 30
-  },
-  content: {
-    overflow: 'hidden',
-    flex: 1
-  }
-});
 
 class Layout extends Component {
   static propTypes = {
@@ -36,7 +22,7 @@ class Layout extends Component {
     const { children, ...rest } = this.props;
     const [header, ...otherChildren] = children;
     return (
-      <View column className={classNames(layoutStyles.root)} {...rest}>
+      <View column className={layoutStyles.root} {...rest}>
         {header}
         {otherChildren}
       </View>
@@ -45,3 +31,9 @@ class Layout extends Component {
 }
 
 export default Layout;
+
+const layoutStyles = oxygenCss({
+  root: {
+    height: '100%',
+  },
+});

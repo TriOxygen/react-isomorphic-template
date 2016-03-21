@@ -3,55 +3,6 @@ import Ink from './Ink';
 import { Units } from './Styles';
 import classNames from 'classnames';
 
-const styles = oxygenCss({
-  flatButton: {
-    '+flatButton': {
-      marginLeft: Units.phone.gutter.mini
-    },
-    border: 'none',
-    display: 'inline-block',
-    fontWeight: 500,
-    color: 'inherit',
-    userSelect: 'none',
-    backgroundColor: 'transparent',
-    textTransform: 'uppercase',
-    outline: 'none',
-    tapHighlightColor: 'transparent',
-    transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-    overflow: 'hidden',
-    cursor: 'pointer',
-    minHeight: `${Units.phone.button.height}px`,
-    lineHeight: `${Units.phone.button.height}px`,
-    padding: `0 ${Units.phone.gutter.mini}px`,
-    borderRadius: Units.phone.borderRadius,
-    fontSize: `${Units.phone.button.fontSize}px`,
-    position: 'relative',
-    // margin: `0 ${Units.phone.gutter.mini}px`,
-    minWidth: Units.phone.button.width,
-    '@desktop': {
-      margin: `0 ${Units.desktop.gutter.mini}px`,
-      minWidth: Units.desktop.button.width,
-      minHeight: `${Units.desktop.button.height}px`,
-      lineHeight: `${Units.desktop.button.height}px`,
-      padding: `0 ${Units.desktop.gutter.mini}px`,
-      borderRadius: Units.desktop.borderRadius,
-      fontSize: `${Units.desktop.button.fontSize}px`,
-    },
-    '&dense': {
-      minHeight: `${Units.phone.button.dense.height}px`,
-      lineHeight: `${Units.phone.button.dense.height}px`,
-      '@desktop': {
-        minHeight: `${Units.desktop.button.dense.height}px`,
-        lineHeight: `${Units.desktop.button.dense.height}px`
-      },
-    },
-    '&fullWidth': {
-      display: 'block'
-    },
-  },
-
-});
-
 class FlatButton extends Component {
   static propTypes = {
     disabled: PropTypes.bool,
@@ -175,3 +126,53 @@ class FlatButton extends Component {
 }
 
 export default FlatButton;
+
+const styles = oxygenCss({
+  flatButton: {
+    '+flatButton': {
+      marginLeft: Units.phone.gutter.mini
+    },
+    border: 'none',
+    display: 'inline-block',
+    fontWeight: 700,
+    color: 'inherit',
+    userSelect: 'none',
+    backgroundColor: 'transparent',
+    textTransform: 'uppercase',
+    outline: 'none',
+    tapHighlightColor: 'transparent',
+    transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+    overflow: 'hidden',
+    cursor: 'pointer',
+    minHeight: `${Units.phone.button.height}px`,
+    lineHeight: `${Units.phone.button.height}px`,
+    padding: `0 ${Units.phone.gutter.mini}px`,
+    borderRadius: Units.phone.borderRadius,
+    fontSize: `${Units.phone.button.fontSize}px`,
+    position: 'relative',
+    margin: `auto 0`,
+        // margin: `0 ${Units.phone.gutter.mini}px`,
+    minWidth: Units.phone.button.width,
+    '@desktop': {
+      // margin: `0 ${Units.desktop.gutter.mini}px`,
+      minWidth: Units.desktop.button.width,
+      minHeight: `${Units.desktop.button.height}px`,
+      lineHeight: `${Units.desktop.button.height}px`,
+      padding: `0 ${Units.desktop.gutter.mini}px`,
+      borderRadius: Units.desktop.borderRadius,
+      fontSize: `${Units.desktop.button.fontSize}px`,
+    },
+    '&dense': {
+      minHeight: `${Units.phone.button.dense.height}px`,
+      lineHeight: `${Units.phone.button.dense.height}px`,
+      '@desktop': {
+        minHeight: `${Units.desktop.button.dense.height}px`,
+        lineHeight: `${Units.desktop.button.dense.height}px`
+      },
+    },
+    '&fullWidth': {
+      display: 'block'
+    },
+  },
+
+});

@@ -32,10 +32,6 @@ const css = oxygenCss({
   testContainer: {
     padding: Units.phone.gutter.more
   },
-  content: {
-    flex: 1,
-    zIndex: 1,
-  },
   colorChooser: {
     width: Units.phone.gutter.more,
     margin: Units.phone.gutter.mini,
@@ -133,10 +129,10 @@ class ThemeChanger extends Component {
         <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
           Theme
         </Toolbar>
-        <Scrollable className={css.content}>
+        <Scrollable>
           {this.renderPrimary()}
           {this.renderSecondary()}
-          {/*this.renderTertiary()*/}
+          {this.renderTertiary()}
           {_l`Hello ${name}, ${amount}:c(EUR) moneyz on ${date}:d`}
           <RaisedButton label={_l`Swedish`} onTouchTap={this.setLocale.bind(this, 'sv-SE', 'SEK')}/>
           <RaisedButton label={_l`English`} onTouchTap={this.setLocale.bind(this, 'en-US', 'EUR')} />

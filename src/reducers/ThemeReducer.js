@@ -4,7 +4,7 @@ const CHANGE_THEME = 'theme/change';
 
 const initialState = {
   primary: 'red',
-  secondary: 'amber',
+  secondary: 'indigo',
   tertiary: 'grey',
   main: 'light'
 };

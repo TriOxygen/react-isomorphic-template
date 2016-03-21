@@ -9,12 +9,10 @@ const styles = oxygenCss({
     userSelect: 'none',
     boxSizing: 'border-box',
     padding: `0 ${Units.phone.gutter.mini}px`,
-    height: Units.phone.toolbar.height,
-    lineHeight: `${Units.phone.toolbar.height}px`,
+    flex: `0 0 ${Units.phone.toolbar.height}px`,
     '@desktop': {
       padding: `0 ${Units.desktop.gutter.mini}px`,
-      height: Units.desktop.toolbar.height,
-      lineHeight: `${Units.desktop.toolbar.height}px`
+      flex: `0 0 ${Units.desktop.toolbar.height}px`,
     }
   }
 });

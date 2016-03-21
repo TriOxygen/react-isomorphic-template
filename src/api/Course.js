@@ -39,11 +39,12 @@ export default router => {
 
 async function newCourse(body, params) {
   const course = new Course(body);
+  course.description = stringGen(200);
   return await course.save();
 }
 
 async function getCourses(body, params) {
-  return await Course.find({}).select('name theme children');
+  return await Course.find({}).select('name theme description children');
 }
 
 async function getCourse(body, params) {
@@ -54,7 +55,23 @@ async function getCourse(body, params) {
   return course;
 }
 
+function stringGen(len) {
+    let text = '';
+
+    const charset = 'abcdefghijklmnopqrstuvwxyz';
+
+    for( let i=0; i < len; i++ ) {
+      text += charset.charAt(Math.floor(Math.random() * charset.length));
+      if (Math.random() > 0.7) {
+        text += ' ';
+      }
+    }
+
+    return text;
+}
+
 async function updateCourse(body, params) {
+  body.description = body.description || stringGen(200);
   const course = await Course.findByIdAndUpdate(params.courseId, body, { new: true });
   if (!course) {
     throw new NotFoundError();

@@ -112,9 +112,12 @@ class RaisedButton extends Component {
 
 const styles = oxygenCss({
   raisedButton: {
+    '+raisedButton': {
+      marginLeft: Units.phone.gutter.mini
+    },
     border: 'none',
     display: 'inline-block',
-    fontWeight: 500,
+    fontWeight: 700,
     textAlign: 'center',
     textDecoration: 'none',
     backgroundColor: 'rgba(158, 158, 158, 0.2)',
@@ -134,7 +137,7 @@ const styles = oxygenCss({
     borderRadius: Units.phone.borderRadius,
     fontSize: `${Units.phone.button.fontSize}px`,
     minWidth: Units.phone.button.width,
-    margin: `auto ${Units.phone.gutter.mini}px`,
+    margin: `auto 0`,
     boxSizing: 'border-box',
     ':hover': {
       boxShadow: Shadow[2],
@@ -144,7 +147,6 @@ const styles = oxygenCss({
       boxShadow: Shadow[2]
     },
     '@desktop': {
-      margin: `auto ${Units.desktop.gutter.mini}px`,
       minWidth: Units.desktop.button.width,
       minHeight: `${Units.desktop.button.height}px`,
       lineHeight: `${Units.desktop.button.height}px`,
