@@ -73,8 +73,14 @@ class RaisedButton extends Component {
     const { disabled, onTouchTap, href } = this.props;
     if (!disabled && onTouchTap) {
       event.preventDefault();
+      event.stopPropagation();
       onTouchTap(href, event);
     }
+  };
+
+  handleClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   handleKeyPress = (event) => {
@@ -101,7 +107,7 @@ class RaisedButton extends Component {
       tabIndex: 0,
       onKeyPress: this.handleKeyPress,
       onTouchTap: this.handleTouchTap,
-      onClick: this.handleTouchTap,
+      onClick: this.handleClick,
     };
     const containerElement = link ? (disabled ? 'span' : 'a') : 'div';
     return React.createElement(containerElement, props, ink, children, label);

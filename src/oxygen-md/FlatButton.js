@@ -63,7 +63,13 @@ class FlatButton extends Component {
     if (!disabled && onTouchTap) {
       onTouchTap(href);
       event.preventDefault();
+      event.stopPropagation();
     }
+  };
+
+  handleClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   handleKeyPress = (event) => {
@@ -113,7 +119,7 @@ class FlatButton extends Component {
       ...other,
       onKeyPress: this.handleKeyPress,
       onTouchTap: this.handleTouchTap,
-      onClick: this.handleTouchTap,
+      onClick: this.handleClick,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
       onMouseEnter: this.handleMouseEnter,
