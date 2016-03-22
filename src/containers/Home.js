@@ -76,19 +76,6 @@ const css = oxygenCss({
   }
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getStructure: bindActionCreators(websiteActions.getStructure, dispatch),
-    go: bindActionCreators(routeActions.push, dispatch)
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    website: state.website,
-  }
-}
-
 class ImageModule extends React.Component {
 
   render() {
@@ -135,6 +122,10 @@ class Home extends React.Component {
     go: PropTypes.func,
     website: PropTypes.object.isRequired,
     getStructure: PropTypes.func.isRequired
+  };
+
+  static contextTypes = {
+    router: PropTypes.object
   };
 
   // static needs = [
@@ -294,6 +285,8 @@ class Home extends React.Component {
   }
 
   go = (link) => {
+    // this.context.router.push(link);
+    // console.log(this.props);
     this.props.go(link);
   };
 
@@ -314,6 +307,7 @@ class Home extends React.Component {
           <RaisedButton secondary onClick={this.jump.bind(this, 4)} label={'Press'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 5)} label={'About'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 6)} label={'Contact'}/>
+          <RaisedButton secondary link href="/users" onTouchTap={this.go} label={'Users'}/>
           <RaisedButton secondary link href="/theme" onTouchTap={this.go} label={'Theme'}/>
           <RaisedButton secondary link href="/test" onTouchTap={this.go} label={'Test'}/>
         </Toolbar>
@@ -322,6 +316,19 @@ class Home extends React.Component {
         </Scrollable>
       </Layout>
     );
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getStructure: bindActionCreators(websiteActions.getStructure, dispatch),
+    go: bindActionCreators(routeActions.push, dispatch)
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    website: state.website,
   }
 }
 

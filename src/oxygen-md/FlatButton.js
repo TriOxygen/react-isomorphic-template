@@ -63,7 +63,6 @@ class FlatButton extends Component {
     if (!disabled && onTouchTap) {
       onTouchTap(href);
       event.preventDefault();
-      event.stopPropagation();
     }
   };
 
@@ -101,7 +100,7 @@ class FlatButton extends Component {
 
   render() {
     const theme = this.props.theme || this.context.theme;
-    const { link, disabled, fullWidth, dense, label, children, onTouchTap, ...other } = this.props;
+    const { link, disabled, fullWidth, dense, label, children, ...other } = this.props;
     const ink = !disabled && <Ink />;
     const buttonClasses = classNames(styles.flatButton, {
       [styles.dense]: dense,
@@ -114,6 +113,7 @@ class FlatButton extends Component {
       ...other,
       onKeyPress: this.handleKeyPress,
       onTouchTap: this.handleTouchTap,
+      onClick: this.handleTouchTap,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
       onMouseEnter: this.handleMouseEnter,
@@ -134,7 +134,7 @@ const styles = oxygenCss({
     },
     border: 'none',
     display: 'inline-block',
-    fontWeight: 700,
+    fontWeight: 500,
     color: 'inherit',
     userSelect: 'none',
     backgroundColor: 'transparent',
@@ -150,7 +150,7 @@ const styles = oxygenCss({
     borderRadius: Units.phone.borderRadius,
     fontSize: `${Units.phone.button.fontSize}px`,
     position: 'relative',
-    margin: `auto 0`,
+    margin: 'auto 0',
         // margin: `0 ${Units.phone.gutter.mini}px`,
     minWidth: Units.phone.button.width,
     '@desktop': {

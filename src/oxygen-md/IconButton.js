@@ -88,7 +88,6 @@ class IconButton extends Component {
     if (!disabled && onTouchTap) {
       onTouchTap(href);
       event.preventDefault();
-      event.stopPropagation();
     }
   };
 
@@ -104,6 +103,7 @@ class IconButton extends Component {
       ...other,
       onKeyPress: this.handleKeyPress,
       onTouchTap: this.handleTouchTap,
+      onClick: this.handleTouchTap,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
       onMouseEnter: this.handleMouseEnter,

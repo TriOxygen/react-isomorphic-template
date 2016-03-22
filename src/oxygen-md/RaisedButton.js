@@ -72,9 +72,8 @@ class RaisedButton extends Component {
   handleTouchTap = (event) => {
     const { disabled, onTouchTap, href } = this.props;
     if (!disabled && onTouchTap) {
-      onTouchTap(href, event);
       event.preventDefault();
-      event.stopPropagation();
+      onTouchTap(href, event);
     }
   };
 
@@ -88,7 +87,7 @@ class RaisedButton extends Component {
 
   render() {
     const theme = this.props.theme || this.context.theme;
-    const { link, disabled, fullWidth, dense, label, children, onTouchTap, ...other } = this.props;
+    const { link, disabled, fullWidth, dense, label, children, ...other } = this.props;
     const ink = !disabled && <Ink />;
     const buttonClasses = classNames(styles.raisedButton, {
       [styles.dense]: dense,
@@ -102,6 +101,7 @@ class RaisedButton extends Component {
       tabIndex: 0,
       onKeyPress: this.handleKeyPress,
       onTouchTap: this.handleTouchTap,
+      onClick: this.handleTouchTap,
     };
     const containerElement = link ? (disabled ? 'span' : 'a') : 'div';
     return React.createElement(containerElement, props, ink, children, label);
@@ -117,7 +117,7 @@ const styles = oxygenCss({
     },
     border: 'none',
     display: 'inline-block',
-    fontWeight: 700,
+    fontWeight: 500,
     textAlign: 'center',
     textDecoration: 'none',
     backgroundColor: 'rgba(158, 158, 158, 0.2)',
@@ -137,7 +137,7 @@ const styles = oxygenCss({
     borderRadius: Units.phone.borderRadius,
     fontSize: `${Units.phone.button.fontSize}px`,
     minWidth: Units.phone.button.width,
-    margin: `auto 0`,
+    margin: 'auto 0',
     boxSizing: 'border-box',
     ':hover': {
       boxShadow: Shadow[2],
