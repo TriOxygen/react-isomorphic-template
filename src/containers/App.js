@@ -2,6 +2,23 @@ import React, { PropTypes } from 'react';
 import CSSPropertyOperations from 'react/lib/CSSPropertyOperations';
 import { connect } from 'react-redux';
 import { setLocale } from 'lib/I18n';
+import { Drawer, DrawerHeader, MenuItem } from 'oxygen-md';
+import { addMessages, translate as _l } from 'lib/I18n';
+import SocialPerson from 'oxygen-md-svg-icons/lib/SvgIcons/SocialPerson';
+import ImagePalette from 'oxygen-md-svg-icons/lib/SvgIcons/ImagePalette';
+import ActionHome from 'oxygen-md-svg-icons/lib/SvgIcons/ActionHome';
+import { bindActionCreators } from 'redux';
+import { routeActions } from 'react-router-redux';
+import * as homeActions from 'reducers/HomeReducer';
+import Hammer from 'components/Hammer';
+
+addMessages({
+  ['en-US']: {
+    'Home': 'Home',
+    'Users': 'Users',
+    'Theme Changer': 'Theme Changer'
+  }
+});
 
 const appStyles = oxygenCss({
   HTML: {
@@ -20,6 +37,8 @@ const appStyles = oxygenCss({
   },
   root: {
     height: '100%',
+    position: 'relative',
+    zIndex: 1,
   }
 })
 
@@ -35,7 +54,14 @@ class App extends React.Component {
   static propTypes = {
     children: PropTypes.object,
     locale: PropTypes.object,
+    drawerPosition: PropTypes.number,
+    toggleDrawer: PropTypes.func,
+    setDrawerPosition: PropTypes.func,
     theme: PropTypes.object
+  };
+
+  state = {
+    position: 0
   };
 
   constructor() {
@@ -51,9 +77,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const node = document.getElementById('app');
-    node.className = appStyles.root;
-    CSSPropertyOperations.setValueForStyles(node, this.getStyle());
+    // const node = document.getElementById('app');
+    // node.className = appStyles.root;
+    // CSSPropertyOperations.setValueForStyles(node, this.getStyle());
   }
 
   componentDidUpdate() {
@@ -82,16 +108,70 @@ class App extends React.Component {
     };
   }
 
+  drawer = (event) => {
+    const { toggleDrawer } = this.props;
+    toggleDrawer();
+  };
+
+  pan = (event) => {
+    const position = event.deltaX > 500 ? 1 : event.deltaX / 500;
+    const { drawerPosition } = this.props;
+    if (position > 0.5 && event.deltaX > 0) {
+      this.props.setDrawerPosition(1);
+    } else if (position < 0.5 && event.deltaX < 1) {
+      this.props.setDrawerPosition(0);
+    } else if (Math.abs(position - drawerPosition) > 0.1) {
+      console.log(position);
+      this.props.setDrawerPosition(position);
+    }
+    //console.log(event.deltaX);
+  };
+
+  go = (link) => {
+    this.props.go(link);
+  };
+
+  renderMenu() {
+    const { drawerPosition } = this.props;
+    return (
+      <Drawer position={drawerPosition} onRequestClose={this.drawer} onRequestOpen={this.drawer}>
+        <DrawerHeader primary>{_l`Home`}</DrawerHeader>
+        <MenuItem href={'/'} onTouchTap={this.go} icon={<ActionHome/>}>{_l`Home`}</MenuItem>
+        <MenuItem href={'/users'} onTouchTap={this.go} autoFocus icon={<SocialPerson/>}>{_l`Users`}</MenuItem>
+        <MenuItem href={'/theme'} onTouchTap={this.go} icon={<ImagePalette/>}>{_l`Theme Changer`}</MenuItem>
+      </Drawer>
+    );
+  }
+
   render() {
-    return React.Children.only(this.props.children);
+    const menu = this.renderMenu();
+    return (
+      <Hammer
+        onPan={this.pan}
+      >
+        <div style={this.getStyle()} className={appStyles.root}>
+          {this.props.children}
+          {menu}
+        </div>
+      </Hammer>
+    );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    go: bindActionCreators(routeActions.push, dispatch),
+    toggleDrawer: bindActionCreators(homeActions.toggleDrawer, dispatch),
+    setDrawerPosition: bindActionCreators(homeActions.setDrawerPosition, dispatch)
+  }
+}
+
 
 function mapStateToProps(state) {
   return {
     theme: state.theme,
-    locale: state.locale
+    drawerPosition: state.home.drawerPosition
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

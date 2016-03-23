@@ -10,12 +10,14 @@ import { Colors, Theme, Units, Typography } from 'oxygen-md/Styles';
 import Section from 'containers/Section';
 import MaterialTest from 'containers/MaterialTest';
 import View from 'oxygen-md/View';
-import { Layout, Toolbar, RaisedButton } from 'oxygen-md';
+import { Drawer, DrawerHeader, MenuItem, Layout, Toolbar, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import Scrollable from 'components/Scrollable';
 import TransitionTest from 'components/TransitionTest';
 import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux'
+
+import NavigationMenu from 'oxygen-md-svg-icons/lib/SvgIcons/NavigationMenu';
 
 // console.log(__CONFIG__)
 
@@ -112,6 +114,7 @@ const moduleMap = {
 
 class Home extends React.Component {
   state = {
+    drawer: false,
     y: 0,
     srollTop: 0
   };
@@ -284,15 +287,15 @@ class Home extends React.Component {
     this.props.go('/test');
   }
 
-  go = (link) => {
-    // this.context.router.push(link);
-    // console.log(this.props);
-    this.props.go(link);
+
+
+  drawer = () => {
+    this.setState({ drawer: !this.state.drawer });
   };
 
   render() {
     const pages = this.renderRandom();
-    const { scrollTop } = this.state;
+    const { scrollTop, drawer } = this.state;
     // const { todos, dispatch } = this.props;
     // <RaisedButton label='Get Stuff' onClick={this.getWebsite.bind(this)}></RaisedButton>
 
@@ -300,7 +303,13 @@ class Home extends React.Component {
               // }
     return (
       <Layout >
-        <Toolbar className={css.toolbar} primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
+        <Toolbar
+          className={css.toolbar}
+          primary
+          onTouchTapLeftIcon={this.drawer}
+          leftIcon={<NavigationMenu block/>}
+
+        >
           <RaisedButton secondary onClick={this.jump.bind(this, 1)} label={'Tour'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 2)} label={'Case Studies'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 3)} label={'Blog'}/>
@@ -311,9 +320,6 @@ class Home extends React.Component {
           <RaisedButton secondary link href="/theme" onTouchTap={this.go} label={'Theme'}/>
           <RaisedButton secondary link href="/test" onTouchTap={this.go} label={'Test'}/>
         </Toolbar>
-        <Scrollable scrollTop={scrollTop} className={css.content}>
-          {pages}
-        </Scrollable>
       </Layout>
     );
   }

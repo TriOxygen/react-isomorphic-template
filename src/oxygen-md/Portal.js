@@ -17,13 +17,11 @@ export default class Portal extends Component {
   componentWillMount() {
     const { style, className, menu, dialog, tooltip } = this.props;
     this.node = document.createElement('div');
-    if (className) {
-      this.node.className = classNames(className, {
-        [css.dialog]: dialog,
-        [css.menu]: menu,
-        [css.tooltip]: tooltip
-      });
-    }
+    this.node.className = classNames(className, css.root, {
+      [css.dialog]: dialog,
+      [css.menu]: menu,
+      [css.tooltip]: tooltip
+    });
     CSSPropertyOperations.setValueForStyles(this.node, style);
     document.body.appendChild(this.node);
     this.renderPortal(this.props);
@@ -56,6 +54,9 @@ export default class Portal extends Component {
 }
 
 const css = oxygenCss({
+  root: {
+    position: 'relative'
+  },
   menu: {
     zIndex: 99
   },

@@ -4,45 +4,53 @@ import DrawerContainer from './DrawerContainer';
 
 export default class Drawer extends Component {
 
+  state = {
+    position: this.props.position
+  };
+
   static propTypes = {
     children: PropTypes.node,
-    open: PropTypes.bool,
+    position: PropTypes.number,
     onRequestClose: PropTypes.func,
     onRequestOpen: PropTypes.func,
   };
 
   static defaultProps = {
-    open: false,
+    position: 0,
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.position !== this.state.position) {
+      this.setState({ position: nextProps.position });
+    }
+  }
+
   handleRequestOpen = () => {
-    const { open, onRequestOpen } = this.props;
-    if (!open && onRequestOpen) {
+    const { position, onRequestOpen } = this.props;
+    if (!position && onRequestOpen) {
       onRequestOpen();
     }
   };
 
   handleRequestClose = () => {
-    const { open, onRequestClose } = this.props;
-    if (open && onRequestClose) {
+    const { position, onRequestClose } = this.props;
+    if (position && onRequestClose) {
       onRequestClose();
     }
   };
 
   render() {
-    const { open, children, onRequestOpen, onRequestClose, ...other } = this.props;
-
+    const { children, onRequestOpen, onRequestClose, ...other } = this.props;
+    const { position } = this.state;
     return (
       <Motion
         style={{
-          position: spring(open ? 1 : 0, { stiffness: 300, damping: 25, precision: 0.1 }),
-          overlayPosition: open ? 0 : -100,
-          opacity: spring(open ? 1 : 0, { stiffness: 300, damping: 25, precision: 0.01 })
+          position: spring(position, { stiffness: 300, damping: 25, precision: 0.01 }),
         }}
       >
         {interpolated => {
-          if (interpolated.opacity > 0) {
-            return <DrawerContainer {...interpolated} onRequestClose={this.handleRequestClose} onRequestOpen={this.handleRequestOpen} {...other}>{children}</DrawerContainer>;
+          if (interpolated.position > 0) {
+            return <DrawerContainer onRequestClose={this.handleRequestClose} onRequestOpen={this.handleRequestOpen} {...other} {...interpolated}>{children}</DrawerContainer>;
           }
           return null;
         }}

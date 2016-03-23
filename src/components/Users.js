@@ -14,6 +14,7 @@ import { List, ListItem, DrawerHeader, IconButton, MenuItem } from 'oxygen-md';
 import * as userActions from 'reducers/UserReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as homeActions from 'reducers/HomeReducer';
 
 import { addMessages, translate as _l } from 'lib/I18n';
 
@@ -58,11 +59,11 @@ class Users extends Component {
   state = {
     edit: null,
     portal: false,
-    drawer: false
   };
 
   static propTypes = {
     dispatch: PropTypes.func,
+    toggleDrawer: PropTypes.func,
     createUser: PropTypes.func,
     deleteUser: PropTypes.func,
     updateUser: PropTypes.func,
@@ -132,17 +133,18 @@ class Users extends Component {
     this.setState({ portal: !this.state.portal });
   };
 
-  drawer = () => {
-    this.setState({ drawer: !this.state.drawer });
-  };
-
   handleUserTap = user => {
     this.edit(user);
   };
 
+  drawer = () => {
+    const { toggleDrawer } = this.props;
+    toggleDrawer();
+  }
+
   render() {
     const { users } = this.props;
-    const { edit, portal, drawer } = this.state;
+    const { edit, portal } = this.state;
     const { name, email } = edit || {};
 
     const label = edit ? _l`Save` : _l`Add`;
@@ -192,15 +194,6 @@ class Users extends Component {
           </Transition>
           </List>
         </Scrollable>
-        <Drawer onRequestClose={this.drawer} onRequestOpen={this.drawer} open={drawer}>
-          <DrawerHeader primary>Test</DrawerHeader>
-          <MenuItem autoFocus icon={<ContentClear/>}>Test</MenuItem>
-          <MenuItem icon={<ActionAccessibility/>}>Test</MenuItem>
-          <MenuItem icon={<ActionAccountBalance/>}>Test</MenuItem>
-          <MenuItem divider icon={<ActionAccountBalanceWallet/>}>Test</MenuItem>
-          <MenuItem icon={<ActionAccountBox/>}>Test</MenuItem>
-          <MenuItem icon={<ActionAccountBox/>}>Test</MenuItem>
-        </Drawer>
         <Dialog onRequestClose={this.portal} onRequestOpen={this.portal} open={portal}>
           <DialogTitle>{_l`User`}</DialogTitle>
           <DialogContent>
@@ -222,6 +215,7 @@ class Users extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    toggleDrawer: bindActionCreators(homeActions.toggleDrawer, dispatch),
     createUser: bindActionCreators(userActions.createUser, dispatch),
     updateUser: bindActionCreators(userActions.updateUser, dispatch),
     deleteUser: bindActionCreators(userActions.deleteUser, dispatch),

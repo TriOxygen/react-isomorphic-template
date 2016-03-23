@@ -13,6 +13,7 @@ const styles = oxygenCss({
   },
   'root': {
     userSelect: 'none',
+    display: 'block',
     outline: 'none',
     transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
     position: 'relative',
@@ -49,6 +50,7 @@ class MenuItem extends Component {
     disabled: PropTypes.bool,
     className: PropTypes.string,
     dense: PropTypes.bool,
+    href: PropTypes.string,
     active: PropTypes.bool,
     icon: PropTypes.node,
     divider: PropTypes.bool,
@@ -107,11 +109,22 @@ class MenuItem extends Component {
     }
   };
 
-  handleTouchTap = () => {
-    const { disabled, onTouchTap, payload } = this.props;
+  handleTouchTap = (event) => {
+    const { disabled, payload, onTouchTap, href } = this.props;
     if (!disabled && onTouchTap) {
-      onTouchTap(payload);
+      event.preventDefault();
+      event.stopPropagation();
+      if (href) {
+        onTouchTap(href, event);
+      } else {
+        onTouchTap(payload, event);
+      }
     }
+  };
+
+  handleClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   handleFocus = () => {
@@ -141,7 +154,7 @@ class MenuItem extends Component {
   }
 
   render() {
-    const { disabled, children, icon, dense, className, ...other } = this.props;
+    const { disabled, children, icon, dense, href, className, ...other } = this.props;
     let iconElement;
     let tabIndex;
     if (icon) {
@@ -154,24 +167,21 @@ class MenuItem extends Component {
     if (!disabled) {
       tabIndex = 0;
     }
+    const props = {
+      ...other,
+      onTouchTap: this.handleTouchTap,
+      onClick: this.handleClick,
+      onMouseEnter: this.handleMouseEnter,
+      onMouseLeave: this.handleMouseLeave,
+      onBlur: this.handleBlur,
+      onFocus: this.handleFocus,
+      style: this.getStyle(),
+      tabIndex: tabIndex,
+      className: rootClasses,
+    };
 
-    return (
-      <div
-        onTouchTap={this.handleTouchTap}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-        onBlur={this.handleBlur}
-        onFocus={this.handleFocus}
-        style={this.getStyle()}
-        tabIndex={tabIndex}
-        className={rootClasses}
-        {...other}
-      >
-        {iconElement}
-        <Ink />
-        {children}
-      </div>
-    );
+    const containerElement = href ? (disabled ? 'span' : 'a') : 'div';
+    return React.createElement(containerElement, props, iconElement, <Ink />, children);
   }
 }
 
