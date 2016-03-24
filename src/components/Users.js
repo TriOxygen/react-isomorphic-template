@@ -4,8 +4,8 @@ import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
 import { Drawer, Dialog, DialogTitle, DialogContent, DialogActions, View, FlatButton, Layout, Toolbar, TextField, RaisedButton } from 'oxygen-md';
 import fetchComponentData from 'lib/fetchComponentData';
+import MainAppBar from 'components/MainAppBar';
 
-import NavigationMenu from 'oxygen-md-svg-icons/lib/SvgIcons/NavigationMenu';
 import EditorModeEdit from 'oxygen-md-svg-icons/lib/SvgIcons/EditorModeEdit';
 import ActionDelete from 'oxygen-md-svg-icons/lib/SvgIcons/ActionDelete';
 
@@ -63,7 +63,7 @@ class Users extends Component {
 
   static propTypes = {
     dispatch: PropTypes.func,
-    toggleDrawer: PropTypes.func,
+    openDrawer: PropTypes.func,
     createUser: PropTypes.func,
     deleteUser: PropTypes.func,
     updateUser: PropTypes.func,
@@ -138,8 +138,8 @@ class Users extends Component {
   };
 
   drawer = () => {
-    const { toggleDrawer } = this.props;
-    toggleDrawer();
+    const { openDrawer } = this.props;
+    openDrawer();
   }
 
   render() {
@@ -153,11 +153,7 @@ class Users extends Component {
 //          </View>
     return (
       <Layout>
-        <Toolbar
-          primary
-          onTouchTapLeftIcon={this.drawer}
-          leftIcon={<NavigationMenu block/>}
-        />
+        <MainAppBar />
         <Scrollable className={css.content} >
           <List>
           <Transition
@@ -215,7 +211,7 @@ class Users extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    toggleDrawer: bindActionCreators(homeActions.toggleDrawer, dispatch),
+    openDrawer: bindActionCreators(homeActions.openDrawer, dispatch),
     createUser: bindActionCreators(userActions.createUser, dispatch),
     updateUser: bindActionCreators(userActions.updateUser, dispatch),
     deleteUser: bindActionCreators(userActions.deleteUser, dispatch),

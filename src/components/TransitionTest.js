@@ -5,6 +5,7 @@ import Scrollable from 'components/Scrollable';
 import { Styles, FlatButton, Layout, Toolbar, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import fetchComponentData from 'lib/fetchComponentData';
+import MainAppBar from 'components/MainAppBar';
 
 import { Grid, GridCell } from 'oxygen-md';
 import { Card, CardContent, CardImage, CardTitle, CardActions } from 'oxygen-md';
@@ -84,9 +85,7 @@ class TransitionTest extends Component {
     const { courses } = this.props;
     return (
       <Layout>
-        <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
-          <RaisedButton onTouchTap={this.addItem.bind(this)} fullWidth label={'Add'} />
-        </Toolbar>
+        <MainAppBar />
         <Scrollable>
           <Grid gutter>
             {

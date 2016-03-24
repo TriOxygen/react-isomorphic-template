@@ -56,6 +56,8 @@ class App extends React.Component {
     locale: PropTypes.object,
     drawerPosition: PropTypes.number,
     toggleDrawer: PropTypes.func,
+    closeDrawer: PropTypes.func,
+    openDrawer: PropTypes.func,
     setDrawerPosition: PropTypes.func,
     theme: PropTypes.object
   };
@@ -108,23 +110,14 @@ class App extends React.Component {
     };
   }
 
-  drawer = (event) => {
-    const { toggleDrawer } = this.props;
-    toggleDrawer();
+  closeDrawer = (event) => {
+    const { closeDrawer } = this.props;
+    closeDrawer();
   };
 
-  pan = (event) => {
-    const position = event.deltaX > 500 ? 1 : event.deltaX / 500;
-    const { drawerPosition } = this.props;
-    if (position > 0.5 && event.deltaX > 0) {
-      this.props.setDrawerPosition(1);
-    } else if (position < 0.5 && event.deltaX < 1) {
-      this.props.setDrawerPosition(0);
-    } else if (Math.abs(position - drawerPosition) > 0.1) {
-      console.log(position);
-      this.props.setDrawerPosition(position);
-    }
-    //console.log(event.deltaX);
+  openDrawer = (event) => {
+    const { openDrawer } = this.props;
+    openDrawer();
   };
 
   go = (link) => {
@@ -134,10 +127,10 @@ class App extends React.Component {
   renderMenu() {
     const { drawerPosition } = this.props;
     return (
-      <Drawer position={drawerPosition} onRequestClose={this.drawer} onRequestOpen={this.drawer}>
+      <Drawer position={drawerPosition} onRequestClose={this.closeDrawer} onRequestOpen={this.openDrawer}>
         <DrawerHeader primary>{_l`Home`}</DrawerHeader>
-        <MenuItem href={'/'} onTouchTap={this.go} icon={<ActionHome/>}>{_l`Home`}</MenuItem>
-        <MenuItem href={'/users'} onTouchTap={this.go} autoFocus icon={<SocialPerson/>}>{_l`Users`}</MenuItem>
+        <MenuItem href={'/'} onTouchTap={this.go} autoFocus icon={<ActionHome/>}>{_l`Home`}</MenuItem>
+        <MenuItem href={'/users'} onTouchTap={this.go} icon={<SocialPerson/>}>{_l`Users`}</MenuItem>
         <MenuItem href={'/theme'} onTouchTap={this.go} icon={<ImagePalette/>}>{_l`Theme Changer`}</MenuItem>
       </Drawer>
     );
@@ -146,14 +139,10 @@ class App extends React.Component {
   render() {
     const menu = this.renderMenu();
     return (
-      <Hammer
-        onPan={this.pan}
-      >
-        <div style={this.getStyle()} className={appStyles.root}>
-          {this.props.children}
-          {menu}
-        </div>
-      </Hammer>
+      <div style={this.getStyle()} className={appStyles.root}>
+        {this.props.children}
+        {menu}
+      </div>
     );
   }
 }
@@ -162,6 +151,8 @@ function mapDispatchToProps(dispatch) {
   return {
     go: bindActionCreators(routeActions.push, dispatch),
     toggleDrawer: bindActionCreators(homeActions.toggleDrawer, dispatch),
+    closeDrawer: bindActionCreators(homeActions.closeDrawer, dispatch),
+    openDrawer: bindActionCreators(homeActions.openDrawer, dispatch),
     setDrawerPosition: bindActionCreators(homeActions.setDrawerPosition, dispatch)
   }
 }

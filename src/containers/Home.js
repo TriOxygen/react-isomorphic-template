@@ -15,7 +15,9 @@ import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountC
 import Scrollable from 'components/Scrollable';
 import TransitionTest from 'components/TransitionTest';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux'
+import { routeActions } from 'react-router-redux';
+import MainAppBar from 'components/MainAppBar';
+
 
 import NavigationMenu from 'oxygen-md-svg-icons/lib/SvgIcons/NavigationMenu';
 
@@ -283,14 +285,8 @@ class Home extends React.Component {
     )
   }
 
-  test() {
-    this.props.go('/test');
-  }
-
-
-
-  drawer = () => {
-    this.setState({ drawer: !this.state.drawer });
+  go = href => {
+    this.props.go(href);
   };
 
   render() {
@@ -303,13 +299,7 @@ class Home extends React.Component {
               // }
     return (
       <Layout >
-        <Toolbar
-          className={css.toolbar}
-          primary
-          onTouchTapLeftIcon={this.drawer}
-          leftIcon={<NavigationMenu block/>}
-
-        >
+        <MainAppBar>
           <RaisedButton secondary onClick={this.jump.bind(this, 1)} label={'Tour'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 2)} label={'Case Studies'}/>
           <RaisedButton secondary onClick={this.jump.bind(this, 3)} label={'Blog'}/>
@@ -319,7 +309,8 @@ class Home extends React.Component {
           <RaisedButton secondary link href="/users" onTouchTap={this.go} label={'Users'}/>
           <RaisedButton secondary link href="/theme" onTouchTap={this.go} label={'Theme'}/>
           <RaisedButton secondary link href="/test" onTouchTap={this.go} label={'Test'}/>
-        </Toolbar>
+        </MainAppBar>
+        {this.renderRandom()}
       </Layout>
     );
   }

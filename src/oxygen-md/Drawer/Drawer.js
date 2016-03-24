@@ -9,6 +9,7 @@ export default class Drawer extends Component {
   };
 
   static propTypes = {
+    right: PropTypes.bool,
     children: PropTypes.node,
     position: PropTypes.number,
     onRequestClose: PropTypes.func,
@@ -26,17 +27,67 @@ export default class Drawer extends Component {
   }
 
   handleRequestOpen = () => {
-    const { position, onRequestOpen } = this.props;
-    if (!position && onRequestOpen) {
+    const { onRequestOpen } = this.props;
+    const { position } = this.state;
+    if (position < 1 && onRequestOpen) {
       onRequestOpen();
     }
   };
 
   handleRequestClose = () => {
-    const { position, onRequestClose } = this.props;
-    if (position && onRequestClose) {
+    const { onRequestClose } = this.props;
+    const { position } = this.state;
+    if (position > 0 && onRequestClose) {
       onRequestClose();
     }
+  };
+
+  componentDidMount() {
+    document.body.addEventListener('touchstart', this.onBodyTouchStart);
+  }
+
+  onBodyTouchMove = event => {
+    const { right } = this.props;
+    const deltaX = right ? this.touchStartX - event.touches[0].pageX : event.touches[0].pageX - this.touchStartX;
+    const position = deltaX > 500 ? 1 : deltaX / 500;
+    if (this.state.position === 0 && deltaX < 0 || this.state.position === 1 && deltaX > 0) {
+      return;
+    }
+    if (position > 0.5 && deltaX > 0 && this.props.onRequestOpen) {
+      this.touchStartX = event.touches[0].pageX;
+      this.touchStartY = event.touches[0].pageY;
+      this.props.onRequestOpen();
+    } else if (position < 0.5 && deltaX < 1 && this.props.onRequestClose) {
+      this.touchStartX = event.touches[0].pageX;
+      this.touchStartY = event.touches[0].pageY;
+      this.props.onRequestClose();
+    } else if (Math.abs(position - this.state.position) > 0.1) {
+      this.setState({ position });
+    }
+  };
+
+  onBodyTouchEnd = event => {
+    const { position } = this.state;
+    document.body.removeEventListener('touchmove', this.onBodyTouchMove);
+    document.body.removeEventListener('touchend', this.onBodyTouchEnd);
+    document.body.removeEventListener('touchcancel', this.onBodyTouchEnd);
+    if (position < 0.5 && this.props.position === 0) {
+      this.setState({ position: 0 });
+    }
+  };
+
+  onBodyTouchStart = event => {
+    const { right } = this.props;
+
+    this.touchStartX = event.touches[0].pageX;
+    this.touchStartY = event.touches[0].pageY;
+    if (this.state.position === 0 && ((!right && this.touchStartX > 100) || (right && this.touchStartX + 100 < window.innerWidth) )) {
+      return;
+    }
+
+    document.body.addEventListener('touchmove', this.onBodyTouchMove);
+    document.body.addEventListener('touchend', this.onBodyTouchEnd);
+    document.body.addEventListener('touchcancel', this.onBodyTouchEnd);
   };
 
   render() {
