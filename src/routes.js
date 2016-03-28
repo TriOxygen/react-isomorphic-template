@@ -5,6 +5,7 @@ import Home from 'containers/Home';
 import TransitionTest from 'components/TransitionTest';
 import Users from 'components/Users';
 import ThemeChanger from 'containers/ThemeChanger';
+import Login from 'containers/Login';
 import NotFound from 'containers/NotFound';
 
 export default (
@@ -13,6 +14,7 @@ export default (
     <Route path="/test" component={TransitionTest} />
     <Route path="/users" component={Users} />
     <Route path="/theme" component={ThemeChanger} />
+    <Route path="/login" component={Login} />
     <Route path="*" component={NotFound}/>
   </Route>
 );

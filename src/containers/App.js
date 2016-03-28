@@ -16,7 +16,8 @@ addMessages({
   ['en-US']: {
     'Home': 'Home',
     'Users': 'Users',
-    'Theme Changer': 'Theme Changer'
+    'Theme Changer': 'Theme Changer',
+    'Login': 'Login'
   }
 });
 
@@ -39,6 +40,9 @@ const appStyles = oxygenCss({
     height: '100%',
     position: 'relative',
     zIndex: 1,
+  },
+  app: {
+    height: '100%',
   }
 })
 
@@ -54,6 +58,7 @@ class App extends React.Component {
   static propTypes = {
     children: PropTypes.object,
     locale: PropTypes.object,
+    auth: PropTypes.object,
     drawerPosition: PropTypes.number,
     toggleDrawer: PropTypes.func,
     closeDrawer: PropTypes.func,
@@ -79,9 +84,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // const node = document.getElementById('app');
-    // node.className = appStyles.root;
-    // CSSPropertyOperations.setValueForStyles(node, this.getStyle());
+    const node = document.getElementById('app');
+    node.className = appStyles.root;
+    CSSPropertyOperations.setValueForStyles(node, this.getStyle());
   }
 
   componentDidUpdate() {
@@ -122,16 +127,18 @@ class App extends React.Component {
 
   go = (link) => {
     this.props.go(link);
+    this.closeDrawer();
   };
 
   renderMenu() {
-    const { drawerPosition } = this.props;
+    const { drawerPosition, auth } = this.props;
     return (
       <Drawer position={drawerPosition} onRequestClose={this.closeDrawer} onRequestOpen={this.openDrawer}>
-        <DrawerHeader primary>{_l`Home`}</DrawerHeader>
+        <DrawerHeader primary>{auth.name.first + ' ' + auth.name.last}</DrawerHeader>
         <MenuItem href={'/'} onTouchTap={this.go} autoFocus icon={<ActionHome/>}>{_l`Home`}</MenuItem>
         <MenuItem href={'/users'} onTouchTap={this.go} icon={<SocialPerson/>}>{_l`Users`}</MenuItem>
         <MenuItem href={'/theme'} onTouchTap={this.go} icon={<ImagePalette/>}>{_l`Theme Changer`}</MenuItem>
+        <MenuItem href={'/login'} onTouchTap={this.go} icon={<ActionHome/>}>{_l`Login`}</MenuItem>
       </Drawer>
     );
   }
@@ -139,7 +146,7 @@ class App extends React.Component {
   render() {
     const menu = this.renderMenu();
     return (
-      <div style={this.getStyle()} className={appStyles.root}>
+      <div className={appStyles.app}>
         {this.props.children}
         {menu}
       </div>
@@ -161,6 +168,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     theme: state.theme,
+    auth: state.auth,
+    locale: state.locale,
     drawerPosition: state.home.drawerPosition
   }
 }

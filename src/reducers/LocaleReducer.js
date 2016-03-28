@@ -1,4 +1,5 @@
 import createStore from 'lib/createStore';
+import persistentStorage from 'lib/persistentStorage';
 
 const SET_LOCALE = 'locale/set';
 
@@ -17,6 +18,7 @@ export default createStore(initialState, {
         defaultCurrency
       };
     }
+    persistentStorage.set('locale', state);
     return state;
   }
 })

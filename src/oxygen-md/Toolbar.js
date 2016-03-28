@@ -11,6 +11,7 @@ const styles = oxygenCss({
     padding: `0 ${Units.phone.gutter.mini}px`,
     lineHeight: `${Units.phone.toolbar.height}px`,
     flex: `0 0 ${Units.phone.toolbar.height}px`,
+    zIndex: 1,
     '@desktop': {
       padding: `0 ${Units.desktop.gutter.mini}px`,
       flex: `0 0 ${Units.desktop.toolbar.height}px`,

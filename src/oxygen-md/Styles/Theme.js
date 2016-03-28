@@ -34,7 +34,10 @@ class Theme {
     this.primary = primary;
     this.secondary = secondary;
     this.tertiary = tertiary;
+    this.shade = main;
     this.theme = Colors.theme[main];
+    this.alternate = Colors.theme[themeText]
+    this.alternateText = Colors.text[main]
     this.text = Colors.text[themeText];
     this.material = Colors.hex;
     this.button = Colors.button[main];

@@ -8,13 +8,13 @@ const DELETE_USER = 'users/delete';
 
 export default createStore([], {
   [GET_USERS]: (state, action) => {
-    return action.data.data;
+    return action.data;
   },
   [CREATE_USER]: (state, action) => {
-    return [...state, action.data.data];
+    return [...state, action.data];
   },
   [UPDATE_USER]: (state, action) => {
-    const updatedUser = action.data.data;
+    const updatedUser = action.data;
     return state.map((user) => {
       if (user._id === updatedUser._id) {
         return {
@@ -26,7 +26,7 @@ export default createStore([], {
     })
   },
   [DELETE_USER]: (state, action) => {
-    const deletedUser = action.data.data;
+    const deletedUser = action.data;
     return state.filter(user => {
       return user._id !== deletedUser._id;
     });
@@ -36,14 +36,14 @@ export default createStore([], {
 export function getUsers () {
   return {
     type: GET_USERS,
-    promise: api.get(`users`)
+    promise: api.get('users')
   };
 }
 
 export function createUser (user) {
   return {
     type: CREATE_USER,
-    promise: api.post(`users`, user)
+    promise: api.post('users', user)
   };
 }
 

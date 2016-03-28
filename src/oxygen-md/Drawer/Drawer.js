@@ -91,7 +91,7 @@ export default class Drawer extends Component {
   };
 
   render() {
-    const { children, onRequestOpen, onRequestClose, ...other } = this.props;
+    const { children, ...other } = this.props;
     const { position } = this.state;
     return (
       <Motion
@@ -101,7 +101,7 @@ export default class Drawer extends Component {
       >
         {interpolated => {
           if (interpolated.position > 0) {
-            return <DrawerContainer onRequestClose={this.handleRequestClose} onRequestOpen={this.handleRequestOpen} {...other} {...interpolated}>{children}</DrawerContainer>;
+            return <DrawerContainer {...other} onRequestClose={this.handleRequestClose} onRequestOpen={this.handleRequestOpen} {...interpolated}>{children}</DrawerContainer>;
           }
           return null;
         }}

@@ -86,7 +86,7 @@ class RaisedButton extends Component {
   handleKeyPress = (event) => {
     const { keyCode } = event;
     if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
-      this.handleTouchTap();
+      this.handleTouchTap(event);
       event.preventDefault();
     }
   };
@@ -113,8 +113,6 @@ class RaisedButton extends Component {
     return React.createElement(containerElement, props, ink, children, label);
   }
 }
-
-
 
 const styles = oxygenCss({
   raisedButton: {

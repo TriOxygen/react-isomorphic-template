@@ -16,7 +16,7 @@ class Card extends Component {
       [css.clickable]: this.props.onTouchTap
     });
     return (
-      <Paper className={classes} {...other}>
+      <Paper className={classes} {...other} hover>
         {children}
       </Paper>
     );
@@ -27,6 +27,6 @@ export default Card;
 
 const css = oxygenCss({
   clickable: {
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 })

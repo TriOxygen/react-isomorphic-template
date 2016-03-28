@@ -1,3 +1,10 @@
+import { addMessages, translate as _l } from 'lib/I18n';
+
+addMessages({
+  ['en-US']: {
+    'Validation has failed.': 'Validation has failed.'
+  }
+});
 
 export class UnknownError {
   static messages = [];
@@ -29,4 +36,20 @@ export class AccessDeniedError extends UnknownError {
     'Can\'t touch this!',
     'Hammer time!'
   ];
+}
+
+export class ValidationError extends UnknownError {
+  code = 500;
+
+  constructor(error) {
+    const message = _l`Validation has failed.`;
+    super(message)
+    this.message = message;
+    this.fields = Object.keys(error.errors).map(field => {
+      const { message, value } = error.errors[field];
+      return { field, message, value };
+    });
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor.name);
+  }
 }

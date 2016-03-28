@@ -1,5 +1,5 @@
 import getModel from 'schemas';
-import { AccessDeniedError, NotFoundError } from 'Errors';
+import { AccessDeniedError, ValidationError, NotFoundError } from 'Errors';
 import { makeMiddleware } from 'api';
 import bcrypt from 'bcrypt';
 
@@ -23,11 +23,21 @@ async function newUser(body, params) {
 
   user.password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(10));
 
-  return await user.save();
+  try {
+    await user.save();
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      throw new ValidationError(error);
+    }
+  }
+  return user;
 }
 
 async function getUsers(body, params) {
-  return await User.find({}).select('name email lastLogin');
+  const users = await User.find({}).select('name email lastLogin');
+  return {
+    data: users
+  };
 }
 
 async function getUser(body, params) {
@@ -35,7 +45,9 @@ async function getUser(body, params) {
   if (!user) {
     throw new NotFoundError();
   }
-  return user;
+  return {
+    data: user
+  };
 }
 
 async function updateUser(body, params, loggedInUser) {
@@ -51,8 +63,17 @@ async function updateUser(body, params, loggedInUser) {
   Object.keys(body).forEach(field => {
     user[field] = body[field];
   });
-  await user.save();
-  return user;
+  try {
+    await user.save();
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      throw new ValidationError(error);
+    }
+  }
+  return {
+    data: user,
+    message: 'Done'
+  };
 }
 
 async function deleteUser(body, params) {
@@ -61,5 +82,7 @@ async function deleteUser(body, params) {
   if (!user) {
     throw new NotFoundError();
   }
-  return user;
+  return {
+    data: user
+  }
 }

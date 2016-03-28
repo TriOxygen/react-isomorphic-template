@@ -55,7 +55,11 @@ export default class DrawerContainer extends Component {
   };
 
   render() {
-    const { overlay, width, right, position, children } = this.props;
+    const { overlay, width, right, children } = this.props;
+    let { position } = this.props;
+    if (position > 1) {
+      position = 1;
+    }
     const transform = right ? `translate3d(100vw,0,0) translateX(${position * -100}%)` : `translate3d(${(position - 1) * 100}%, 0, 0)`;
     const overlayPosition = position > 0 ? 0 : -100;
     return (

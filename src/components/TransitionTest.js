@@ -8,10 +8,11 @@ import fetchComponentData from 'lib/fetchComponentData';
 import MainAppBar from 'components/MainAppBar';
 
 import { Grid, GridCell } from 'oxygen-md';
-import { Card, CardContent, CardImage, CardTitle, CardActions } from 'oxygen-md';
+import { Card, CardMedia, CardContent, CardImage, CardTitle, CardActions } from 'oxygen-md';
 
 import * as itemActions from 'reducers/Items';
 import * as courseActions from 'reducers/CourseReducer';
+import * as mailActions from 'reducers/MailReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -55,12 +56,12 @@ class TransitionTest extends Component {
     return shallowCompare(this, nextProps, nextState);
   }
 
-  addItem() {
+  addItem = () => {
     const { createCourse } = this.props;
     createCourse({
       name: Math.random()
     });
-  }
+  };
 
   delete(course) {
     const { deleteCourse } = this.props;
@@ -81,22 +82,44 @@ class TransitionTest extends Component {
     })
   }
 
+  sendMail = () => {
+
+    const mail = {
+      from: '"Özgür Ayten 👥" <ozgur.ucamaz@gmail.com>',
+      to: 'ozgur.gene@gmail.com',
+      subject: 'Hello ✔',
+      text: 'Hello world 🐴',
+      attachment: [
+        { data: '<html>i <i>hope</i> this works! 🐴 🐴</html>', alternative: true },
+      ]
+    }
+    this.props.sendMail(mail);
+    // send mail with defined transport object
+
+  }
+
   render() {
     const { courses } = this.props;
     return (
       <Layout>
-        <MainAppBar />
+        <MainAppBar>
+          <RaisedButton label='Add' onTouchTap={this.addItem} />
+        </MainAppBar>
         <Scrollable>
           <Grid gutter>
             {
               courses.map(course =>
-                <GridCell size={1/4} key={course._id}>
+                <GridCell key={course._id}>
                   <Card zDepth={1} onTouchTap={this.edit.bind(this, course)} >
-                    <CardImage title={course.name} src="http://loremflickr.com/320/200/cat" />
+                    <CardTitle>{course.name}</CardTitle>
+                    <CardMedia>
+                      <img src="http://fpoimg.com/1600x900" className='oz'/>
+                    </CardMedia>
                     <CardContent>{course.description}</CardContent>
                     <CardActions>
                       <FlatButton secondary onTouchTap={this.edit.bind(this, course)} label='Edit' />
                       <FlatButton primary onTouchTap={this.delete.bind(this, course)} label='Del' />
+                      <FlatButton primary onTouchTap={this.sendMail} label='Mail' />
                     </CardActions>
                   </Card>
                 </GridCell>
@@ -118,6 +141,7 @@ function mapDispatchToProps(dispatch) {
     createCourse: bindActionCreators(courseActions.createCourse, dispatch),
     editCourse: bindActionCreators(courseActions.editCourse, dispatch),
     deleteCourse: bindActionCreators(courseActions.deleteCourse, dispatch),
+    sendMail: bindActionCreators(mailActions.send, dispatch),
   }
 }
 

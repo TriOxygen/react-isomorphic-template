@@ -357,11 +357,23 @@ const buttonColors = {
   }
 };
 
+const snackBar = {
+  light: {
+    background: 'rgba(0, 0, 0, 0.75)',
+    text: textColors.light.default,
+  },
+  dark: {
+    background: 'rgba(255, 255, 255, 0.75)',
+    text: textColors.dark.default,
+  }
+}
+
 const Colors = {
   material: materialColors,
   text: textColors,
   theme: themeColors,
   button: buttonColors,
+  snackBar: snackBar,
   black: '#000000',
   white: '#ffffff',
 

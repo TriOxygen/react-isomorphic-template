@@ -15,6 +15,7 @@ import { NotFoundError } from 'Errors';
 import Config from 'Config';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
+import persistentStorage from 'lib/persistentStorage';
 const MongoStore = connectMongo(session);
 // import routes from 'routes';
 
@@ -43,6 +44,14 @@ app.use(session({
       mongooseConnection: mongoose.connection,
     })
 }));
+
+app.use(function (req, res, next) {
+  const { session } = req;
+  persistentStorage.setStorage(session);
+  // session.auth = session.auth || persistentStorage.get('auth');
+  // persistentStorage.set('auth', session.auth);
+  next();
+});
 
 /**
  * Removes a module from the cache
@@ -83,11 +92,8 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
 
       app.use( function main(req, res, next) {
         const { session } = req;
-        session.calls = session.calls || 0;
-        session.calls++;
         const location = createLocation(req.url);
 
-        const store = configureStore();
         // const routes = require('./routes');
 
         match({ routes, location }, async (err, redirectLocation, renderProps) => {
@@ -104,6 +110,11 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
             return next(new NotFoundError());
             // return res.status(404).end('Not found');
           }
+          const initial = {
+            auth: session.auth,
+            locale: session.locale
+          };
+          const store = configureStore(initial);
 
           function renderView() {
             const initialView = (

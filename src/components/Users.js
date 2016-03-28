@@ -11,10 +11,13 @@ import ActionDelete from 'oxygen-md-svg-icons/lib/SvgIcons/ActionDelete';
 
 import { List, ListItem, DrawerHeader, IconButton, MenuItem } from 'oxygen-md';
 
+import { SnackBar } from 'oxygen-md';
+
 import * as userActions from 'reducers/UserReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as homeActions from 'reducers/HomeReducer';
+import * as userMessageActions from 'reducers/UserMessageReducer';
 
 import { addMessages, translate as _l } from 'lib/I18n';
 
@@ -34,8 +37,10 @@ addMessages({
     'Clear': 'Clear',
     'Save': 'Save',
     'Dialog': 'Dialog',
+    'Message': 'Message',
     'User': 'User',
     'Drawer': 'Drawer',
+    'User updated': 'User updated',
     'Password': 'Password',
   },
 });
@@ -113,7 +118,7 @@ class Users extends Component {
   }
 
   updateUser() {
-    const { updateUser } = this.props;
+    const { updateUser, addMessage } = this.props;
     const { edit } = this.state;
     updateUser(edit._id, {
       name: {
@@ -122,6 +127,8 @@ class Users extends Component {
       },
       email: this.refs.email.getValue(),
       password: this.refs.password.getValue(),
+    }).then(() => {
+      this.setState({ portal: false });
     });
   }
 
@@ -142,8 +149,20 @@ class Users extends Component {
     openDrawer();
   }
 
+  nextMessage = () => {
+    const { nextMessage } = this.props;
+    nextMessage();
+  }
+
+  message = () => {
+    const { addMessage } = this.props;
+    this._count = this._count || 0;
+
+    addMessage(++this._count + ' sheep');
+  }
+
   render() {
-    const { users } = this.props;
+    const { users, message } = this.props;
     const { edit, portal } = this.state;
     const { name, email } = edit || {};
 
@@ -153,7 +172,10 @@ class Users extends Component {
 //          </View>
     return (
       <Layout>
-        <MainAppBar />
+        <MainAppBar>
+          <RaisedButton label={_l`Add`} onTouchTap={this.portal} />
+          <RaisedButton label={_l`Message`} onTouchTap={this.message} />
+        </MainAppBar>
         <Scrollable className={css.content} >
           <List>
           <Transition
@@ -203,6 +225,7 @@ class Users extends Component {
             <FlatButton onTouchTap={this.clear} label={_l`Clear`}/>
           </DialogActions>
         </Dialog>
+        <SnackBar message={message.message} time={message.time} onRequestNext={this.nextMessage}/>
       </Layout>
     );
   }
@@ -211,6 +234,8 @@ class Users extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    addMessage: bindActionCreators(userMessageActions.addMessage, dispatch),
+    nextMessage: bindActionCreators(userMessageActions.nextMessage, dispatch),
     openDrawer: bindActionCreators(homeActions.openDrawer, dispatch),
     createUser: bindActionCreators(userActions.createUser, dispatch),
     updateUser: bindActionCreators(userActions.updateUser, dispatch),
@@ -220,7 +245,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    users: state.users
+    users: state.users,
+    message: state.userMessage.currentMessage
   }
 }
 

@@ -10,6 +10,7 @@ import { Units, Colors } from 'oxygen-md/Styles';
 import MaterialTest from 'containers/MaterialTest';
 const { material } = Colors;
 import { addMessages, translate as _l } from 'lib/I18n';
+import MainAppBar from 'components/MainAppBar';
 
 addMessages({
   ['en-US']: {
@@ -126,9 +127,9 @@ class ThemeChanger extends Component {
     const date = new Date();
     return (
       <Layout >
-        <Toolbar primary leftIcon={<ActionAccountCircle block/>} rightIcon={<ActionAccountCircle block/>}>
+        <MainAppBar>
           Theme
-        </Toolbar>
+        </MainAppBar>
         <Scrollable>
           {this.renderPrimary()}
           {this.renderSecondary()}

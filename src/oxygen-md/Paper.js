@@ -12,7 +12,8 @@ class Paper extends Component {
     children: PropTypes.node,
     style: PropTypes.object,
     className: PropTypes.string,
-    theme: PropTypes.object
+    theme: PropTypes.object,
+    hover: PropTypes.bool
   };
 
   static contextTypes = {
@@ -24,26 +25,47 @@ class Paper extends Component {
     rounded: true,
   };
 
+  state = {
+    hover: false
+  };
+
   getStyle() {
     const theme = this.props.theme || this.context.theme;
     const { zDepth, transparent, style } = this.props;
+    const { hover } = this.state;
     return Object.assign({},
       transparent ? null : {
         backgroundColor: theme.theme.card.hex,
         color: theme.text.default,
-        boxShadow: Shadow[zDepth]
+        boxShadow: hover ? Shadow[zDepth + 1] : Shadow[zDepth]
       }, style);
   }
 
+  handleEnter = () => {
+    this.setState({ hover: true });
+  };
+
+  handleLeave = () => {
+    this.setState({ hover: false });
+  };
+
   render() {
-    const { children, spaced, padded, rounded, className, style, ...other } = this.props;
+    const { children, spaced, padded, rounded, className, hover, ...other } = this.props;
     const classes = classNames(className, styles.root, {
       [styles.spaced]: spaced,
       [styles.padded]: padded,
       [styles.rounded]: rounded,
     });
+    const props = {
+      className: classes,
+      style: this.getStyle(),
+    };
+    if (hover) {
+      props.onMouseEnter = this.handleEnter;
+      props. onMouseLeave = this.handleLeave;
+    };
     return (
-      <div className={classes} style={this.getStyle()} {...other}>
+      <div {...other} {...props} >
         {children}
       </div>
     );
@@ -56,6 +78,7 @@ const styles = oxygenCss({
   root: {
     boxSizing: 'border-box',
     overflow: 'hidden',
+    transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1)',
     '&padded': {
       padding: Units.phone.gutter.mini,
     },

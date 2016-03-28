@@ -19,6 +19,7 @@ if (process.env.SERVER) {
   }));
 }
 
+
 // browserHistory.listen(location => console.log(location));
 
 export { reduxRouterMiddleware as reduxRouterMiddleware };

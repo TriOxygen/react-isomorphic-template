@@ -1,8 +1,9 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import todo from './Todo';
+import auth from './Auth';
 import course from './Course';
 import user from './User';
+import mail from './Mail';
 import { UnknownError } from 'Errors';
 
 export class NoSuchEndpointError extends UnknownError {
@@ -21,9 +22,10 @@ export function makeMiddleware() {
   return wrap(async function (req, res, next) {
     try {
       middlewares.forEach(middleware => middleware(req.body, req.params, req.session.user));
-      const data = await apiFunc(req.body, req.params, req.session.user);
+      const { data, message } = await apiFunc(req.body, req.params, req.session.user);
       if (data) {
         res.data = data;
+        res.message = message;
         next();
       }
     } catch (e) {
@@ -39,14 +41,9 @@ export default function api (app) {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  app.use(function (req, res, next) {
-    const { session } = req;
-    session.user = session.user || {
-      name: 'Oz'
-    };
-    next();
-  });
 
+  auth(router);
+  mail(router);
   user(router);
   course(router);
 
@@ -61,7 +58,8 @@ export default function api (app) {
     if (res.data) {
       res.json({
         error: false,
-        data: res.data
+        data: res.data,
+        message: res.message
       });
     } else {
       res.status(404);

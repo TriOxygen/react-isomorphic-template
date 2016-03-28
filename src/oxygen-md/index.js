@@ -30,9 +30,12 @@ export DialogTitle from './Dialog/DialogTitle';
 export DialogContent from './Dialog/DialogContent';
 export DialogActions from './Dialog/DialogActions';
 
+export SnackBar from './SnackBar/SnackBar';
+
 export Card from './Card/Card';
 export CardTitle from './Card/CardTitle';
 export CardImage from './Card/CardImage';
+export CardMedia from './Card/CardMedia';
 export CardContent from './Card/CardContent';
 export CardActions from './Card/CardActions';
 

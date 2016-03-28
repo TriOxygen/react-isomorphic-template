@@ -6,20 +6,24 @@ export default function promiseMiddleware () {
 
     const SUCCESS = type;
 
-    const REQUEST = type + '_REQUEST';
-    const FAILURE = type + '_FAILURE';
+    const REQUEST = type + '/request';
+    const FAILURE = type + '/fail';
 
     next({ ...rest, type: REQUEST });
 
     return promise
       .then(res => {
-        next({ ...rest, res, data: res.data, type: SUCCESS });
-
+        next({ ...rest, data: res.data.data, type: SUCCESS });
+        if (res.data.message) {
+          next({ message: res.data.message, type: 'userMessage/add' } )
+        }
         return true;
       })
-      .catch(error => {
-        next({ ...rest, error, type: FAILURE });
-
+      .catch(res => {
+        next({ ...rest, res, type: FAILURE });
+        if (res.data.error.message) {
+          next({ message: res.data.error.message, type: 'userMessage/add' } )
+        }
         return false;
       });
   };
