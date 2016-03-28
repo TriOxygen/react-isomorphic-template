@@ -42,6 +42,8 @@ addMessages({
     'Drawer': 'Drawer',
     'User updated': 'User updated',
     'Password': 'Password',
+    'User updated': 'User might have been updated',
+    'User update failed': 'User update was not successful',
   },
 });
 
@@ -127,7 +129,7 @@ class Users extends Component {
       },
       email: this.refs.email.getValue(),
       password: this.refs.password.getValue(),
-    }).then(() => {
+    }, _l`User updated`, _l`User update failed` ).then(() => {
       this.setState({ portal: false });
     });
   }

@@ -30,7 +30,9 @@ async function newUser(body, params) {
       throw new ValidationError(error);
     }
   }
-  return user;
+  return {
+    data: user
+  };
 }
 
 async function getUsers(body, params) {

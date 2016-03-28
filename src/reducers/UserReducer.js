@@ -47,10 +47,17 @@ export function createUser (user) {
   };
 }
 
-export function updateUser (id, user) {
+export function updateUser (
+    id,
+    user,
+    successMessage,
+    errorMessage
+  ) {
   return {
     type: UPDATE_USER,
-    promise: api.put(`users/${id}`, user)
+    promise: api.put(`users/${id}`, user),
+    successMessage,
+    errorMessage
   };
 }
 

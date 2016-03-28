@@ -133,6 +133,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
             await fetchComponentData(store.dispatch, renderProps.components, renderProps.params);
             res.end(renderView());
           } catch (err) {
+            console.log(err.stack);
             res.end(err.message);
           }
 
@@ -144,11 +145,12 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           return next(error);
         }
         res.setHeader('Content-Type', 'application/json');
-        console.log(error);
+        // console.log(error);
         res.status(error.code || 500);
         if (error) {
           res.json({
-            error
+            error,
+            message: error.message
           });
         } else {
           res.json({

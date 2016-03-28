@@ -22,12 +22,9 @@ export function makeMiddleware() {
   return wrap(async function (req, res, next) {
     try {
       middlewares.forEach(middleware => middleware(req.body, req.params, req.session.user));
-      const { data, message } = await apiFunc(req.body, req.params, req.session.user);
-      if (data) {
-        res.data = data;
-        res.message = message;
-        next();
-      }
+      const response = await apiFunc(req.body, req.params, req.session.user) || {};
+      Object.assign(res, response);
+      next();
     } catch (e) {
       next(e);
     }
