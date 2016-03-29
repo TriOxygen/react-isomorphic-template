@@ -112,7 +112,6 @@ class Users extends Component {
     } else {
       this.addUser();
     }
-    this.setState({ edit: null });
   };
 
   edit(user) {
@@ -120,7 +119,7 @@ class Users extends Component {
   }
 
   updateUser() {
-    const { updateUser, addMessage } = this.props;
+    const { updateUser } = this.props;
     const { edit } = this.state;
     updateUser(edit._id, {
       name: {
@@ -129,8 +128,13 @@ class Users extends Component {
       },
       email: this.refs.email.getValue(),
       password: this.refs.password.getValue(),
-    }, _l`User updated` ).then(() => {
-      this.setState({ portal: false });
+    }, _l`User updated` ).then(res => {
+      if (res.error) {
+        this.props.addMessage(res.message);
+      } else {
+        this.setState({ portal: false });
+        this.props.addMessage(res.message);
+      }
     });
   }
 

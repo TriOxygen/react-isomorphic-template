@@ -27,20 +27,16 @@ export default createStore(initialState, {
   }
 });
 
-export function login(email, password, successMessage, errorMessage) {
+export function login(email, password) {
   return {
     type: LOGIN,
     promise: api.put('auth', { email, password }),
-    successMessage,
-    errorMessage
   };
 }
 
-export function logout(successMessage, errorMessage) {
+export function logout() {
   return {
     type: LOGOUT,
     promise: api.delete('auth'),
-    successMessage,
-    errorMessage
   };
 }

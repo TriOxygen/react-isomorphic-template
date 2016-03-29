@@ -14,11 +14,9 @@ export default createStore(initialState, {
   }
 });
 
-export function send(body, successMessage, errorMessage) {
+export function send(body) {
   return {
     type: SEND,
     promise: api.put('mail', body),
-    successMessage,
-    errorMessage
   };
 }

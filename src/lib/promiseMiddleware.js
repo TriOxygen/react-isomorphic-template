@@ -1,6 +1,6 @@
 export default function promiseMiddleware () {
   return next => action => {
-    const { promise, type, errorMessage, successMessage, ...rest } = action;
+    const { promise, type, ...rest } = action;
 
     if (!promise) return next(action);
 
@@ -15,23 +15,17 @@ export default function promiseMiddleware () {
       .then(res => {
         const response = res.data;
         next({ ...rest, data: response.data, type: SUCCESS });
-        if (response.error && errorMessage ) {
-          next({ message: errorMessage, type: 'userMessage/add' } )
-        } else if (!response.error && successMessage) {
-          next({ message: successMessage, type: 'userMessage/add' } )
-        } else if (response.message) {
-          next({ message: response.message, type: 'userMessage/add' } )
-        }
-        return true;
+        return {
+          error: false,
+          message: response.message
+        };
       })
       .catch(res => {
         next({ ...rest, res, type: FAILURE });
-        if (errorMessage) {
-          next({ message: errorMessage, type: 'userMessage/add' } )
-        } else if (res.data && res.data.message) {
-          next({ message: res.data.message, type: 'userMessage/add' })
+        return {
+          error: true,
+          message: res.data && res.data.message
         }
-        return false;
       });
   };
 }

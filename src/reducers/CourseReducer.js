@@ -30,38 +30,30 @@ export default createStore([], {
   }
 })
 
-export function getCourses (successMessage, errorMessage) {
+export function getCourses () {
   return {
     type: GET_COURSES,
     promise: api.get(`courses`),
-    successMessage,
-    errorMessage
   };
 }
 
-export function createCourse (course, successMessage, errorMessage) {
+export function createCourse (course) {
   return {
     type: CREATE_COURSE,
     promise: api.post(`courses`, course),
-    successMessage,
-    errorMessage
   };
 }
 
-export function editCourse (id, course, successMessage, errorMessage) {
+export function editCourse (id, course) {
   return {
     type: EDIT_COURSE,
     promise: api.put(`courses/${id}`, course),
-    successMessage,
-    errorMessage
   };
 }
 
-export function deleteCourse (id, successMessage, errorMessage) {
+export function deleteCourse (id) {
   return {
     type: DELETE_COURSE,
     promise: api.delete(`courses/${id}`),
-    successMessage,
-    errorMessage
   };
 }

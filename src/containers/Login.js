@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as authActions from 'reducers/AuthReducer';
+import * as userMessageActtions from 'reducers/UserMessageReducer';
 import { Layout, TextField, RaisedButton } from 'oxygen-md';
 import { addMessages, translate as _l } from 'lib/I18n';
 import MainAppBar from 'components/MainAppBar';
@@ -21,13 +22,18 @@ class Login extends Component {
     auth: PropTypes.object,
     login: PropTypes.func,
     logout: PropTypes.func,
+    addMessage: PropTypes.func
   };
 
   login = () => {
     const { login } = this.props;
     const email = this.refs.email.getValue();
     const password = this.refs.password.getValue();
-    login(email, password);
+    login(email, password).then(res => {
+      if (res.message) {
+        this.props.addMessage(res.message);
+      }
+    })
   };
 
   logout = () => {
@@ -45,7 +51,9 @@ class Login extends Component {
           <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
           <RaisedButton primary onTouchTap={this.login} label={_l`Login`}/>
         </div> :
-        <RaisedButton primary onTouchTap={this.logout} label={_l`Logout`}/>
+        <div>
+          <RaisedButton fullWidth primary onTouchTap={this.logout} label={_l`Logout`}/>
+        </div>
       }
       </Layout>
     );
@@ -55,6 +63,7 @@ class Login extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    addMessage: bindActionCreators(userMessageActtions.addMessage, dispatch),
     login: bindActionCreators(authActions.login, dispatch),
     logout: bindActionCreators(authActions.logout, dispatch),
   }

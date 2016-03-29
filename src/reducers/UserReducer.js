@@ -33,38 +33,30 @@ export default createStore([], {
   }
 })
 
-export function getUsers (successMessage, errorMessage ) {
+export function getUsers () {
   return {
     type: GET_USERS,
     promise: api.get('users'),
-    successMessage,
-    errorMessage
   };
 }
 
-export function createUser (user, successMessage, errorMessage ) {
+export function createUser (user) {
   return {
     type: CREATE_USER,
     promise: api.post('users', user),
-    successMessage,
-    errorMessage
   };
 }
 
-export function updateUser (id, user, successMessage, errorMessage ) {
+export function updateUser (id, user) {
   return {
     type: UPDATE_USER,
     promise: api.put(`users/${id}`, user),
-    successMessage,
-    errorMessage
   };
 }
 
-export function deleteUser (id, successMessage, errorMessage ) {
+export function deleteUser (id) {
   return {
     type: DELETE_USER,
     promise: api.delete(`users/${id}`),
-    successMessage,
-    errorMessage
   };
 }
