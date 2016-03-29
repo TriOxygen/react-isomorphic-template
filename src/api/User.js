@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { addMessages, translate as _l } from 'lib/I18n';
 
 const User = getModel('User');
+const Settings = getModel('Settings');
 const apiCall = makeMiddleware;
 
 addMessages({
@@ -27,6 +28,7 @@ export default router => {
 
 async function newUser(body, params) {
   const user = new User(body);
+  user.settings = new Settings();
 
   user.password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(10));
 

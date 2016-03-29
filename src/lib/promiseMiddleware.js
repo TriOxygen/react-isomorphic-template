@@ -17,14 +17,15 @@ export default function promiseMiddleware () {
         next({ ...rest, data: response.data, type: SUCCESS });
         return {
           error: false,
-          message: response.message
+          message: response.message,
+          data: res.data,
         };
       })
       .catch(res => {
         next({ ...rest, res, type: FAILURE });
         return {
-          error: true,
-          message: res.data && res.data.message
+          error: res.data && res.data.error || true,
+          message: res.data && res.data.message,
         }
       });
   };

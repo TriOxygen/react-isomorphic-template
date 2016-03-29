@@ -3,6 +3,7 @@ import * as reducers from 'reducers';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { syncHistory, routeReducer } from 'react-router-redux'
 import { browserHistory } from 'react-router'
+import { setLocale } from 'lib/I18n';
 
 let reducer;
 let middlewares;
@@ -25,6 +26,9 @@ if (process.env.SERVER) {
 export { reduxRouterMiddleware as reduxRouterMiddleware };
 
 export default function (initialState = {}) {
+  if (initialState.locale) {
+    setLocale(initialState.locale.locale, initialState.locale.defaultCurrency);
+  }
   return createStore(
     reducer,
     initialState,

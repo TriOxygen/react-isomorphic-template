@@ -26,7 +26,7 @@ export default router => {
 
 async function login(body, params) {
   const { email, password } = body;
-  const user = await User.findOne({ email }).select('name password email lastLogin');
+  const user = await User.findOne({ email }).select('name password email settings.locale settings.theme lastLogin');
   if (!user || !bcrypt.compareSync(password, user.password)) {
     throw new AccessDeniedError(_l`Access denied.`);
   }
@@ -35,6 +35,7 @@ async function login(body, params) {
   const auth = {
     name: user.name,
     email: user.email,
+    settings: user.settings,
     lastLogin: user.lastLogin,
     loggedIn: true
   };

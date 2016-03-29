@@ -11,6 +11,9 @@ const initialState = {
 
 export default createStore(initialState, {
   [ADD]: (state, action) => {
+    if (!action.message) {
+      return state;
+    }
     const messages = [...state.messages, { time: Date.now(), message: action.message, id: state.id }];
     const currentMessage = messages[0] || { time: null, message: null };
     return {

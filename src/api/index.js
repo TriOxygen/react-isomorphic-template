@@ -3,6 +3,7 @@ import express from 'express';
 import auth from './Auth';
 import course from './Course';
 import user from './User';
+import locale from './Locale';
 import mail from './Mail';
 import { UnknownError } from 'Errors';
 
@@ -40,6 +41,7 @@ export default function api (app) {
   app.use(bodyParser.json());
 
   auth(router);
+  locale(router);
   mail(router);
   user(router);
   course(router);

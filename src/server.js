@@ -16,6 +16,7 @@ import Config from 'Config';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import persistentStorage from 'lib/persistentStorage';
+import { setLocale } from 'lib/I18n';
 const MongoStore = connectMongo(session);
 // import routes from 'routes';
 
@@ -37,21 +38,24 @@ if (process.env.NODE_ENV === 'production') {
 mongoose.connect(Config.mongodb.url);
 
 app.use(session({
-    secret: 'Very secret stuffs',
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({
-      mongooseConnection: mongoose.connection,
-    })
+  secret: 'Very secret stuffs',
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection,
+  })
 }));
 
 app.use(function (req, res, next) {
   const { session } = req;
   persistentStorage.setStorage(session);
-  // session.auth = session.auth || persistentStorage.get('auth');
-  // persistentStorage.set('auth', session.auth);
+  const { locale } = req.session;
+  if (locale) {
+    setLocale(...locale);
+  }
   next();
 });
+
 
 /**
  * Removes a module from the cache

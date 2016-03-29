@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import { routeActions } from 'react-router-redux';
 import * as homeActions from 'reducers/HomeReducer';
 import MainSnackBar from 'components/MainSnackBar';
+import shallowCompare from 'react-addons-shallow-compare';
 
 addMessages({
   ['en-US']: {
@@ -53,6 +54,7 @@ class App extends React.Component {
 
   static childContextTypes = {
     theme: PropTypes.object,
+    locale: PropTypes.object,
   };
 
   static propTypes = {
@@ -80,7 +82,7 @@ class App extends React.Component {
 
   getChildContext() {
     return {
-      theme: this.theme
+      theme: this.theme,
     };
   }
 
@@ -96,17 +98,27 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // Object.keys(nextProps).forEach(key => {
+    //   if (nextProps[key] !== this.props[key]) {
+    //     console.log(key, this.props[key], nextProps[key])
+    //   }
+    // })
     if (this.props.theme !== nextProps.theme) {
       const { primary, secondary, tertiary, main } = nextProps.theme;
       this.theme.setTheme(material[primary], material[secondary], material[tertiary], main);
       this.forceUpdate();
     }
-    if (this.props.locale !== nextProps.locale) {
+    if (this.props.locale.locale !== nextProps.locale.locale || this.props.locale.defaultCurrency !== nextProps.locale.defaultCurrency) {
       const { locale, defaultCurrency } = nextProps.locale;
       setLocale(locale, defaultCurrency);
-      this.forceUpdate();
     }
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   const update = shallowCompare(this, nextProps, nextState);
+  //   console.log('Update', update);
+  //   return update;
+  // }
 
   getStyle() {
     const theme = this.theme;

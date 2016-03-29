@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import SettingsSchema from './SettingsSchema';
 import { addMessages, translate as _l } from 'lib/I18n';
 const { ObjectId } = Schema;
 
@@ -11,11 +12,24 @@ addMessages({
 const User = new Schema({
   id: ObjectId,
   name: {
-    first: String,
-    last: String
+    first: {
+      type: String,
+      required: true
+    },
+    last: {
+      type: String,
+      required: true
+    }
   },
-  email: String,
-  password: String,
+  email: {
+    required: true,
+    type: String,
+  },
+  password: {
+    require: true,
+    type: String,
+  },
+  settings: SettingsSchema,
   loginAttempts: Number,
   lastLogin: { type: Date, default: Date.now },
   lastUpdate: { type: Date, default: Date.now },

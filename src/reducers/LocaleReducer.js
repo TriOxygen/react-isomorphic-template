@@ -1,7 +1,8 @@
+import api from 'lib/api';
 import createStore from 'lib/createStore';
-import persistentStorage from 'lib/persistentStorage';
 
 const SET_LOCALE = 'locale/set';
+const GET_LOCALE = 'locale/get';
 
 const initialState = {
   locale: 'en-US',
@@ -10,23 +11,27 @@ const initialState = {
 
 export default createStore(initialState, {
   [SET_LOCALE]: (state, action) => {
-    const { locale, defaultCurrency } = action;
-    if (state.locale !== locale && state.defaultCurrency !== defaultCurrency) {
-      return {
-        ...state,
-        locale,
-        defaultCurrency
-      };
+    return {
+      ...action.data
     }
-    persistentStorage.set('locale', state);
-    return state;
+  },
+  [GET_LOCALE]: (state, action) => {
+    return {
+      ...action.data
+    }
   }
 })
 
 export function setLocale (locale, defaultCurrency) {
   return {
     type: SET_LOCALE,
-    locale,
-    defaultCurrency
+    promise: api.put('locale', { locale, defaultCurrency })
+  };
+}
+
+export function getLocale () {
+  return {
+    type: GET_LOCALE,
+    promise: api.get('locale')
   };
 }

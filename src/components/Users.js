@@ -98,7 +98,15 @@ class Users extends Component {
       },
       email: this.refs.email.getValue(),
       password: this.refs.password.getValue(),
-    });
+    }).then(res => {
+      this.props.addMessage(res.message);
+      if (!res.error) {
+        this.setState({ edit: null, portal: false });
+      }
+      // if (res.error) {
+      // } else {
+      // }
+    })
   };
 
   delete(user) {
