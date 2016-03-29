@@ -17,6 +17,7 @@ import * as userActions from 'reducers/UserReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as homeActions from 'reducers/HomeReducer';
+import * as userMessageActions from 'reducers/UserMessageReducer';
 
 import { addMessages, translate as _l } from 'lib/I18n';
 
@@ -150,10 +151,6 @@ class Users extends Component {
     openDrawer();
   }
 
-  nextMessage = () => {
-    const { nextMessage } = this.props;
-    nextMessage();
-  }
 
   message = () => {
     const { addMessage } = this.props;
@@ -226,7 +223,6 @@ class Users extends Component {
             <FlatButton onTouchTap={this.clear} label={_l`Clear`}/>
           </DialogActions>
         </Dialog>
-        <SnackBar message={message.message} time={message.time} onRequestNext={this.nextMessage}/>
       </Layout>
     );
   }
@@ -236,7 +232,6 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     addMessage: bindActionCreators(userMessageActions.addMessage, dispatch),
-    nextMessage: bindActionCreators(userMessageActions.nextMessage, dispatch),
     openDrawer: bindActionCreators(homeActions.openDrawer, dispatch),
     createUser: bindActionCreators(userActions.createUser, dispatch),
     updateUser: bindActionCreators(userActions.updateUser, dispatch),
@@ -247,7 +242,6 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     users: state.users,
-    message: state.userMessage.currentMessage
   }
 }
 
