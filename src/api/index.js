@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import auth from './Auth';
+import profile from './Profile';
 import course from './Course';
 import user from './User';
 import locale from './Locale';
@@ -22,8 +22,8 @@ export function makeMiddleware() {
   const apiFunc = middlewares.pop();
   return wrap(async function (req, res, next) {
     try {
-      middlewares.forEach(middleware => middleware(req.body, req.params, req.session.user));
-      const [data, message] = await apiFunc(req.body, req.params, req.session.user) || [];
+      middlewares.forEach(middleware => middleware(req.body, req.params, req.session.profile));
+      const [data, message] = await apiFunc(req.body, req.params, req.session.profile) || [];
       res.data = data;
       res.message = message;
       next();
@@ -40,7 +40,7 @@ export default function api (app) {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  auth(router);
+  profile(router);
   locale(router);
   mail(router);
   user(router);

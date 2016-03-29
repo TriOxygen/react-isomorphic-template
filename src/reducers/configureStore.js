@@ -20,14 +20,14 @@ if (process.env.SERVER) {
   }));
 }
 
-
 // browserHistory.listen(location => console.log(location));
 
 export { reduxRouterMiddleware as reduxRouterMiddleware };
 
 export default function (initialState = {}) {
-  if (initialState.locale) {
-    setLocale(initialState.locale.locale, initialState.locale.defaultCurrency);
+  if (initialState.profile && initialState.profile.settings && initialState.profile.settings.locale) {
+    const { locale, defaultCurrency } = initialState.profile.settings.locale;
+    setLocale(locale, defaultCurrency);
   }
   return createStore(
     reducer,

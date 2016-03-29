@@ -5,7 +5,8 @@ import { Provider } from 'react-redux';
 import routes from 'routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import configureStore, { reduxRouterMiddleware } from 'reducers/configureStore';
-import { IntlProvider } from 'lib/I18n';
+import IntlProvider from 'lib/IntlProvider';
+import { ThemeProvider } from 'oxygen-md/Styles';
 
 injectTapEventPlugin();
 
@@ -22,10 +23,12 @@ require('styles/bundle.css');
 require('oxygen-md-svg-icons/lib/bundle.css');
 
 ReactDOM.render(
-  <IntlProvider>
-    <Provider store={store}>
-      <Router children={routes} history={browserHistory} />
-    </Provider>
-  </IntlProvider>,
+  <Provider store={store}>
+    <IntlProvider>
+      <ThemeProvider>
+        <Router children={routes} history={browserHistory} />
+      </ThemeProvider>
+    </IntlProvider>
+  </Provider>,
   document.getElementById('app')
 );

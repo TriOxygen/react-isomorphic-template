@@ -1,4 +1,3 @@
-import React, { Component, PropTypes } from 'react';
 const typeInfoRegex = /^:([a-z])(\((.+)\))?/;
 const messages = {};
 
@@ -98,45 +97,6 @@ export function addMessages(messageBundles) {
 
 const i18n = new I18N('en-US', 'EUR');
 const { translate, setLocale } = i18n;
-
-
-export class IntlProvider extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-  };
-
-  static childContextTypes = {
-    locale: PropTypes.object,
-  };
-
-  getChildContext() {
-    return {
-      locale: this.locale
-    }
-  }
-
-  constructor() {
-    super(...arguments);
-    this.i18n = i18n;
-    this.locale = {
-      locale: i18n.locale,
-      defaultCurrency: i18n.defaultCurrency
-    };
-    i18n.onChange = (locale, defaultCurrency) => {
-      this.locale = {
-        locale,
-        defaultCurrency
-      };
-      this.forceUpdate();
-    }
-  }
-
-  render() {
-    const { children } = this.props;
-    return React.Children.only(children);
-  }
-}
-
 
 export { translate, setLocale };
 export default i18n;

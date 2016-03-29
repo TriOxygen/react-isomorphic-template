@@ -4,13 +4,12 @@ import { Layout, Toolbar, Paper, RaisedButton } from 'oxygen-md';
 import ActionAccountCircle from 'oxygen-md-svg-icons/lib/SvgIcons/ActionAccountCircle';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as themeActions from 'reducers/ThemeReducer';
-import * as localeActions from 'reducers/LocaleReducer';
 import { Units, Colors } from 'oxygen-md/Styles';
 import MaterialTest from 'containers/MaterialTest';
 const { material } = Colors;
 import { addMessages, translate as _l } from 'lib/I18n';
 import MainAppBar from 'components/MainAppBar';
+import * as profileActions from 'reducers/ProfileReducer';
 
 addMessages({
   ['en-US']: {
@@ -47,7 +46,7 @@ class ThemeChanger extends Component {
 
   static propTypes = {
     theme: PropTypes.object,
-    changeTheme: PropTypes.func,
+    setTheme: PropTypes.func,
     setLocale: PropTypes.func
   };
 
@@ -98,22 +97,22 @@ class ThemeChanger extends Component {
 
   setPrimary(primary) {
     const { secondary, tertiary, main } = this.props.theme;
-    this.props.changeTheme(primary, secondary, tertiary, main);
+    this.props.setTheme(primary, secondary, tertiary, main);
   }
 
   setSecondary(secondary) {
     const { primary, tertiary, main } = this.props.theme;
-    this.props.changeTheme(primary, secondary, tertiary, main);
+    this.props.setTheme(primary, secondary, tertiary, main);
   }
 
   setTertiary(tertiary) {
     const { primary, secondary, main } = this.props.theme;
-    this.props.changeTheme(primary, secondary, tertiary, main);
+    this.props.setTheme(primary, secondary, tertiary, main);
   }
 
   setShading(shading) {
     const { primary, secondary, tertiary } = this.props.theme;
-    this.props.changeTheme(primary, secondary, tertiary, shading);
+    this.props.setTheme(primary, secondary, tertiary, shading);
 
   }
 
@@ -149,14 +148,14 @@ class ThemeChanger extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    changeTheme: bindActionCreators(themeActions.changeTheme, dispatch),
-    setLocale: bindActionCreators(localeActions.setLocale, dispatch),
+    setTheme: bindActionCreators(profileActions.setTheme, dispatch),
+    setLocale: bindActionCreators(profileActions.setLocale, dispatch),
   }
 }
 
 function mapStateToProps(state) {
   return {
-    theme: state.theme
+    theme: state.profile.settings.theme
   }
 }
 

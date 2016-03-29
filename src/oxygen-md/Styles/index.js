@@ -4,6 +4,7 @@ export Typography from './Typography';
 export Units from './Units';
 export Shadow from './Shadow';
 export Transitions from './Transitions';
+export ThemeProvider from './ThemeProvider';
 
 export function mergeStyles() {
   return Object.assign({}, ...arguments);

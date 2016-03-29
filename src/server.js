@@ -17,6 +17,8 @@ import session from 'express-session';
 import connectMongo from 'connect-mongo';
 import persistentStorage from 'lib/persistentStorage';
 import { setLocale } from 'lib/I18n';
+import { ThemeProvider } from 'oxygen-md/Styles';
+
 const MongoStore = connectMongo(session);
 // import routes from 'routes';
 
@@ -49,9 +51,11 @@ app.use(session({
 app.use(function (req, res, next) {
   const { session } = req;
   persistentStorage.setStorage(session);
-  const { locale } = req.session;
-  if (locale) {
-    setLocale(...locale);
+  const { profile } = req.session;
+  console.log(profile);
+  if (profile.settings.locale) {
+    const { locale, defaultCurrency } = profile.settings.locale;
+    setLocale(locale, defaultCurrency);
   }
   next();
 });
@@ -115,15 +119,16 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
             // return res.status(404).end('Not found');
           }
           const initial = {
-            auth: session.auth,
-            locale: session.locale
+            profile: session.profile,
           };
           const store = configureStore(initial);
 
           function renderView() {
             const initialView = (
               <Provider store={store} >
-               <RouterContext {...renderProps} />
+                <ThemeProvider>
+                  <RouterContext {...renderProps} />
+                </ThemeProvider>
               </Provider>
             );
 

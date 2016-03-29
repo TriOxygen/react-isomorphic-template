@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as authActions from 'reducers/AuthReducer';
+import * as profileActions from 'reducers/ProfileReducer';
 import * as userMessageActtions from 'reducers/UserMessageReducer';
 import { Layout, TextField, RaisedButton } from 'oxygen-md';
 import { addMessages, translate as _l } from 'lib/I18n';
@@ -19,7 +19,7 @@ addMessages({
 class Login extends Component {
 
   static propTypes = {
-    auth: PropTypes.object,
+    profile: PropTypes.object,
     login: PropTypes.func,
     logout: PropTypes.func,
     addMessage: PropTypes.func
@@ -42,11 +42,11 @@ class Login extends Component {
   };
 
   render() {
-    const { auth } = this.props;
+    const { profile } = this.props;
     return (
       <Layout>
         <MainAppBar />
-        {! auth.loggedIn ? <div>
+        {! profile.loggedIn ? <div>
           <TextField ref="email" floatingLabelText={_l`E-mail`}/>
           <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
           <RaisedButton primary onTouchTap={this.login} label={_l`Login`}/>
@@ -64,14 +64,14 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     addMessage: bindActionCreators(userMessageActtions.addMessage, dispatch),
-    login: bindActionCreators(authActions.login, dispatch),
-    logout: bindActionCreators(authActions.logout, dispatch),
+    login: bindActionCreators(profileActions.login, dispatch),
+    logout: bindActionCreators(profileActions.logout, dispatch),
   }
 }
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    profile: state.profile
   }
 }
 
