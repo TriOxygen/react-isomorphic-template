@@ -52,7 +52,7 @@ export default function api (app) {
   router.use(function apiHandler(req, res) {
     res.set({ 'content-type': 'application/json; charset=utf-8' });
     // res.set('ETag', '1235');
-    if (res.data) {
+    if (res.data || res.message) {
       res.json({
         error: false,
         data: res.data,

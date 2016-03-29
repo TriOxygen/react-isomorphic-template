@@ -1,6 +1,5 @@
 import api from 'lib/api';
 import createStore from 'lib/createStore';
-import persistentStorage from 'lib/persistentStorage';
 
 const SEND = 'mail/send';
 
@@ -9,16 +8,17 @@ const initialState = {
 
 export default createStore(initialState, {
   [SEND]: (state, action) => {
-    const auth = action.data.data;
-    console.log(auth);
     return {
+      ...action.data
     }
   }
 });
 
-export function send(body) {
+export function send(body, successMessage, errorMessage) {
   return {
     type: SEND,
-    promise: api.put('mail', body)
+    promise: api.put('mail', body),
+    successMessage,
+    errorMessage
   };
 }

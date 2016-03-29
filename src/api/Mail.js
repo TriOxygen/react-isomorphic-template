@@ -8,12 +8,11 @@ export default router => {
     .put(apiCall(mail));
 }
 
-
 function sendMail(params) {
   const server = email.server.connect({
-     user: "ozgur.ucamaz@gmail.com",
-     password: "PASS",
-     host: "smtp.gmail.com",
+     user: 'ozgur.ucamaz@gmail.com',
+     password: 'PASS',
+     host: 'smtp.gmail.com',
      ssl: true
   });
 

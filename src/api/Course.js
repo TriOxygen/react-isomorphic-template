@@ -98,7 +98,7 @@ async function newChapter(body, params) {
   await chapter.save();
   course.children.push(chapter);
 
-  const course = await course.save();
+  await course.save();
   return [course];
 }
 
