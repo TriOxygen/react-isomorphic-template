@@ -24,10 +24,12 @@ export default function promiseMiddleware () {
         }
         return true;
       })
-      .catch(error => {
-        next({ ...rest, error, type: FAILURE });
+      .catch(res => {
+        next({ ...rest, res, type: FAILURE });
         if (errorMessage) {
           next({ message: errorMessage, type: 'userMessage/add' } )
+        } else if (res.data && res.data.message) {
+          next({ message: res.data.message, type: 'userMessage/add' })
         }
         return false;
       });

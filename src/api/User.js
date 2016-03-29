@@ -2,10 +2,17 @@ import getModel from 'schemas';
 import { AccessDeniedError, ValidationError, NotFoundError } from 'Errors';
 import { makeMiddleware } from 'api';
 import bcrypt from 'bcrypt';
+import { addMessages, translate as _l } from 'lib/I18n';
 
 const User = getModel('User');
-
 const apiCall = makeMiddleware;
+
+addMessages({
+  ['en-US']: {
+    'User updated': 'User updated',
+  },
+});
+
 
 export default router => {
   router.route('/users')
@@ -30,16 +37,12 @@ async function newUser(body, params) {
       throw new ValidationError(error);
     }
   }
-  return {
-    data: user
-  };
+  return [user];
 }
 
 async function getUsers(body, params) {
   const users = await User.find({}).select('name email lastLogin');
-  return {
-    data: users
-  };
+  return [users];
 }
 
 async function getUser(body, params) {
@@ -47,9 +50,7 @@ async function getUser(body, params) {
   if (!user) {
     throw new NotFoundError();
   }
-  return {
-    data: user
-  };
+  return [user];
 }
 
 async function updateUser(body, params, loggedInUser) {
@@ -72,10 +73,7 @@ async function updateUser(body, params, loggedInUser) {
       throw new ValidationError(error);
     }
   }
-  return {
-    data: user,
-    message: 'Done'
-  };
+  return [user, _l`User updated`];
 }
 
 async function deleteUser(body, params) {
@@ -84,7 +82,5 @@ async function deleteUser(body, params) {
   if (!user) {
     throw new NotFoundError();
   }
-  return {
-    data: user
-  }
+  return [user];
 }

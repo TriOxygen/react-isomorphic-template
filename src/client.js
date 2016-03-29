@@ -5,9 +5,8 @@ import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import routes from 'routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 import configureStore, { reduxRouterMiddleware } from 'reducers/configureStore';
+injectTapEventPlugin();
 
 window.React = React;
 
@@ -15,7 +14,6 @@ const initialState = window.__INITIAL_STATE__;
 const store = configureStore(initialState);
 
 reduxRouterMiddleware.listenForReplays(store);
-
 
 require('images/favicon.png');
 require('styles/normalize.css');

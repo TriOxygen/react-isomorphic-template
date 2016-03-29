@@ -33,26 +33,25 @@ export default createStore([], {
   }
 })
 
-export function getUsers () {
+export function getUsers (successMessage, errorMessage ) {
   return {
     type: GET_USERS,
-    promise: api.get('users')
-  };
-}
-
-export function createUser (user) {
-  return {
-    type: CREATE_USER,
-    promise: api.post('users', user)
-  };
-}
-
-export function updateUser (
-    id,
-    user,
+    promise: api.get('users'),
     successMessage,
     errorMessage
-  ) {
+  };
+}
+
+export function createUser (user, successMessage, errorMessage ) {
+  return {
+    type: CREATE_USER,
+    promise: api.post('users', user),
+    successMessage,
+    errorMessage
+  };
+}
+
+export function updateUser (id, user, successMessage, errorMessage ) {
   return {
     type: UPDATE_USER,
     promise: api.put(`users/${id}`, user),
@@ -61,9 +60,11 @@ export function updateUser (
   };
 }
 
-export function deleteUser (id) {
+export function deleteUser (id, successMessage, errorMessage ) {
   return {
     type: DELETE_USER,
-    promise: api.delete(`users/${id}`)
+    promise: api.delete(`users/${id}`),
+    successMessage,
+    errorMessage
   };
 }

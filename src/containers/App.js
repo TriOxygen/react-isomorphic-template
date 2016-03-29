@@ -10,7 +10,7 @@ import ActionHome from 'oxygen-md-svg-icons/lib/SvgIcons/ActionHome';
 import { bindActionCreators } from 'redux';
 import { routeActions } from 'react-router-redux';
 import * as homeActions from 'reducers/HomeReducer';
-import Hammer from 'components/Hammer';
+import MainSnackBar from 'components/MainSnackBar';
 
 addMessages({
   ['en-US']: {
@@ -64,7 +64,8 @@ class App extends React.Component {
     closeDrawer: PropTypes.func,
     openDrawer: PropTypes.func,
     setDrawerPosition: PropTypes.func,
-    theme: PropTypes.object
+    theme: PropTypes.object,
+    message: PropTypes.object,
   };
 
   state = {
@@ -134,7 +135,7 @@ class App extends React.Component {
     const { drawerPosition, auth } = this.props;
     return (
       <Drawer position={drawerPosition} onRequestClose={this.closeDrawer} onRequestOpen={this.openDrawer}>
-        <DrawerHeader primary>{auth.name.first + ' ' + auth.name.last}</DrawerHeader>
+        <DrawerHeader primary>{auth.loggedIn && auth.name.first + ' ' + auth.name.last}</DrawerHeader>
         <MenuItem href={'/'} onTouchTap={this.go} autoFocus icon={<ActionHome/>}>{_l`Home`}</MenuItem>
         <MenuItem href={'/users'} onTouchTap={this.go} icon={<SocialPerson/>}>{_l`Users`}</MenuItem>
         <MenuItem href={'/theme'} onTouchTap={this.go} icon={<ImagePalette/>}>{_l`Theme Changer`}</MenuItem>
@@ -149,6 +150,7 @@ class App extends React.Component {
       <div className={appStyles.app}>
         {this.props.children}
         {menu}
+        <MainSnackBar />
       </div>
     );
   }

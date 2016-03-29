@@ -26,7 +26,8 @@ const User = new Schema({
 const model = mongoose.model('User', User);
 
 User.path('email').validate(function(value, done) {
-  model.count({ email: value, $and: { _id: { $ne: this._id } } }, (err, count) => {
+  model.count({ email: value, _id: { $ne: this.id } }, (err, count) => {
+    console.log(count);
     if (err) {
       return done(err);
     }

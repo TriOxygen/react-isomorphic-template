@@ -11,7 +11,7 @@ const initialState = {
 
 export default createStore(initialState, {
   [LOGIN]: (state, action) => {
-    const auth = action.data.data;
+    const auth = action.data;
     persistentStorage.set('auth', auth);
     return {
       ...state,
@@ -19,7 +19,7 @@ export default createStore(initialState, {
     }
   },
   [LOGOUT]: (state, action) => {
-    const auth = action.data.data;
+    const auth = action.data;
     persistentStorage.set('auth', auth);
     return {
       ...auth
@@ -27,16 +27,20 @@ export default createStore(initialState, {
   }
 });
 
-export function login(email, password) {
+export function login(email, password, successMessage, errorMessage) {
   return {
     type: LOGIN,
-    promise: api.put('auth', { email, password })
+    promise: api.put('auth', { email, password }),
+    successMessage,
+    errorMessage
   };
 }
 
-export function logout() {
+export function logout(successMessage, errorMessage) {
   return {
     type: LOGOUT,
-    promise: api.delete('auth')
+    promise: api.delete('auth'),
+    successMessage,
+    errorMessage
   };
 }

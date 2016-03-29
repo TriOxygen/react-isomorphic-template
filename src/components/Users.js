@@ -17,7 +17,6 @@ import * as userActions from 'reducers/UserReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as homeActions from 'reducers/HomeReducer';
-import * as userMessageActions from 'reducers/UserMessageReducer';
 
 import { addMessages, translate as _l } from 'lib/I18n';
 
@@ -129,7 +128,7 @@ class Users extends Component {
       },
       email: this.refs.email.getValue(),
       password: this.refs.password.getValue(),
-    }, _l`User updated`, _l`User update failed` ).then(() => {
+    }, _l`User updated` ).then(() => {
       this.setState({ portal: false });
     });
   }

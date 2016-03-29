@@ -22,8 +22,9 @@ export function makeMiddleware() {
   return wrap(async function (req, res, next) {
     try {
       middlewares.forEach(middleware => middleware(req.body, req.params, req.session.user));
-      const response = await apiFunc(req.body, req.params, req.session.user) || {};
-      Object.assign(res, response);
+      const [data, message] = await apiFunc(req.body, req.params, req.session.user) || [];
+      res.data = data;
+      res.message = message;
       next();
     } catch (e) {
       next(e);
@@ -37,7 +38,6 @@ export default function api (app) {
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-
 
   auth(router);
   mail(router);

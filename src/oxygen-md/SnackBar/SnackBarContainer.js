@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import { Motion, spring } from 'react-motion';
-import SnackBarContainer from './SnackBarContainer';
 import { Shadow, Colors, Units, Typography } from '../Styles';
+import Portal from '../Portal';
 
 const { snackBar } = Colors;
 
@@ -43,9 +42,11 @@ export default class SnackBar extends Component {
     const { message } = this.props;
 
     return (
-      <div className={css.container} style={this.getStyle()}>
-        {message}
-      </div>
+      <Portal tooltip>
+        <div className={css.container} style={this.getStyle()}>
+          {message}
+        </div>
+      </Portal>
     );
   }
 }

@@ -60,10 +60,10 @@ export default class SnackBar extends Component {
     const { open } = this.state;
 
     return (
-      <Motion style={{ position: spring(open ? 1 : 0, { stiffness: 300, damping: 25 })}}>
+      <Motion style={{ position: spring(open ? 1 : 0, { stiffness: 300, damping: 25 }) }}>
         {interpolated => {
           if (interpolated.position > 0) {
-            return <SnackBarContainer {...this.props} {...interpolated} onRequestNext={this.handleRequestNext}  />;
+            return <SnackBarContainer {...this.props} {...interpolated} onRequestNext={this.handleRequestNext} />;
           }
           return null;
         }}

@@ -40,11 +40,13 @@ export default router => {
 async function newCourse(body, params) {
   const course = new Course(body);
   course.description = stringGen(200);
-  return await course.save();
+  await course.save();
+  return [course];
 }
 
 async function getCourses(body, params) {
-  return await Course.find({}).select('name theme description children');
+  const courses = await Course.find({}).select('name theme description children');
+  return [courses];
 }
 
 async function getCourse(body, params) {
@@ -52,22 +54,22 @@ async function getCourse(body, params) {
   if (!course) {
     throw new NotFoundError();
   }
-  return course;
+  return [course];
 }
 
 function stringGen(len) {
-    let text = '';
+  let text = '';
 
-    const charset = 'abcdefghijklmnopqrstuvwxyz';
+  const charset = 'abcdefghijklmnopqrstuvwxyz';
 
-    for( let i=0; i < len; i++ ) {
-      text += charset.charAt(Math.floor(Math.random() * charset.length));
-      if (Math.random() > 0.7) {
-        text += ' ';
-      }
+  for( let i=0; i < len; i++ ) {
+    text += charset.charAt(Math.floor(Math.random() * charset.length));
+    if (Math.random() > 0.7) {
+      text += ' ';
     }
+  }
 
-    return text;
+  return text;
 }
 
 async function updateCourse(body, params) {
@@ -76,7 +78,7 @@ async function updateCourse(body, params) {
   if (!course) {
     throw new NotFoundError();
   }
-  return course;
+  return [course];
 }
 
 async function deleteCourse(body, params) {
@@ -85,7 +87,7 @@ async function deleteCourse(body, params) {
   if (!course) {
     throw new NotFoundError();
   }
-  return course;
+  return [course];
 }
 
 async function newChapter(body, params) {
@@ -96,7 +98,8 @@ async function newChapter(body, params) {
   await chapter.save();
   course.children.push(chapter);
 
-  return await course.save();
+  const course = await course.save();
+  return [course];
 }
 
 async function updateChapter(body, params) {
@@ -114,15 +117,17 @@ async function updateChapter(body, params) {
     Object.assign(foundChapter, body);
     await foundChapter.save();
   }
+  return [course];
 }
 
 async function deleteChapter(body, params) {
   const { courseId, chapterId } = params;
-  return await Course.findByIdAndUpdate(courseId, {
+  const course = await Course.findByIdAndUpdate(courseId, {
     $pull: {
       children: { _id: chapterId }
     }
   });
+  return [course];
 }
 
 async function updatePage(body, params) {
@@ -145,13 +150,15 @@ async function updatePage(body, params) {
     Object.assign(foundPage, body);
     await foundPage.save();
   }
+  return [course];
 }
 
 async function deletePage(body, params) {
   const { chapterId, pageId } = params;
-  return await Chapter.findByIdAndUpdate(chapterId, {
+  const chapter = await Chapter.findByIdAndUpdate(chapterId, {
     $pull: {
       children: { _id: pageId }
     }
   });
+  return [chapter];
 }

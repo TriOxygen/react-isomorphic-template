@@ -75,7 +75,7 @@ class FlatButton extends Component {
   handleKeyPress = (event) => {
     const { keyCode } = event;
     if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
-      this.handleTouchTap();
+      this.handleTouchTap(event);
       event.preventDefault();
     }
   };

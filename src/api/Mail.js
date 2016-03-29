@@ -10,11 +10,11 @@ export default router => {
 
 
 function sendMail(params) {
-  const server  = email.server.connect({
-     user:    "ozgur.ucamaz@gmail.com",
-     password:"2akh00i@AKH))I",
-     host:    "smtp.gmail.com",
-     ssl:     true
+  const server = email.server.connect({
+     user: "ozgur.ucamaz@gmail.com",
+     password: "PASS",
+     host: "smtp.gmail.com",
+     ssl: true
   });
 
   return new Promise((resolve, reject) => {
@@ -32,5 +32,6 @@ function sendMail(params) {
 
 
 async function mail(body, params) {
-  return await sendMail(body);
+  const mailInfo = await sendMail(body);
+  return [mailInfo];
 }
