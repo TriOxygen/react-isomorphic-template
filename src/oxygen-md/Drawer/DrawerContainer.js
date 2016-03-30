@@ -14,6 +14,7 @@ export default class DrawerContainer extends Component {
     children: PropTypes.node,
     right: PropTypes.bool,
     overlay: PropTypes.bool,
+    closeOnEsc: PropTypes.bool,
     onRequestClose: PropTypes.func,
     onRequestOpen: PropTypes.func,
   };
@@ -21,6 +22,7 @@ export default class DrawerContainer extends Component {
   static defaultProps = {
     overlay: true,
     right: false,
+    closeOnEsc: true,
     width: Units.phone.keylineIncrement * 4
   };
 
@@ -31,11 +33,17 @@ export default class DrawerContainer extends Component {
   };
 
   componentDidMount() {
-    document.addEventListener('keyup', this.handleKey);
+    const { closeOnEsc } = this.props;
+    if (closeOnEsc) {
+      document.addEventListener('keyup', this.handleKey);
+    }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keyup', this.handleKey);
+    const { closeOnEsc } = this.props;
+    if (closeOnEsc) {
+      document.removeEventListener('keyup', this.handleKey);
+    }
   }
 
   handleKey = (event) => {
@@ -64,13 +72,12 @@ export default class DrawerContainer extends Component {
     const overlayPosition = position > 0 ? 0 : -100;
     return (
       <Portal menu>
-        {overlay ?
-          <Overlay
-            center={false}
-            onTouchTap={this.handleTap}
-            onKeyup={this.handleKey}
-            style={{ opacity: position, top: `${overlayPosition}%` }}
-          /> : null }
+        {overlay && <Overlay
+          center={false}
+          onTouchTap={this.handleTap}
+          onKeyup={this.handleKey}
+          style={{ opacity: position, top: `${overlayPosition}%` }}
+        />}
         <Paper
           rounded={false}
           style={{ width, transform }}
