@@ -15,8 +15,6 @@ import { NotFoundError } from 'Errors';
 import Config from 'Config';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
-import persistentStorage from 'lib/persistentStorage';
-import { setLocale } from 'lib/I18n';
 import { ThemeProvider } from 'oxygen-md/Styles';
 
 const MongoStore = connectMongo(session);
@@ -47,19 +45,6 @@ app.use(session({
     mongooseConnection: mongoose.connection,
   })
 }));
-
-app.use(function (req, res, next) {
-  const { session } = req;
-  persistentStorage.setStorage(session);
-  const { profile } = req.session;
-  console.log(profile);
-  if (profile.settings.locale) {
-    const { locale, defaultCurrency } = profile.settings.locale;
-    setLocale(locale, defaultCurrency);
-  }
-  next();
-});
-
 
 /**
  * Removes a module from the cache

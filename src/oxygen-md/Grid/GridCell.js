@@ -27,7 +27,6 @@ class GridCell extends Component {
 
   getStyle() {
     const { size, style } = this.props;
-    console.log(size);
     return Object.assign({}, style, {
       flex: size ? `0 0 ${size * 100}%` : 1
     });

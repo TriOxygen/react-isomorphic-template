@@ -38,7 +38,11 @@ class Login extends Component {
 
   logout = () => {
     const { logout } = this.props;
-    logout();
+    logout().then(res => {
+      if (res.message) {
+        this.props.addMessage(res.message);
+      }
+    })
   };
 
   render() {

@@ -109,7 +109,7 @@ class TransitionTest extends Component {
           <Grid gutter>
             {
               courses.map(course =>
-                <GridCell key={course._id}>
+                <GridCell size={1/3} key={course._id}>
                   <Card zDepth={1} onTouchTap={this.edit.bind(this, course)} >
                     <CardTitle>{course.name}</CardTitle>
                     <CardMedia>

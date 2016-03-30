@@ -32,7 +32,44 @@ export default router => {
     .put(apiCall(setTheme))
     .get(apiCall(getTheme));
 
+}
 
+function stripProfile(profile) {
+  const { _id, name, email, lastLogin, settings } = profile;
+  const { locale, theme } = settings;
+  return {
+    _id,
+    name,
+    email,
+    lastLogin,
+    settings: {
+      locale,
+      theme
+    }
+  }
+}
+
+export function createEmptyProfile() {
+  return {
+    name: {
+      first: 'Guest',
+      last: 'Person'
+    },
+    email: 'standing@middle.of.nowhere',
+    lastLogin: Date.now(),
+    settings: {
+      locale: {
+        locale: 'en-US',
+        defaultCurrency: 'EUR'
+      },
+      theme: {
+        main: 'light',
+        primary: 'red',
+        secondary: 'orange',
+        tertiary: 'grey'
+      }
+    }
+  }
 }
 
 async function login(body, params) {
@@ -43,43 +80,30 @@ async function login(body, params) {
   }
   user.lastLogin = Date.now();
   await user.save();
-  const profile = {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    settings: user.settings,
-    lastLogin: user.lastLogin,
-    loggedIn: true
-  };
+  const profile = stripProfile(user);
+  profile.loggedIn = true;
   persistentStorage.set('profile', profile);
   return [profile, _l`You are logged in.`];
 }
 
 async function logout(body, params) {
-  persistentStorage.set('profile', {});
-  return [{
-    loggedIn: false
-  }, _l`You are logged out.`];
+  const emptyProfile = createEmptyProfile();
+  persistentStorage.set('profile', emptyProfile);
+  return [emptyProfile, _l`You are logged out.`];
 }
 
-async function setLocale(body, params, profile) {
+async function setLocale(body, params, loggedInUser) {
   const { locale, defaultCurrency } = body;
-  const user = await User.findById(profile._id);
+  const user = await User.findById(loggedInUser._id);
   user.setttings = user.settings || new Settings();
   user.settings.locale.locale = locale;
   user.settings.locale.defaultCurrency = defaultCurrency;
   await user.save();
-  const _profile = {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    settings: user.settings,
-    lastLogin: user.lastLogin,
-    loggedIn: true
-  };
+  const profile = stripProfile(user);
+  profile.loggedIn = true;
   switchLocale(locale, defaultCurrency);
-  persistentStorage.set('profile', _profile);
-  return [_profile, _l`Locale changed.`];
+  persistentStorage.set('profile', profile);
+  return [profile, _l`Locale changed.`];
 }
 
 async function getLocale(body, params, profile) {
@@ -91,9 +115,9 @@ async function getLocale(body, params, profile) {
   return [user.settings.locale];
 }
 
-async function setTheme(body, params, profile) {
+async function setTheme(body, params, loggedInUser) {
   const { primary, secondary, tertiary, main } = body;
-  const user = await User.findById(profile._id);
+  const user = await User.findById(loggedInUser._id);
   user.setttings = user.settings || new Settings();
   user.settings.theme = {
     ...user.settings.theme,
@@ -103,20 +127,14 @@ async function setTheme(body, params, profile) {
     main
   };
   await user.save();
-  const _profile = {
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    settings: user.settings,
-    lastLogin: user.lastLogin,
-    loggedIn: true
-  };
-  persistentStorage.set('profile', _profile);
-  return [_profile, _l`Locale changed.`];
+  const profile = stripProfile(user);
+  profile.loggedIn = true;
+  persistentStorage.set('profile', profile);
+  return [profile, _l`Locale changed.`];
 }
 
-async function getTheme(body, params, profile) {
-  const user = await User.findById(profile._id);
+async function getTheme(body, params, loggedInUser) {
+  const user = await User.findById(loggedInUser._id);
   if (!user.settings) {
     user.settings = new Settings();
     await user.settings.save();

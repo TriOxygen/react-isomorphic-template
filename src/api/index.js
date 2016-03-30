@@ -1,11 +1,13 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import profile from './Profile';
+import profile, { createEmptyProfile } from './Profile';
 import course from './Course';
 import user from './User';
 import locale from './Locale';
 import mail from './Mail';
 import { UnknownError } from 'Errors';
+import persistentStorage from 'lib/persistentStorage';
+import { setLocale } from 'lib/I18n';
 
 export class NoSuchEndpointError extends UnknownError {
   code = 404;
@@ -39,6 +41,17 @@ export default function api (app) {
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+
+  app.use(function (req, res, next) {
+    const { session } = req;
+    persistentStorage.setStorage(session);
+    const profile = req.session.profile || createEmptyProfile();
+    const { locale, defaultCurrency } = profile.settings.locale;
+    setLocale(locale, defaultCurrency);
+    next();
+  });
+
+
 
   profile(router);
   locale(router);
