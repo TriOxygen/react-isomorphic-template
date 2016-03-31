@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
-import routes from 'routes';
+import createRoutes from 'routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import configureStore, { reduxRouterMiddleware } from 'reducers/configureStore';
 import IntlProvider from 'lib/IntlProvider';
@@ -22,11 +22,12 @@ require('styles/normalize.css');
 require('styles/bundle.css');
 require('oxygen-md-svg-icons/lib/bundle.css');
 
+
 ReactDOM.render(
   <Provider store={store}>
     <IntlProvider>
       <ThemeProvider>
-        <Router children={routes} history={browserHistory} />
+        <Router children={createRoutes(store.dispatch)} history={browserHistory} />
       </ThemeProvider>
     </IntlProvider>
   </Provider>,

@@ -4,7 +4,7 @@ export default function fetchComponentData (dispatch, components, params) {
     return current ? (current.needs || []).concat(prev) : prev;
   }, []);
 
-  const promises = needs.map(need => dispatch(need(params)));
+  const promises = needs.reverse().map(need => dispatch(need(params)));
 
   return Promise.all(promises);
 }

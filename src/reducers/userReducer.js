@@ -49,13 +49,13 @@ export function getUsers () {
   };
 }
 
-export function getUser (id) {
+export function getUser ({userId}) {
   return {
     type: GET_USER,
-    apiCall: api => api.get(`users/${id}`),
+    apiCall: api => api.get(`users/${userId}`),
     checkCache: state => {
-      if (state.users[id] && state.users[id].hasOwnProperty('active')) {
-        return state.users[id];
+      if (state.users[userId] && state.users[userId].hasOwnProperty('active')) {
+        return state.users[userId];
       }
       return false;
     }

@@ -18,7 +18,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as homeActions from 'reducers/homeReducer';
 import * as userMessageActions from 'reducers/userMessageReducer';
-
+import { routeActions } from 'react-router-redux';
 import { addMessages, translate as _l } from 'lib/I18n';
 
 import ContentClear from 'oxygen-md-svg-icons/lib/SvgIcons/ContentClear';
@@ -82,10 +82,6 @@ class Users extends Component {
     userActions.getUsers
   ];
 
-  componentWillMount() {
-    fetchComponentData(this.props.dispatch, [this.constructor]);
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState);
   }
@@ -124,10 +120,10 @@ class Users extends Component {
   };
 
   edit(user) {
-    this.props.getUser(user._id).then(res => {
-      console.log(res);
-      this.setState({ edit: res.data, portal: true });
-    })
+    this.props.go(`/users/${user._id}`);
+    // this.props.getUser({ userId: user._id }).then(res => {
+    //   this.setState({ edit: res.data, portal: true });
+    // })
   }
 
   updateUser() {
@@ -159,7 +155,7 @@ class Users extends Component {
   };
 
   handleUserTap = user => {
-    this.props.getUser(user._id);
+    this.props.go(`/users/${user._id}`);
   };
 
   drawer = () => {
@@ -222,6 +218,7 @@ class Users extends Component {
   }
 
   render() {
+    const { children } = this.props;
     const { edit, portal } = this.state;
     const { name, email } = edit || {};
     const list = this.renderList();
@@ -232,27 +229,6 @@ class Users extends Component {
 //          </View>\
 //
 
-    let child;
-    if (portal) {
-      child = (
-        <div>
-          <Toolbar transparent onTouchTapRightIcon={this.portal} rightIcon={<ContentClear block/>}>Hi</Toolbar>
-          <DialogTitle>{_l`User`}</DialogTitle>
-          <DialogContent>
-            <TextField autoFocus ref="first" value={edit && name.first} floatingLabelText={_l`First name`}/>
-            <TextField ref="last" value={edit && name.last} floatingLabelText={_l`Last name`}/>
-            <TextField ref="email" value={edit && email} floatingLabelText={_l`E-mail`}/>
-            <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
-            <Toggle ref="active" checked={edit && edit.active} label={_l`Active`} />
-            <Toggle ref="locked" checked={edit && edit.locked} label={_l`Locked`} />
-          </DialogContent>
-          <DialogActions>
-            <FlatButton primary onTouchTap={this.save} label={label}/>
-            <FlatButton onTouchTap={this.clear} label={_l`Clear`}/>
-          </DialogActions>
-        </div>
-      );
-    }
     return (
       <Layout>
         <MainAppBar>
@@ -260,9 +236,9 @@ class Users extends Component {
           <RaisedButton label={_l`Message`} onTouchTap={this.message} />
         </MainAppBar>
         <SplitPane leftComponent={list}>
-          {child}
+          {children}
         </SplitPane>
-        <Dialog onRequestClose={this.portal} onRequestOpen={this.portal} open={portal && false}>
+        <Dialog onRequestClose={this.portal} onRequestOpen={this.portal} open={portal}>
           <DialogTitle>{_l`User`}</DialogTitle>
           <DialogContent>
             <TextField autoFocus ref="first" value={edit && name.first} floatingLabelText={_l`First name`}/>
@@ -283,6 +259,7 @@ class Users extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    go: bindActionCreators(routeActions.push, dispatch),
     addMessage: bindActionCreators(userMessageActions.addMessage, dispatch),
     openDrawer: bindActionCreators(homeActions.openDrawer, dispatch),
     createUser: bindActionCreators(userActions.createUser, dispatch),

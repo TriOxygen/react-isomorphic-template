@@ -42,6 +42,7 @@ class SplitPane extends Component {
   handleResize = () => {
     const { width } = this._node.getBoundingClientRect();
     this._width = width;
+    this.setState({ hasChild: this.state.hasChild });
   }
 
   render() {
@@ -61,12 +62,22 @@ class SplitPane extends Component {
               width: deficit
             };
           } else {
-            leftStyle = {
-              right: 0
-            };
-            rightStyle = {
-              width: 0
-            };
+            if (hasChild) {
+              leftStyle = {
+                width: this.props.leftWidth
+              };
+              rightStyle = {
+                left: this.props.leftWidth
+              };
+            } else {
+              leftStyle = {
+                right: 0
+              };
+              rightStyle = {
+                width: 0
+              };
+
+            }
           }
           return (
             <div className={css.root} style={{ overflow: interpolated.progress ? 'hidden' : null }}>

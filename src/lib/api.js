@@ -2,7 +2,7 @@ import request from 'axios';
 import Config from 'Config';
 const { version, host, route } = Config.api;
 
-const API_URL = `//${host}/${route}/${version}`;
+const API_URL = `http://${host}/${route}/${version}`;
 
 class API {
   constructor() {
@@ -16,7 +16,6 @@ class API {
   put(url, data) {
     return request.put(`${this.url}/${url}`, data);
   }
-
 
   post(url, data) {
     return request.post(`${this.url}/${url}`, data);

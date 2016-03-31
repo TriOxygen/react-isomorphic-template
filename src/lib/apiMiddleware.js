@@ -27,7 +27,6 @@ export default function apiMiddleware (store) {
     }
 
     next({ ...rest, type: REQUEST });
-
     return apiCall(api)
       .then(res => {
         const response = res.data;

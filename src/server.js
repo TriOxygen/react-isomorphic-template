@@ -78,8 +78,6 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
 
     function init () {
 
-      var routes = require('./routes').default;
-
       const api = require('api').default;
       app.use('/api/v1', api(app) );
 
@@ -87,7 +85,11 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
         const { session } = req;
         const location = createLocation(req.url);
 
-        // const routes = require('./routes');
+        const initial = {
+          profile: session.profile,
+        };
+        const store = configureStore(initial);
+        const routes = require('./routes').default(store.dispatch);
 
         match({ routes, location }, async (err, redirectLocation, renderProps) => {
           if (process.env.NODE_ENV !== 'production') {
@@ -103,10 +105,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
             return next(new NotFoundError());
             // return res.status(404).end('Not found');
           }
-          const initial = {
-            profile: session.profile,
-          };
-          const store = configureStore(initial);
+
 
           function renderView() {
             const initialView = (
@@ -123,6 +122,11 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
               renderToString(<Html assets={webpackIsomorphicTools.assets()} component={initialView} store={initialState}/>);
           }
 
+
+        // fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
+        //   .then(renderView)
+        //   .then(html => res.end(html))
+        //   .catch(err => res.end(err.message));
           try {
             await fetchComponentData(store.dispatch, renderProps.components, renderProps.params);
             res.end(renderView());
