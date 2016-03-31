@@ -33,8 +33,14 @@ const User = new Schema({
   loginAttempts: Number,
   lastLogin: { type: Date, default: Date.now },
   lastUpdate: { type: Date, default: Date.now },
-  active: Boolean,
-  locked: Boolean
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  locked: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const model = mongoose.model('User', User);

@@ -1,4 +1,5 @@
 import promiseMiddleware from 'lib/promiseMiddleware';
+import apiMiddleware from 'lib/apiMiddleware';
 import * as reducers from 'reducers';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { syncHistory, routeReducer } from 'react-router-redux'
@@ -10,11 +11,11 @@ let middlewares;
 let reduxRouterMiddleware;
 
 if (process.env.SERVER) {
-  middlewares = applyMiddleware(promiseMiddleware);
+  middlewares = applyMiddleware(promiseMiddleware, apiMiddleware);
   reducer = combineReducers(reducers);
 } else {
   reduxRouterMiddleware = syncHistory(browserHistory);
-  middlewares = applyMiddleware(promiseMiddleware, reduxRouterMiddleware);
+  middlewares = applyMiddleware(promiseMiddleware, apiMiddleware, reduxRouterMiddleware);
   reducer = combineReducers(Object.assign({}, reducers, {
     routing: routeReducer
   }));

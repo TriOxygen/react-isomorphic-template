@@ -1,4 +1,4 @@
-import createStore from 'lib/createStore';
+import createReducer from 'lib/createReducer';
 
 const TOGGLE_DRAWER = 'home/toggleDrawer';
 const SET_DRAWER_POSITION = 'home/setDrawerPosition';
@@ -9,7 +9,7 @@ const initialState = {
   drawerPosition: 0
 };
 
-export default createStore(initialState, {
+export default createReducer(initialState, {
   [TOGGLE_DRAWER]: (state) => {
     return {
       ...state,

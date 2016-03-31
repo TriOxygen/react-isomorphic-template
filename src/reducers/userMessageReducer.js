@@ -1,4 +1,4 @@
-import createStore from 'lib/createStore';
+import createReducer from 'lib/createReducer';
 
 const ADD = 'userMessage/add';
 const NEXT = 'userMessage/next';
@@ -9,7 +9,7 @@ const initialState = {
   currentMessage: { time: null, message: null }
 };
 
-export default createStore(initialState, {
+export default createReducer(initialState, {
   [ADD]: (state, action) => {
     if (!action.message) {
       return state;

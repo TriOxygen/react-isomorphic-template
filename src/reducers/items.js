@@ -1,10 +1,10 @@
-import createStore from 'lib/createStore';
+import createReducer from 'lib/createReducer';
 
 const DELETE_ITEM = 'items/delete';
 const ADD_ITEM = 'items/add';
 const EDIT_ITEM = 'items/edit';
 
-export default createStore([], {
+export default createReducer([], {
   [ADD_ITEM]: (state, action) => {
     const item = {
       id: action.content,

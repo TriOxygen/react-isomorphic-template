@@ -10,9 +10,9 @@ import MainAppBar from 'components/MainAppBar';
 import { Grid, GridCell } from 'oxygen-md';
 import { Card, CardMedia, CardContent, CardImage, CardTitle, CardActions } from 'oxygen-md';
 
-import * as itemActions from 'reducers/Items';
-import * as courseActions from 'reducers/CourseReducer';
-import * as mailActions from 'reducers/MailReducer';
+import * as itemActions from 'reducers/items';
+import * as courseActions from 'reducers/courseReducer';
+import * as mailActions from 'reducers/mailReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 

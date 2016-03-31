@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as userMessageActions from 'reducers/UserMessageReducer';
+import * as userMessageActions from 'reducers/userMessageReducer';
 import { SnackBar } from 'oxygen-md';
 
 class MainAppBar extends Component {

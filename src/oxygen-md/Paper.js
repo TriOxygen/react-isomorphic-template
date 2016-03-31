@@ -78,7 +78,7 @@ const styles = oxygenCss({
   root: {
     boxSizing: 'border-box',
     overflow: 'hidden',
-    transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1)',
+    transition: 'box-shadow 450ms cubic-bezier(0.23, 1, 0.32, 1)',
     '&padded': {
       padding: Units.phone.gutter.mini,
     },

@@ -102,9 +102,9 @@ class Toolbar extends Component {
     const classes = classNames(styles.root, className);
     return (
       <View row className={classes} style={this.getStyle()} {...other}>
-        <View grow={0} ><IconButton onTouchTap={this.handleTouchTapLeftIcon}>{leftIcon}</IconButton></View>
+        {leftIcon && <View grow={0} ><IconButton onTouchTap={this.handleTouchTapLeftIcon}>{leftIcon}</IconButton></View>}
         <View grow={1}>{children}</View>
-        <View grow={0} ><IconButton onTouchTap={this.handleTouchTapLeftIcon}>{rightIcon}</IconButton></View>
+        {rightIcon && <View grow={0} ><IconButton onTouchTap={this.handleTouchTapRightIcon}>{rightIcon}</IconButton></View>}
       </View>
     );
   }

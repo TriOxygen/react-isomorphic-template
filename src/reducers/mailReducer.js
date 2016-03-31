@@ -1,12 +1,12 @@
 import api from 'lib/api';
-import createStore from 'lib/createStore';
+import createReducer from 'lib/createReducer';
 
 const SEND = 'mail/send';
 
 const initialState = {
 };
 
-export default createStore(initialState, {
+export default createReducer(initialState, {
   [SEND]: (state, action) => {
     return {
       ...action.data

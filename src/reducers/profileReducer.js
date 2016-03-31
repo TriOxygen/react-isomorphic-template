@@ -1,5 +1,5 @@
 import api from 'lib/api';
-import createStore from 'lib/createStore';
+import createReducer from 'lib/createReducer';
 
 const LOGIN = 'profile/login';
 const LOGOUT = 'profile/logout';
@@ -23,7 +23,7 @@ const initialState = {
   }
 };
 
-export default createStore(initialState, {
+export default createReducer(initialState, {
   [LOGIN]: (state, action) => {
     return action.data;
   },

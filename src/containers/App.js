@@ -9,7 +9,7 @@ import ImagePalette from 'oxygen-md-svg-icons/lib/SvgIcons/ImagePalette';
 import ActionHome from 'oxygen-md-svg-icons/lib/SvgIcons/ActionHome';
 import { bindActionCreators } from 'redux';
 import { routeActions } from 'react-router-redux';
-import * as homeActions from 'reducers/HomeReducer';
+import * as homeActions from 'reducers/homeReducer';
 import MainSnackBar from 'components/MainSnackBar';
 import shallowCompare from 'react-addons-shallow-compare';
 

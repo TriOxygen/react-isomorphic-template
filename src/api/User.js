@@ -15,6 +15,14 @@ addMessages({
 });
 
 
+const fullUserProjection = {
+  name: true,
+  email: true,
+  lastLogin: true,
+  active: true,
+  locked: true
+};
+
 export default router => {
   router.route('/users')
     .post(apiCall(newUser))
@@ -44,11 +52,15 @@ async function newUser(body, params) {
 
 async function getUsers(body, params) {
   const users = await User.find({}).select('name email lastLogin');
-  return [users];
+  const map = users.reduce((prev, current) => {
+    prev[current._id] = current;
+    return prev;
+  }, {});
+  return [map];
 }
 
 async function getUser(body, params) {
-  const user = await User.findById(params.userId);
+  const user = await User.findById(params.userId, fullUserProjection);
   if (!user) {
     throw new NotFoundError();
   }

@@ -1,24 +1,41 @@
-export default function promiseMiddleware (store) {
-  return next => action => {
-    const { promise, type, ...rest } = action;
+import api from 'lib/api';
 
-    if (!promise) return next(action);
+export default function apiMiddleware (store) {
+  return next => action => {
+    const { apiCall, checkCache, type, ...rest } = action;
+
+    if (!apiCall) return next(action);
 
     const SUCCESS = type;
-
     const REQUEST = type + '/request';
     const FAILURE = type + '/fail';
 
+    if (checkCache) {
+      const cachedResponse = checkCache(store.getState());
+      if (cachedResponse) {
+
+        return new Promise((resolve) => {
+          resolve(cachedResponse);
+        }).then(data => {
+          next({ ...rest, data, type: SUCCESS });
+          return {
+            error: false,
+            data
+          };
+        })
+      }
+    }
+
     next({ ...rest, type: REQUEST });
 
-    return promise
+    return apiCall(api)
       .then(res => {
         const response = res.data;
         next({ ...rest, data: response.data, type: SUCCESS });
         return {
           error: false,
           message: response.message,
-          data: res.data,
+          data: response.data,
         };
       })
       .catch(res => {
@@ -28,5 +45,6 @@ export default function promiseMiddleware (store) {
           message: res.data && res.data.message,
         }
       });
+
   };
 }

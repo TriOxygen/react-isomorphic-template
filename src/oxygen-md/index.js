@@ -1,10 +1,4 @@
 
-// import RaisedButton from './RaisedButton';
-
-// export default {
-//   RaisedButton
-// };
-
 export RaisedButton from './RaisedButton';
 export FlatButton from './FlatButton';
 export Toggle from './Toggle';
@@ -50,9 +44,6 @@ import * as Lists from './Lists';
 const { Menu, MenuItem } = Menus;
 const { List, ListItem } = Lists;
 
-
-
-
 export * as Styles from './Styles';
 // export * as Utils from './Utils';
 export * as Menus from './Menus';
@@ -62,3 +53,4 @@ export { Menu as Menu };
 export { ListItem as ListItem };
 export { List as List };
 
+export SplitPane from './SplitPane';

@@ -1,12 +1,12 @@
 import api from 'lib/api';
-import createStore from 'lib/createStore';
+import createReducer from 'lib/createReducer';
 
 const GET_COURSES = 'courses/get';
 const CREATE_COURSE = 'courses/create';
 const EDIT_COURSE = 'courses/edit';
 const DELETE_COURSE = 'courses/delete';
 
-export default createStore([], {
+export default createReducer([], {
   [GET_COURSES]: (state, action) => {
     return action.data;
   },

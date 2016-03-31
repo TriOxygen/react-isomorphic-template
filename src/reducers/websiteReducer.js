@@ -1,5 +1,5 @@
 import SteelCompass from 'lib/SteelCompass';
-import createStore from 'lib/createStore';
+import createReducer from 'lib/createReducer';
 
 //const API_URL = 'https://webtask.it.auth0.com/api/run/wt-milomord-gmail_com-0/redux-tutorial-backend?webtask_no_cache=1';
 const GET_COURSE = 'website/getCourseById';
@@ -11,7 +11,7 @@ const initialState = {
   loaded: false,
 }
 
-export default createStore(initialState, {
+export default createReducer(initialState, {
   [GET_COURSE]: (state, action) => {
     return {
       ...state,

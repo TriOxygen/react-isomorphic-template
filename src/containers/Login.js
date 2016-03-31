@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as profileActions from 'reducers/ProfileReducer';
-import * as userMessageActtions from 'reducers/UserMessageReducer';
+import * as profileActions from 'reducers/profileReducer';
+import * as userMessageActtions from 'reducers/userMessageReducer';
 import { Layout, TextField, RaisedButton } from 'oxygen-md';
 import { addMessages, translate as _l } from 'lib/I18n';
 import MainAppBar from 'components/MainAppBar';

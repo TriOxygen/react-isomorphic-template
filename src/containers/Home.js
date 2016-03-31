@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import TodosView from 'components/TodosView';
 import TodosForm from 'components/TodosForm';
 import { bindActionCreators } from 'redux';
-import * as websiteActions from 'reducers/WebsiteReducer';
+import * as websiteActions from 'reducers/websiteReducer';
 import classNames from 'classnames';
 // import theme from '../style/theme';
 import { Colors, Theme, Units, Typography } from 'oxygen-md/Styles';

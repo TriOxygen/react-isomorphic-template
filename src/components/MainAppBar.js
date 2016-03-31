@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as homeActions from 'reducers/HomeReducer';
+import * as homeActions from 'reducers/homeReducer';
 import { Toolbar } from 'oxygen-md';
 import NavigationMenu from 'oxygen-md-svg-icons/lib/SvgIcons/NavigationMenu';
 

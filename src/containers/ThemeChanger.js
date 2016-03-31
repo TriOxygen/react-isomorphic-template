@@ -9,7 +9,7 @@ import MaterialTest from 'containers/MaterialTest';
 const { material } = Colors;
 import { addMessages, translate as _l } from 'lib/I18n';
 import MainAppBar from 'components/MainAppBar';
-import * as profileActions from 'reducers/ProfileReducer';
+import * as profileActions from 'reducers/profileReducer';
 
 addMessages({
   ['en-US']: {

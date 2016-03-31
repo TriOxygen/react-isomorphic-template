@@ -165,7 +165,7 @@ const toggleStyles = oxygenCss({
     transition: 'all 0.3s ease',
     borderRadius: 100,
     backgroundColor: Colors.material.grey[500].hex,
-    margin: `${Units.phone.gutter.mini / 2}px  ${Units.phone.gutter.mini}px ${Units.phone.gutter.mini /2}px ${Units.phone.gutter.mini}px`,
+    margin: `${Units.phone.gutter.mini / 2}px  ${Units.phone.gutter.mini}px ${Units.phone.gutter.mini /2}px 0`,
     boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
     outline: 'none',
     verticalAlign: 'middle',
