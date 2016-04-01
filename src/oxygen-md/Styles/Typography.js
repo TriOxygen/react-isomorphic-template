@@ -1,6 +1,6 @@
 const LIGHT = 300;
 const REGULAR = 400;
-const MEDIUM = 600;
+const SEMI_BOLD = 500;
 const BOLD = 700;
 
 const caption = {

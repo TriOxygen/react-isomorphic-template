@@ -51,6 +51,14 @@ class MenuButton extends IconButton {
     this.setState({ menu: false });
   }
 
+  handleKeyPress = event => {
+    const { keyCode } = event;
+    if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
+      this.handleTouchTap(event);
+      event.preventDefault();
+    }
+  };
+
   renderMenu() {
     const { children } = this.props;
     const { left, top, width, menu } = this.state;
@@ -61,7 +69,7 @@ class MenuButton extends IconButton {
           if (progress > 0) {
             return (
               <Portal positioned menu style={{ transform: `translate3d(${left - 256 + width}px, ${top}px, 0)` }}>
-                <Menu onRequestClose={this.handleMenuClose} style={{ position: 'relative', width: 256, top: progress * 32 - 32, opacity: progress }}>
+                <Menu onRequestClose={this.handleMenuClose} style={{ position: 'relative', width: 256, top: 32 - progress * 32, opacity: progress }}>
                   {children}
                 </Menu>
               </Portal>

@@ -26,14 +26,14 @@ const appStyles = oxygenCss({
   HTML: {
     width: '100%',
     height: '100%',
-    fontFamily: `'Open Sans', sans-serif`,
+    fontFamily: `'Hind Siliguri', sans-serif`,
     fontSize: 14,
     fontWeight: 400,
   },
   BODY: {
     width: '100%',
     height: '100%',
-    fontFamily: `'Open Sans', sans-serif`,
+    fontFamily: `'Hind Siliguri', sans-serif`,
     fontSize: 14,
     fontWeight: 400,
   },

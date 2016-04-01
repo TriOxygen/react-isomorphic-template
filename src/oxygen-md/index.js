@@ -8,7 +8,7 @@ export Checkbox from './Checkbox';
 export IconButton from './IconButton';
 export MenuButton from './MenuButton';
 export FloatingActionButton from './FloatingActionButton';
-export Toolbar from './Toolbar';
+
 export ButtonContainer from './ButtonContainer';
 export Layout from './Layout';
 export View from './View';
@@ -24,6 +24,10 @@ export Dialog from './Dialog/Dialog';
 export DialogTitle from './Dialog/DialogTitle';
 export DialogContent from './Dialog/DialogContent';
 export DialogActions from './Dialog/DialogActions';
+
+export Toolbar from './Toolbar/Toolbar';
+export ToolbarTitle from './Toolbar/ToolbarTitle';
+
 
 export SnackBar from './SnackBar/SnackBar';
 

@@ -2,13 +2,13 @@ import React, { PropTypes, Component } from 'react';
 import Transition from 'react-motion-ui-pack';
 import shallowCompare from 'react-addons-shallow-compare';
 import Scrollable from 'components/Scrollable';
-import { Dialog, DialogTitle, DialogContent, DialogActions, View, FlatButton, Layout, Toolbar, TextField, RaisedButton, MenuButton, MenuItem } from 'oxygen-md';
+import { View, Layout, Toolbar, ToolbarTitle, RaisedButton, MenuButton, MenuItem } from 'oxygen-md';
 import MainAppBar from 'components/MainAppBar';
 
 import EditorModeEdit from 'oxygen-md-svg-icons/lib/SvgIcons/EditorModeEdit';
 import ActionDelete from 'oxygen-md-svg-icons/lib/SvgIcons/ActionDelete';
 
-import { SplitPane, List, ListItem, IconButton } from 'oxygen-md';
+import { SplitPane, List, ListItem } from 'oxygen-md';
 
 
 import * as userActions from 'reducers/userReducer';
@@ -107,7 +107,9 @@ class UserList extends Component {
     );
     return (
       <Scrollable className={css.content} >
-        <Toolbar transparent onTouchTapRightIcon={this.portal} rightElement={rightElement}>Users</Toolbar>
+        <Toolbar transparent onTouchTapRightIcon={this.portal} rightElement={rightElement}>
+          <ToolbarTitle>Users</ToolbarTitle>
+        </Toolbar>
         <List>
           <Transition
             className={css.container}

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { Shadow, Units } from './Styles';
-import View from './View';
+import { Shadow, Units } from '../Styles';
+import View from '../View';
 import classNames from 'classnames';
 
 const styles = oxygenCss({

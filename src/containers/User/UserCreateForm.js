@@ -7,7 +7,7 @@ import ContentClear from 'oxygen-md-svg-icons/lib/SvgIcons/ContentClear';
 import { addMessages, translate as _l } from 'lib/I18n';
 import { routeActions } from 'react-router-redux';
 
-import { IconButton, Toolbar, DialogTitle, DialogContent, TextField, Toggle, DialogActions, RaisedButton } from 'oxygen-md';
+import { IconButton, Toolbar, ToolbarTitle, DialogTitle, DialogContent, TextField, Toggle, DialogActions, RaisedButton } from 'oxygen-md';
 
 
 addMessages({
@@ -57,16 +57,16 @@ class UserCreateForm extends Component {
     return (
       <div>
         <Toolbar transparent rightElement={<IconButton onTouchTap={this.goBack}><ContentClear block/></IconButton>}>
-          Some title
+          <ToolbarTitle>{_l`Create a new user`}</ToolbarTitle>
         </Toolbar>
-        <DialogTitle>{_l`Create a new user`}</DialogTitle>
+
         <DialogContent>
           <TextField autoFocus ref="first" floatingLabelText={_l`First name`}/>
           <TextField ref="last" floatingLabelText={_l`Last name`}/>
           <TextField ref="email" floatingLabelText={_l`E-mail`}/>
           <TextField type="password" ref="password" floatingLabelText={_l`Password`}/>
-          <Toggle ref="active" checked={true} label={_l`Active`} />
-          <Toggle ref="locked" checked={false} label={_l`Locked`} />
+          <Toggle primary ref="active" checked={true} label={_l`Active`} />
+          <Toggle primary ref="locked" checked={false} label={_l`Locked`} />
         </DialogContent>
         <DialogActions>
           <RaisedButton fullWidth secondary onTouchTap={this.createUser} label={'Save'}/>
