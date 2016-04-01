@@ -25,7 +25,6 @@ const styles = oxygenCss({
     overflow: 'hidden',
     cursor: 'pointer',
     boxSizing: 'border-box',
-    padding: `0 ${Units.phone.list.item.padding}px`,
     lineHeight: `${Units.phone.list.item.height}px`,
     height: `${Units.phone.list.item.height}px`,
     borderStyle: 'none none solid none',
@@ -43,7 +42,8 @@ const styles = oxygenCss({
         height: `${Units.desktop.list.item.dense.height}px`,
 
       }
-    }
+    },
+    padding: `0 ${Units.phone.list.item.padding / 2}px`,
   },
 });
 

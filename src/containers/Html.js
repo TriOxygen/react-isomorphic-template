@@ -9,11 +9,12 @@ export default class Html extends Component
   {
     assets: PropTypes.object,
     component: PropTypes.object,
-    store: PropTypes.object
+    store: PropTypes.object,
+    theme: PropTypes.string
   };
 
   render() {
-    const { assets, component, store } = this.props;
+    const { assets, component, store, theme } = this.props;
     let styles;
     let styleAssets;
     let cleaner;
@@ -49,7 +50,9 @@ export default class Html extends Component
           <meta charSet="utf-8"/>
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
-           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+          <meta name="theme-color" content={theme} />
+          <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css' />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
           <title>Coursio</title>
 
           {/* favicon */}

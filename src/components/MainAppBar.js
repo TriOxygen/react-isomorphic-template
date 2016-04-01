@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as homeActions from 'reducers/homeReducer';
-import { Toolbar } from 'oxygen-md';
+import { Toolbar, IconButton } from 'oxygen-md';
 import NavigationMenu from 'oxygen-md-svg-icons/lib/SvgIcons/NavigationMenu';
 
 class MainAppBar extends Component {
@@ -29,8 +29,7 @@ class MainAppBar extends Component {
     return (
       <Toolbar
         primary
-        onTouchTapLeftIcon={this.openDrawer}
-        leftIcon={<NavigationMenu block/>}
+        leftElement={<IconButton onTouchTap={this.openDrawer}><NavigationMenu block/></IconButton>}
       >
         {children}
       </Toolbar>

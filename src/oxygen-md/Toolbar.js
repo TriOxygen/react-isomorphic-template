@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Shadow, Units } from './Styles';
 import View from './View';
-import IconButton from './IconButton';
 import classNames from 'classnames';
 
 const styles = oxygenCss({
@@ -27,8 +26,8 @@ class Toolbar extends Component {
     primary: PropTypes.bool,
     secondary: PropTypes.bool,
     children: PropTypes.node,
-    leftIcon: PropTypes.node,
-    rightIcon: PropTypes.node,
+    leftElement: PropTypes.node,
+    rightElement: PropTypes.node,
     theme: PropTypes.object,
     className: PropTypes.string,
     onTouchTapLeftIcon: PropTypes.func,
@@ -98,13 +97,13 @@ class Toolbar extends Component {
   };
 
   render() {
-    const { children, leftIcon, rightIcon, className, primary, secondary, ...other } = this.props;
+    const { children, leftElement, rightElement, className, primary, secondary, ...other } = this.props;
     const classes = classNames(styles.root, className);
     return (
       <View row className={classes} style={this.getStyle()} {...other}>
-        {leftIcon && <View grow={0} ><IconButton onTouchTap={this.handleTouchTapLeftIcon}>{leftIcon}</IconButton></View>}
+        {leftElement && <View grow={0} >{leftElement}</View>}
         <View grow={1}>{children}</View>
-        {rightIcon && <View grow={0} ><IconButton onTouchTap={this.handleTouchTapRightIcon}>{rightIcon}</IconButton></View>}
+        {rightElement && <View grow={0} >{rightElement}</View>}
       </View>
     );
   }

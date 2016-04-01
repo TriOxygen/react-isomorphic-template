@@ -135,7 +135,7 @@ export default TextField;
 const styles = oxygenCss({
   root: {
     position: 'relative',
-    height: 46,
+    height: 48,
     '&hasFloatingLabel': {
        height: 72,
     },
@@ -169,6 +169,7 @@ const inputStyles = oxygenCss({
     background: 'transparent',
     fontSize: Typography.phone.body1.fontSize,
     fontWeight: Typography.phone.body1.fontWeight,
+    top: 2,
     ':focus': {
       outline: 'none',
     },

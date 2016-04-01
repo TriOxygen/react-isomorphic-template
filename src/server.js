@@ -15,7 +15,7 @@ import { NotFoundError } from 'Errors';
 import Config from 'Config';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
-import { ThemeProvider } from 'oxygen-md/Styles';
+import { Colors, ThemeProvider } from 'oxygen-md/Styles';
 
 const MongoStore = connectMongo(session);
 // import routes from 'routes';
@@ -117,9 +117,9 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
             );
 
             const initialState = store.getState();
-
+            const theme = Colors.material[session.profile && session.profile.settings.theme.primary || 'red'][500].hex;
             return '<!doctype html>\n' +
-              renderToString(<Html assets={webpackIsomorphicTools.assets()} component={initialView} store={initialState}/>);
+              renderToString(<Html theme={theme} assets={webpackIsomorphicTools.assets()} component={initialView} store={initialState}/>);
           }
 
 

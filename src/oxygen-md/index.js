@@ -6,6 +6,7 @@ export Radio from './Radio';
 export RadioGroup from './RadioGroup';
 export Checkbox from './Checkbox';
 export IconButton from './IconButton';
+export MenuButton from './MenuButton';
 export FloatingActionButton from './FloatingActionButton';
 export Toolbar from './Toolbar';
 export ButtonContainer from './ButtonContainer';

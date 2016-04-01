@@ -9,21 +9,23 @@ export default class Portal extends Component {
     className: PropTypes.string,
     children: PropTypes.node,
     style: PropTypes.object,
+    positioned: PropTypes.bool,
     dialog: PropTypes.bool,
     tooltip: PropTypes.bool,
     menu: PropTypes.bool
   };
 
   componentWillMount() {
-    const { style, className, menu, dialog, tooltip } = this.props;
+    const { style, className, menu, positioned, dialog, tooltip } = this.props;
     this.node = document.createElement('div');
     this.node.className = classNames(className, css.root, {
       [css.dialog]: dialog,
+      [css.positioned]: positioned,
       [css.menu]: menu,
       [css.tooltip]: tooltip
     });
-    CSSPropertyOperations.setValueForStyles(this.node, style);
     document.body.appendChild(this.node);
+    CSSPropertyOperations.setValueForStyles(this.node, style, this);
     this.renderPortal(this.props);
   }
 
@@ -45,7 +47,11 @@ export default class Portal extends Component {
 
   renderPortal(props) {
     const { children } = props;
-    ReactDOM.unstable_renderSubtreeIntoContainer(this, <div>{children}</div>, this.node);
+    if (children.length > 0) {
+      ReactDOM.unstable_renderSubtreeIntoContainer(this, <div>{children}</div>, this.node);
+    } else {
+      ReactDOM.unstable_renderSubtreeIntoContainer(this, React.Children.only(children), this.node);
+    }
   }
 
   render() {
@@ -65,5 +71,10 @@ const css = oxygenCss({
   },
   tooltip: {
     zIndex: 101
+  },
+  positioned: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
   }
 });

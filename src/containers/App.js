@@ -26,16 +26,16 @@ const appStyles = oxygenCss({
   HTML: {
     width: '100%',
     height: '100%',
-    fontFamily: `'Source Sans Pro', sans-serif`,
+    fontFamily: `'Open Sans', sans-serif`,
     fontSize: 14,
-    fontWeight: 300,
+    fontWeight: 400,
   },
   BODY: {
     width: '100%',
     height: '100%',
-    fontFamily: `'Source Sans Pro', sans-serif`,
+    fontFamily: `'Open Sans', sans-serif`,
     fontSize: 14,
-    fontWeight: 300,
+    fontWeight: 400,
   },
   root: {
     height: '100%',
@@ -101,7 +101,7 @@ class App extends React.Component {
   renderMenu() {
     const { drawerPosition, profile } = this.props;
     return (
-      <Drawer overlay={false} position={drawerPosition} onRequestClose={this.closeDrawer} onRequestOpen={this.openDrawer}>
+      <Drawer position={drawerPosition} onRequestClose={this.closeDrawer} onRequestOpen={this.openDrawer}>
         <DrawerHeader primary>{profile.loggedIn && profile.name.first + ' ' + profile.name.last}</DrawerHeader>
         <MenuItem href={'/'} onTouchTap={this.go} autoFocus icon={<ActionHome/>}>{_l`Home`}</MenuItem>
         <MenuItem href={'/users'} onTouchTap={this.go} icon={<SocialPerson/>}>{_l`Users`}</MenuItem>

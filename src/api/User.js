@@ -36,7 +36,6 @@ export default router => {
 
 async function newUser(body, params) {
   const user = new User(body);
-  user.settings = new Settings();
 
   user.password = bcrypt.hashSync(body.password, bcrypt.genSaltSync(10));
 

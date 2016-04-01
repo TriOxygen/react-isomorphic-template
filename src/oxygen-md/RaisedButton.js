@@ -121,7 +121,7 @@ const styles = oxygenCss({
     },
     border: 'none',
     display: 'inline-block',
-    fontWeight: 500,
+    fontWeight: 600,
     textAlign: 'center',
     textDecoration: 'none',
     backgroundColor: 'rgba(158, 158, 158, 0.2)',

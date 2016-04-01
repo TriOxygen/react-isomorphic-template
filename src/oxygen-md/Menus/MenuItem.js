@@ -153,6 +153,14 @@ class MenuItem extends Component {
     }
   }
 
+  handleKeyPress = event => {
+    const { keyCode } = event;
+    if (keyCode === 0 || keyCode === 32 || keyCode == 13) {
+      this.handleTouchTap(event);
+      event.preventDefault();
+    }
+  };
+
   render() {
     const { disabled, children, icon, dense, href, className, ...other } = this.props;
     let iconElement;
@@ -173,6 +181,7 @@ class MenuItem extends Component {
       onClick: this.handleClick,
       onMouseEnter: this.handleMouseEnter,
       onMouseLeave: this.handleMouseLeave,
+      onKeyPress: this.handleKeyPress,
       onBlur: this.handleBlur,
       onFocus: this.handleFocus,
       style: this.getStyle(),

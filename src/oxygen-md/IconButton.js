@@ -122,7 +122,7 @@ class IconButton extends Component {
 
 export default IconButton;
 
-const styles = oxygenCss({
+export const styles = oxygenCss({
   'iconButton': {
     position: 'relative',
     borderRadius: '50%',

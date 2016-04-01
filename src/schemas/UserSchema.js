@@ -29,7 +29,10 @@ const User = new Schema({
     require: true,
     type: String,
   },
-  settings: SettingsSchema,
+  settings: {
+    type: SettingsSchema,
+    default: SettingsSchema
+  },
   loginAttempts: Number,
   lastLogin: { type: Date, default: Date.now },
   lastUpdate: { type: Date, default: Date.now },
