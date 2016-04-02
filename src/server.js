@@ -89,7 +89,7 @@ var webpackIsomorphicTools = new WebpackIsomorphicTools(require('../webpack/webp
           profile: session.profile,
         };
         const store = configureStore(initial);
-        const routes = require('./routes').default(store.dispatch);
+        const routes = require('./routes').default(store);
 
         match({ routes, location }, async (err, redirectLocation, renderProps) => {
           if (process.env.NODE_ENV !== 'production') {

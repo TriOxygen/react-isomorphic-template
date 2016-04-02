@@ -100,12 +100,13 @@ class App extends React.Component {
 
   renderMenu() {
     const { drawerPosition, profile } = this.props;
+    const { loggedIn } = profile;
     return (
       <Drawer position={drawerPosition} onRequestClose={this.closeDrawer} onRequestOpen={this.openDrawer}>
         <DrawerHeader primary>{profile.loggedIn && profile.name.first + ' ' + profile.name.last}</DrawerHeader>
         <MenuItem href={'/'} onTouchTap={this.go} autoFocus icon={<ActionHome/>}>{_l`Home`}</MenuItem>
-        <MenuItem href={'/users'} onTouchTap={this.go} icon={<SocialPerson/>}>{_l`Users`}</MenuItem>
-        <MenuItem href={'/theme'} onTouchTap={this.go} icon={<ImagePalette/>}>{_l`Theme Changer`}</MenuItem>
+        {loggedIn && <MenuItem href={'/users'} onTouchTap={this.go} icon={<SocialPerson/>}>{_l`Users`}</MenuItem>}
+        {loggedIn && <MenuItem href={'/theme'} onTouchTap={this.go} icon={<ImagePalette/>}>{_l`Theme Changer`}</MenuItem>}
         <MenuItem href={'/login'} onTouchTap={this.go} icon={<ActionHome/>}>{_l`Login`}</MenuItem>
       </Drawer>
     );

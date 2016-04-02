@@ -9,8 +9,6 @@ import EditorModeEdit from 'oxygen-md-svg-icons/lib/SvgIcons/EditorModeEdit';
 import ActionDelete from 'oxygen-md-svg-icons/lib/SvgIcons/ActionDelete';
 
 import { SplitPane, List, ListItem } from 'oxygen-md';
-
-
 import * as userActions from 'reducers/userReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -39,8 +37,6 @@ addMessages({
     'User update failed': 'User update was not successful',
   },
 });
-
-
 
 const css = oxygenCss({
   item: {
@@ -76,12 +72,10 @@ class UserList extends Component {
     return shallowCompare(this, nextProps, nextState);
   }
 
-
   delete = (user) => {
     const { deleteUser } = this.props;
     deleteUser(user._id);
   };
-
 
   edit = (user) => {
     this.props.go(`/users/${user._id}`);

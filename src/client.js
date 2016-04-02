@@ -27,7 +27,7 @@ ReactDOM.render(
   <Provider store={store}>
     <IntlProvider>
       <ThemeProvider>
-        <Router children={createRoutes(store.dispatch)} history={browserHistory} />
+        <Router children={createRoutes(store)} history={browserHistory} />
       </ThemeProvider>
     </IntlProvider>
   </Provider>,
